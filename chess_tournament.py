@@ -1,43 +1,63 @@
 import itertools
+from operator import itemgetter  # , attrgetter
 
 
-# def players():
-"""
-list of player for the tournament
- affectation d'un id  compilant , dictionnaire 
+def players_list():
+    """
+    list of player for the tournament
+    affectation d'un id  compilant , dictionnaire 
 
-"""
+    """
+    players_t0 = [
+        ['t', 'g', 4, 3],
+        ['e', 'f', 8, 2],
+        ['a', 'b', 3, 1],
+        ['k', 'l', 15, 0],
+        ['m', 'n', 1000, 0],
+        ['o', 'r', 100, 0],
+        ['q', 's', 16, 2],
+        ['p', 't', 16, 3]
+        ]
+    a = len(players_t0)
+    print("la liste comporte", a, "joueurs")
+    return players_t0
 
-play1 = 10
-play2 = 5
-play3 = 4
-play4 = 6
-play5 = 7
-play6 = 2
-play7 = 1
-play8 = 8
 
-""" tour 1
-"""
-tour1 = [play1, play2, play3]
-play1 = 11
-tour2 = (play1, play2, play3)
-# play1 = 11
-print("tour2 = ", (tour2))
-tour1.sort()
-print(tour1)
+def tri_players(players_list):
+    """
+    """
+    c = sorted(players_list, key=itemgetter(2, 3), reverse=True)
+    return c
 
-players_t0 = [
-    ['t', 'g', 4, 3],
-    ['e', 'f', 8, 2],
-    ['a', 'b', 3, 1],
-    ['k', 'l', 15, 0],
-    ['m', 'n', 15, 0],
-    ['o', 'r', 15, 0],
-    ['p', 's', 15, 0],
-    ['q', 't', 15, 0]
-     ]
-a = players_t0[2][1]
-print(a)
-b = sorted(players_t0, key=lambda t: t[2])
-print(b)
+def couple_list_T0(players_list):
+    """
+    """
+    a = len(players_list)
+
+    # base pour recuperer le nombre de parties au tour 0 , nb participants / 2, parties à 1 contre 1'
+    a = int(a/2)
+    
+    for i in range(a):
+        if a == 4:
+            round_0 = (players_list[(i)], players_list[(i+a)])
+            print(round_0)
+
+
+def main():
+    """
+    """
+    players_t0 = players_list()
+    players_t0 = tri_players(players_t0)
+    print(players_t0)
+
+    d = (int(len(players_t0)))  #/2
+    d = d*0.5
+    print(int(d))
+    if d is not int:
+        print("Creation des parties tour 0")
+        T0 = (couple_list_T0(players_t0))
+
+
+if __name__ == '__main__':
+    main()
+
