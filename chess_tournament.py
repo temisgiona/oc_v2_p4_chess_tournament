@@ -80,17 +80,18 @@ def results_T0(T0, d):
     dl = len(T0)
     for pos in range(dl):
         if (a == T0[pos]):
-            b = input("taper G pour gagnant ou N pour null ex-aequo : ")
-            b = b.upper()
-            gain = 0
-            
-            if b == "G":
-                "test"
-                # result_maker = search_player(T0, a)
-                gain = 1
+            while gain < 0.5:
+                b = input("taper G pour gagnant ou N pour null ex-aequo : ")
+                b = b.upper()
+                gain = 0
                 
-            if b == "N":
-                gain = 0.5
+                if b == "G":
+                    "test"
+                    # result_maker = search_player(T0, a)
+                    gain = 1
+                    
+                if b == "N":
+                    gain = 0.5
 
             player_exist, pos_player, ind_player2 = search_player(T0, a)
             if player_exist:
