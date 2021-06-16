@@ -1,6 +1,7 @@
-import itertools
-from operator import itemgetter
-from typing import Optional  # , attrgetter
+from itertools import combinations, permutations
+from operator import itemgetter, attrgetter
+from typing import Optional
+from typing_extensions import TypeVarTuple
 
 
 def players_list():
@@ -21,25 +22,49 @@ def players_list():
         ]
     a = len(players_t0)
     print("la liste comporte", a, "joueurs")
-    return players_t0 # , a as Optional
+    return players_t0  # , a as Optional
 
 
-def tri_players(players_list):
+def tri_players(players_list, column=3):
     """
+    affecte un indice alphabetique en vue  du
     tri des joueurs par rang (2) et eventuellement par pt
     du plus grand au plus petit
+     
+    """
+    players_list2 = sorted(players_list, key=itemgetter((column-1)), reverse=True)   
+    return players_list2
+
+def assign_id (players_list, column=3):
+    """
+    assigne ou affecte un indice alphabetique
+    en vue de tracer les rencontres facilement
+    
+    making alphabetical ID to trace the meeting match
 
     """
-    c = len(players_list)
-        
     d = "A"
-    for i in range(c):
+    # si column == 3 le rang du joueur , 
+    # pour linstant ca a l'air decalé , comme si il n'y avait pas de zero
+    list_ind = []
+    for i in range(len(players_list)):
         # players_list[i][3] = chr(ord(d) + i)
-        players_list[i][3] = chr(ord(d) + i)
-        print(players_list[i][3])
+        players_list[i][column] = chr(ord(d) + i)
+        list_ind.append(chr(ord(d) + i))
+        print(players_list[i][column])
+    return players_list, list_ind
 
-    return players_list
 
+def tri_players_T1(players_list, column=4):
+    """
+    affecte un indice alphabetique en vue  du
+    tri des joueurs par rang (2) et eventuellement par pt
+    du plus grand au plus petit pour les tours suivant T0
+     
+    """
+    players_list2 = sorted(players_list, key=itemgetter((column)), reverse=True)   
+    
+    return players_list2
 
 def couple_list_T0(players_list):
     """
@@ -98,10 +123,8 @@ def results_T0(T0, d):
                 
                 if b == 'G':
                     T0[pos_player] = a
-                else :
+                else:
                     T0[pos_player] = 0
-            
-
             break
     return(T0, a, gain, ind_player2)
 
@@ -112,7 +135,7 @@ def search_player(player_list, player):
 
     """
     try:
-        a = player_list.index(player)  #position juste apres e+1
+        a = player_list.index(player)  # position juste apres e+1
     
         p_exist = True
         ind_player2 = None
@@ -121,7 +144,7 @@ def search_player(player_list, player):
             print(player_list[(a-1)][0])
             b = (a-1)+3
             nom_echiq = player_list[(a-1)]
-            pos_play2 = a+1
+            # pos_play2 = a+1
             ind_player2 = player_list[(a+1)]
             print("Le joueur est trouvé dans l'échiquier", nom_echiq)
             print(player_list)
@@ -131,7 +154,7 @@ def search_player(player_list, player):
             "test"
             b = (a-2)+3
             nom_echiq = player_list[(a-2)]
-            pos_play2 = a-1
+            # pos_play2 = a-1
             ind_player2 = player_list[(a-1)]
             print(player_list)
             print("Le joueur est trouvé dans l'échiquier", nom_echiq)
@@ -158,7 +181,7 @@ def search_player(player_list, player):
 def player_score_up(players_t0, player_indice, pt_gain):
     """
     upgrade score player 
-    ajouter les points des gagnant dans la fiche joueur
+    ajoute les points des gagnants dans la fiche joueur
 
     """
     array_pos = search_player_by_indice(players_t0, player_indice)
@@ -177,7 +200,7 @@ def search_player_by_indice(players_t0, player_indice):
             return player_pos
 
 
-def test_search(T0, value = 10):
+def test_search(T0, value=10):
     """
     test la presence d'une valeur dans la chaine
     pour savoir si il reste des partie a clore
@@ -186,25 +209,72 @@ def test_search(T0, value = 10):
     return nb_value
 
 
+def read_player_file():
+    """
+    lecture de la fiche joueur  et comptage de point
+    """
+
+
+def round_tournament(player_lists, column=4):
+    """
+    algo deroulement du tournoi sur la base des points accumulés au fur a mesure des parties
+    
+    """
+    player_lists2 = tri_players_T1(player_lists, column)
+    print(player_lists2)
+
+
+def combinations(iterable, r=2):
+    n = len(iterable)
+    my_list = []
+    # my_list = list(combinations(iterable, r))
+    my_list = list(permutations(iterable, r))
+    for i in range(len(my_list)):
+        my_list[i] = my_list[i][0] + my_list[i][1]
+    return my_list 
+
+def test_couple_ind(my_list, ind_1, ind_2):
+    """
+    this section is checking if the couple exists in the list
+    if yes it returns true
+
+    """
+    ind_3 = ind_1+ind_2
+    try :
+        for i in range(len(my_list)):
+            if my_list.index(ind_3):
+                print("ok")
+                return True
+    except :
+        return False
+
 def main():
     """
     """
     players_t0 = players_list()
     players_t0 = tri_players(players_t0)
+    list_ind = []
+    # list_ind__tournament = [] 
+    players_t0, list_ind = assign_id(players_t0)
+    list_ind__tournament = combinations(list_ind)
+    print(list_ind__tournament)
+    test_couple_ind(list_ind__tournament, 'A','C')
     print(players_t0)
     
     d = len(players_t0)     
-    d = int(d*0.5)
-    print(int(d))
-    if d is not int:
+    d = (d*0.5)
+    # print(d)
+    if (d % 2) == 0:        # test si d est paire via le modulo == 0
+    #  if d is int:
         print("Creation des parties tour 0")
         T0 = []
+
         T0 = couple_list_T0(players_t0)
 
     #  tour0 =  1 quand tous les resultats sont saisi dans le T0_results
     tour0 = 0
-    for i in range(d):
-        # while tour0 < 1:
+    
+    while tour0 < 1:
         # print("liste round0", T0)
         print(len(T0))
         T0_results, player_indice, pt_gain, player_indice2 = results_T0(T0, d)
@@ -218,24 +288,16 @@ def main():
 
             print(T0_results, "le joueur", player_indice, "gagne", pt_gain, "point")
             print(T0_results, "le joueur", player_indice2, "gagne", 0, "point")
-        fin_tour = 0
-
+        
         nb_free = test_search(T0_results)
         if nb_free < 1:
             tour0 = 1
             print("fin de la partie")
+            print(players_t0)
+        
+    test_round = round_tournament(players_t0)
+    print(test_round)
             
-        """
-        try :
-            fin_tour, pos_m, player_indice2 = search_player(T0, 10)
-            if fin_tour:
-                print("Il reste des parties non saisies")
-            else:
-                tour0 = 1
-        except TypeError :
-            print("fin de la partie")
-            raise
-            """
 
 if __name__ == '__main__':
     main()
