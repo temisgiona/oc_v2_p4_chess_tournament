@@ -1,7 +1,7 @@
 from itertools import combinations, permutations
 from operator import itemgetter, attrgetter
 from typing import Optional
-from typing_extensions import TypeVarTuple
+# from typing_extensions import TypeVarTuple
 
 
 def players_list():
@@ -35,7 +35,8 @@ def tri_players(players_list, column=3):
     players_list2 = sorted(players_list, key=itemgetter((column-1)), reverse=True)   
     return players_list2
 
-def assign_id (players_list, column=3):
+
+def assign_id(players_list, column=3):
     """
     assigne ou affecte un indice alphabetique
     en vue de tracer les rencontres facilement
@@ -66,6 +67,7 @@ def tri_players_T1(players_list, column=4):
     
     return players_list2
 
+
 def couple_list_T0(players_list):
     """
     création de la liste des joueurs devant s'affronter selon methode tournoi suisse , 
@@ -91,6 +93,33 @@ def couple_list_T0(players_list):
 
     return round_0_list
     
+
+def couple_list_T1_write(T1, player1, player2):
+    """
+    rempli la liste T1 des joueurs devant s'affronter selon methode tournoi suisse , 
+    2eme partie
+
+    """
+    a = len(T1)
+
+    # base pour recuperer le nombre de parties au tour 0 , nb participants / 2, parties à 1 contre 1'
+    # a = int(a/2)
+    # T1 = []
+    
+        
+    if (a % 2 == 0):
+        T1.append("E" + str(int(a/4+1)))
+        T1.append(player1)
+        T1.append(player2)
+        T1.append(10)
+    else: 
+        print("erreur sur la liste T1")
+                
+    for j in enumerate(T1):
+        print(j)
+
+    return T1
+
 
 def results_T0(T0, d):
     """
@@ -148,7 +177,6 @@ def search_player(player_list, player):
             ind_player2 = player_list[(a+1)]
             print("Le joueur est trouvé dans l'échiquier", nom_echiq)
             print(player_list)
-            
 
         elif player_list[(a-2)][0] == "E" and len(player_list[(a-2)]) == 2:          # position 2 dans la liste
             "test"
@@ -159,7 +187,6 @@ def search_player(player_list, player):
             print(player_list)
             print("Le joueur est trouvé dans l'échiquier", nom_echiq)
             
-
         elif player_list[(a-3)][0] == "E" and len(player_list[(a-3)]) == 2:          # a déjà gagné ! modifier  ?
             "test"
             b = (a-3)+3
@@ -215,16 +242,40 @@ def read_player_file():
     """
 
 
-def round_tournament(player_lists, column=4):
+def round_tournament(player_lists,list_tmp_tournament,T0_results, col=3):
     """
     algo deroulement du tournoi sur la base des points accumulés au fur a mesure des parties
     
     """
-    player_lists2 = tri_players_T1(player_lists, column)
+    T1 = []
+    T1.extend(T0_results)
+    player_lists2 = tri_players_T1(player_lists)
     print(player_lists2)
+    j=1
+    while(len(player_lists2)) >= 2:
+        i= 0    
+    
+        j = +1
+        if  test_couple_ind(list_tmp_tournament,player_lists2[i][col],player_lists2[j][col]) is False:
+            
+            T1 = couple_list_T1_write(T1, player_lists2[i][col], player_lists2[j][col])
+            list_tmp_tournament = add_couplelist(list_tmp_tournament, player_lists2[i][col], player_lists2[j][col])
+            player_lists2.pop(j)
+            player_lists2.pop(i)
+            i = 0
 
+        else :
+            
+            j = +1
+    return T1,list_tmp_tournament
+    
 
-def combinations(iterable, r=2):
+              
+
+def permutation_cpl(iterable, r=2):
+    """
+    creation of the iteration about to listing all possibilities of meeting in the tournament
+    """
     n = len(iterable)
     my_list = []
     # my_list = list(combinations(iterable, r))
@@ -233,20 +284,53 @@ def combinations(iterable, r=2):
         my_list[i] = my_list[i][0] + my_list[i][1]
     return my_list 
 
+
+def add_couplelist(T0_list, player1, player2):
+    """
+    create the list and add couple of player
+    remplace combination
+    read T0 an extract couple
+    make a list after round  0
+
+    """
+    if len(T0_list) == 0:
+        T0_list =[]
+    T0_list.append(player1 + player2)
+    T0_list.append(player2 + player1)
+    return T0_list
+
+
 def test_couple_ind(my_list, ind_1, ind_2):
     """
-    this section is checking if the couple exists in the list
+    this section is checking if the couple exists in the meeting_list
     if yes it returns true
 
     """
     ind_3 = ind_1+ind_2
-    try :
-        for i in range(len(my_list)):
-            if my_list.index(ind_3):
-                print("ok")
-                return True
-    except :
+    try:
+        # for i in range(len(my_list)):
+        if my_list.index(ind_3) >= 0:
+            print("ok")
+            return True
+    except:
+        print("not ok")
         return False
+
+def score_up(players_T0, player1, player2, gain):
+    """
+    send message for the statut of score added for player
+    """
+    if gain == 0.5:
+            player_score_up(players_T0, player1, gain)
+            player_score_up(players_T0, player2, gain)
+
+    else:
+        player_score_up(players_T0, player1, gain)
+
+    print("le joueur", player1, "gagne", gain, "point")
+    if gain == 0.5:
+        print("le joueur", player2, "gagne", gain, "point")
+    return players_T0
 
 def main():
     """
@@ -254,21 +338,20 @@ def main():
     players_t0 = players_list()
     players_t0 = tri_players(players_t0)
     list_ind = []
-    # list_ind__tournament = [] 
+    list_ind_tournament = [] 
     players_t0, list_ind = assign_id(players_t0)
-    list_ind__tournament = combinations(list_ind)
-    print(list_ind__tournament)
-    test_couple_ind(list_ind__tournament, 'A','C')
+    # list_ind__tournament = permutation_cpl(list_ind)
+    # print(list_ind__tournament)
+    # test_couple_ind(list_ind_tournament, 'A','Z')
     print(players_t0)
     
-    d = len(players_t0)     
-    d = (d*0.5)
+    d = (len(players_t0))*0.5
+    # d = (d*0.5)
     # print(d)
     if (d % 2) == 0:        # test si d est paire via le modulo == 0
     #  if d is int:
         print("Creation des parties tour 0")
         T0 = []
-
         T0 = couple_list_T0(players_t0)
 
     #  tour0 =  1 quand tous les resultats sont saisi dans le T0_results
@@ -278,25 +361,16 @@ def main():
         # print("liste round0", T0)
         print(len(T0))
         T0_results, player_indice, pt_gain, player_indice2 = results_T0(T0, d)
-        if pt_gain == 0.5:
-            player_score_up(players_t0, player_indice, pt_gain)
-            player_score_up(players_t0, player_indice2, pt_gain)
-            print(T0_results, "le joueur", player_indice, "gagne", pt_gain, "point")
-            print(T0_results, "le joueur", player_indice2, "gagne", pt_gain, "point")
-        else:
-            player_score_up(players_t0, player_indice, pt_gain)
-
-            print(T0_results, "le joueur", player_indice, "gagne", pt_gain, "point")
-            print(T0_results, "le joueur", player_indice2, "gagne", 0, "point")
-        
+        list_ind_tournament = add_couplelist(list_ind_tournament, player_indice, player_indice2)
+        players_t0 = score_up(players_t0, player_indice, player_indice2, pt_gain)
         nb_free = test_search(T0_results)
         if nb_free < 1:
             tour0 = 1
             print("fin de la partie")
             print(players_t0)
         
-    test_round = round_tournament(players_t0)
-    print(test_round)
+    T1, list_ind_tournament = round_tournament(players_t0, list_ind_tournament, T0_results)
+    print(T1)
             
 
 if __name__ == '__main__':
