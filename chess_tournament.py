@@ -1,6 +1,7 @@
 from itertools import combinations, permutations
 from operator import itemgetter, attrgetter
 from typing import Optional
+import tkinter
 # from typing_extensions import TypeVarTuple
 
 
@@ -77,17 +78,17 @@ def couple_list_T0(players_list):
     a = len(players_list)
 
     # base pour recuperer le nombre de parties au tour 0 , nb participants / 2, parties à 1 contre 1'
+    
     a = int(a/2)
     round_0_list = []
     for i in range(a):
         if (a % 2 == 0):
-            if a == 4:
-                # round_0_list(i) = [players_list[(i)], players_list[(i+a)]]
-                round_0_list.append("E" + str(i+1))
-                round_0_list.append(players_list[(i)][3])
-                round_0_list.append(players_list[(i+a)][3])
-                round_0_list.append(10)
-                # print(round_0_list)
+
+            round_0_list.append("E" + str(i+1))
+            round_0_list.append(players_list[(i)][3])
+            round_0_list.append(players_list[(i+a)][3])
+            round_0_list.append(10)
+            # print(round_0_list)
     for j in enumerate(round_0_list):
         print(j)
 
@@ -242,7 +243,7 @@ def read_player_file():
     """
 
 
-def round_tournament(player_lists,list_tmp_tournament,T0_results, col=3):
+def round_tournament(player_lists, list_tmp_tournament,T0_results, col=3):
     """
     algo deroulement du tournoi sur la base des points accumulés au fur a mesure des parties
     
@@ -332,6 +333,64 @@ def score_up(players_T0, player1, player2, gain):
         print("le joueur", player2, "gagne", gain, "point")
     return players_T0
 
+
+def deroulement(T_round,list_ind_tournament):
+    """
+
+    """
+    tour0 = 0
+    
+    while tour0 < 1:
+        # print("liste round0", T0)
+        print(len(T_round))
+        T0_results, player_indice, pt_gain, player_indice2 = results_T0(T_round, d)
+        list_ind_tournament = add_couplelist(list_ind_tournament, player_indice, player_indice2)
+        players_t0 = score_up(players_t0, player_indice, player_indice2, pt_gain)
+        nb_free = test_search(T0_results)
+        if nb_free < 1:
+            tour0 = 1
+            print("fin de la partie")
+            print(players_t0)
+
+def show_about():
+    
+    # about_window = tkinter.Toplevel(app)
+    about_window = tkinter.Toplevel()
+    about_window.title("A propos")
+    lb = tkinter.Label(about_window, text="\n écrit et conçu par: \n TGIONA pour OpenclassRooms prj4! \n Tous droits reservés 2021.")
+    lb.pack()
+
+def window_menu():
+
+    # Création de la fenetre  + parametrage
+
+    app = tkinter.Tk()
+    app.geometry("640x480")
+    app.title("Chess Tournament Master")
+
+
+    # Widgets...
+    mainmenu = tkinter.Menu(app)
+    first_menu = tkinter.Menu(app,tearoff=0)
+
+    first_menu.add_command(label="Création tournoi")
+    first_menu.add_command(label="Saisie des résultats")
+    first_menu.add_separator()
+    first_menu.add_command(label="Quitter", command=app.quit)
+
+    second_menu = tkinter.Menu(mainmenu, tearoff=0)
+    second_menu.add_command(label="Impression résultats")
+    second_menu.add_command(label="Mode texte")
+    second_menu.add_command(label="A propos", command=show_about)
+
+    mainmenu.add_cascade(label="Tournoi", menu=first_menu)
+    mainmenu.add_cascade(label="Divers", menu=second_menu)
+
+    # Boucle prinicpale
+    app.config(menu=mainmenu)
+    app.mainloop()
+
+
 def main():
     """
     """
@@ -340,6 +399,8 @@ def main():
     list_ind = []
     list_ind_tournament = [] 
     players_t0, list_ind = assign_id(players_t0)
+
+    window_menu()
     # list_ind__tournament = permutation_cpl(list_ind)
     # print(list_ind__tournament)
     # test_couple_ind(list_ind_tournament, 'A','Z')
@@ -371,6 +432,7 @@ def main():
         
     T1, list_ind_tournament = round_tournament(players_t0, list_ind_tournament, T0_results)
     print(T1)
+    deroulement(T1, list_ind_tournament)
             
 
 if __name__ == '__main__':
