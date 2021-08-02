@@ -1,8 +1,8 @@
 from itertools import combinations, count, permutations
 from operator import itemgetter, attrgetter
 from typing import Optional
-import tkinter
-import time
+from tkinter import *
+from time import *
 
 # from typing_extensions import TypeVarTuple
 
@@ -272,6 +272,7 @@ def round_tournament(player_lists, list_tmp_tournament, T0_results, round=0, col
     couple_list_temp2 = []
     list_temp = []
     list_temp3 = []
+    list_combinaison = []
     list_combinaison2 = []
     list_classement = []
     list_temp4b = []
@@ -289,7 +290,7 @@ def round_tournament(player_lists, list_tmp_tournament, T0_results, round=0, col
             couple_list_temp2.append(list_temp3[i])
 
     list_combinaison = list(combinations(list_temp3, int(len(player_lists2)/2))
-    start = time.time()
+        #tart_time = time.time()
     for item in range(len(list_combinaison)):
         var_temp401 = ""
 
@@ -304,8 +305,8 @@ def round_tournament(player_lists, list_tmp_tournament, T0_results, round=0, col
         #list_temp6 = set(list_temp401)
         #list_temp4b = [.split(item) for item in list_combinaison]
     
-    end = time.time()
-    print("la fonction a pris : ", end - start, "s")
+        #end_time = time.time()
+        #print("la fonction a pris : ", (end_time - star_time), "s")
     
     list_combinaison_charg = []
     for i in range(len(list_combinaison2)):
