@@ -288,7 +288,7 @@ def round_tournament(player_lists, list_tmp_tournament, T0_results, round=0, col
         if test_couple_ind_all(list_tmp_tournament, list_temp3[i]) is False: 
             couple_list_temp2.append(list_temp3[i])
 
-    list_combinaison = list(combinations(list_temp3, 4))
+    list_combinaison = list(combinations(list_temp3, int(len(player_lists2)/2))
     start = time.time()
     for item in range(len(list_combinaison)):
         var_temp401 = ""
@@ -325,7 +325,7 @@ def round_tournament(player_lists, list_tmp_tournament, T0_results, round=0, col
             point_ech_partiel = point_player1 * point_player2
             point_echiquier_total = point_echiquier_total + point_ech_partiel
 
-        liste_advers.append(point_echiquier_total) # 10 esy le nb de point a associer
+        liste_advers.append(point_echiquier_total)
         list_combinaison2[i] = liste_advers
     
     list_combinaison_charg = tri_players_T1(list_combinaison2, 4)
