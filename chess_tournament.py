@@ -1,10 +1,34 @@
-from itertools import combinations, count, permutations
+""" va me gave """
+from itertools import combinations
 from operator import itemgetter, attrgetter
 from typing import Optional
 from tkinter import *
-from time import *
+from time import time
 
 # from typing_extensions import TypeVarTuple
+
+class Player:
+    def __init__(self, name, age, rank):
+        self.name = name
+        self.age = age
+        self.rank = rank
+
+
+class round:
+    def __init__(self, name, start_horodate, end_horodate):
+        self.name = name
+        self.start_horodate = start_date
+        self.end_horodate = end_date
+    
+
+class echiquier(round):
+    def __init__(self, name, start_horodate, end_horodate, nom_echiquier, joueur1, joueur2, joueur_gagnant):
+        self.nom_echiquier = nom_echiquier
+        self.joueur1 = joueur1
+        self.joueur2 = joueur2
+        self.joueur_gagnant = joueur_gagnant
+
+        #super().__init__(name, start_horodate, end_horodate)
 
 
 def players_list():
@@ -133,7 +157,7 @@ def results_T0(T0, round=0):
     while player_exist is False:
         ind_player_1 = (input("Tour "+ str(round) + " : Donner l'indice alphabétique du joueur gagnant : ")).upper()
         player_exist = search_player(T0, ind_player_1)
-        #print("Ce joueur n'a pas été trouvé ! ")
+        """#print("Ce joueur n'a pas été trouvé ! ")"""
     gain = 0
     dim_list = len(T0)
     for pos in range(dim_list):
@@ -272,26 +296,33 @@ def round_tournament(player_lists, list_tmp_tournament, T0_results, round=0, col
     couple_list_temp2 = []
     list_temp = []
     list_temp3 = []
-    list_combinaison = []
+    #list_combinaison = []
     list_combinaison2 = []
     list_classement = []
     list_temp4b = []
-    print(player_lists2)
-
+    
+    #print(player_lists2)
+    
+    #recuperation generique de la liste des indices joueurs
     for i in range(len(player_lists)):
         list_temp.append(player_lists[i][col])
-
+    
+    #creation des combinaisons mathematiquement possible avec les indices
     list_temp2 = list(combinations(list_temp, 2))
-
+    #creation des couples indices formatée sur 2 catacteres
     list_temp3 = ["".join(item) for item in list_temp2]
 
-    for i in range(len(list_temp3)):
-        if test_couple_ind_all(list_tmp_tournament, list_temp3[i]) is False: 
-            couple_list_temp2.append(list_temp3[i])
-
-    list_combinaison = list(combinations(list_temp3, int(len(player_lists2)/2))
+    #tri des couples deja joués dans un tour precedent et ajout a une liste de recensement
+    for j in range(len(list_temp3)): 
+        if test_couple_ind_all(list_tmp_tournament, list_temp3[j]) is False:
+            couple_list_temp2.append(list_temp3[j])
+    #creation des combinaisons sur un tour ou round complet
+    #list_combinaison = list(combinations(list_temp3, int(len(player_lists2)/2)))
+    list_combinaison = list(combinations(couple_list_temp2, int(len(player_lists2)/2)))
         #tart_time = time.time()
-    for item in range(len(list_combinaison)):
+    test = len(list_combinaison)
+    #for item in range(len(list_combinaison)):
+    for item in range(test):
         var_temp401 = ""
 
         list_temp4 = list_combinaison[item]
@@ -302,6 +333,8 @@ def round_tournament(player_lists, list_tmp_tournament, T0_results, round=0, col
 
         if len(var_temp401) == len(list_temp6):
             list_combinaison2.append(list_combinaison[item])
+        
+    print("il y a", len(list_combinaison2), "possibilités")
         #list_temp6 = set(list_temp401)
         #list_temp4b = [.split(item) for item in list_combinaison]
     
@@ -369,7 +402,6 @@ def round_tournament2(player_lists, list_tmp_tournament, T0_results, round=0, co
                         couple_list_temp.append(player_lists2[i][col] + player_lists2[j][col])
                     #else :
                         
-                    
                     T1 = couple_list_T1_write(T1, player_lists2[i][col], player_lists2[j][col])
                     list_tmp_tournament = add_couplelist(list_tmp_tournament, player_lists2[i][col], player_lists2[j][col])
                     
