@@ -1,12 +1,13 @@
-""" va me gave """
+""" Ca me gave """
 from itertools import combinations
 from operator import itemgetter, attrgetter
 from typing import Optional
 from tkinter import *
-from time import time
+from pydantic import BaseModel
+import models
+#from time import time
 
-# from typing_extensions import TypeVarTuple
-
+"""
 class Player:
     def __init__(self, name, age, rank):
         self.name = name
@@ -17,9 +18,9 @@ class Player:
 class round:
     def __init__(self, name, start_horodate, end_horodate):
         self.name = name
-        self.start_horodate = start_date
-        self.end_horodate = end_date
-    
+        self.start_horodate = start_horodate
+        self.end_horodate = end_horodate
+
 
 class echiquier(round):
     def __init__(self, name, start_horodate, end_horodate, nom_echiquier, joueur1, joueur2, joueur_gagnant):
@@ -29,7 +30,7 @@ class echiquier(round):
         self.joueur_gagnant = joueur_gagnant
 
         #super().__init__(name, start_horodate, end_horodate)
-
+"""
 
 def players_list():
     """
@@ -317,12 +318,10 @@ def round_tournament(player_lists, list_tmp_tournament, T0_results, round=0, col
         if test_couple_ind_all(list_tmp_tournament, list_temp3[j]) is False:
             couple_list_temp2.append(list_temp3[j])
     #creation des combinaisons sur un tour ou round complet
-    #list_combinaison = list(combinations(list_temp3, int(len(player_lists2)/2)))
     list_combinaison = list(combinations(couple_list_temp2, int(len(player_lists2)/2)))
         #tart_time = time.time()
-    test = len(list_combinaison)
-    #for item in range(len(list_combinaison)):
-    for item in range(test):
+    #nettoyage des doublons pour avoir 1 joueur / tour
+    for item in range(len(list_combinaison)):
         var_temp401 = ""
 
         list_temp4 = list_combinaison[item]
@@ -370,57 +369,7 @@ def round_tournament(player_lists, list_tmp_tournament, T0_results, round=0, col
         list_tmp_tournament = add_couplelist(list_tmp_tournament, players[0], players[1])
     return T1, list_tmp_tournament
 
-
-def round_tournament2(player_lists, list_tmp_tournament, T0_results, round=0, col=3):
-    """
-    algo deroulement du tournoi sur la base des points accumulés au fur a mesure des parties
     
-    """
-    T1 = []  # liste des parties  avec appariement par  piorité resultats
-    T1.extend(T0_results)
-    player_lists2 = tri_players_T1(player_lists)
-    couple_list_temp = []
-    print(player_lists2)
-    i = 0
-    j = 0
-    k = 0
-    #couple_list_temp = 
-
-    while(len(player_lists2)) >= 2:
-        
-        for i in range(int((len(player_lists2))/2)-1):
-            
-            for j in range(len(player_lists2)-1):
-                
-                if j <= (len(player_lists2)-1):
-                    i = i+1
-                else:
-                    print("en cours de resolution")
-
-                if test_couple_ind(list_tmp_tournament, player_lists2[i][col], player_lists2[j][col]) is False:
-                    if player_lists2[i][col] != player_lists2[j][col]:
-                        couple_list_temp.append(player_lists2[i][col] + player_lists2[j][col])
-                    #else :
-                        
-                    T1 = couple_list_T1_write(T1, player_lists2[i][col], player_lists2[j][col])
-                    list_tmp_tournament = add_couplelist(list_tmp_tournament, player_lists2[i][col], player_lists2[j][col])
-                    
-                    # player_lists2.pop(j)
-                    if j == len(player_lists2): 
-                        
-                        player_lists2.pop(i)
-                        #i = 0
-
-            else:
-                k = k + 1
-                j += 1
-                if k == 4:
-                # 4 = valeur nb_chess pour les test
-                    print("erreur de resolution")
-            
-    return T1, list_tmp_tournament
-    
-
 def permutation_cpl(iterable, r=2):
     """
     creation of the iteration about to listing all possibilities of meeting in the tournament
