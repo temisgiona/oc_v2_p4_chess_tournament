@@ -13,10 +13,17 @@ class Name(str):
 
         return  str.__new__(cls, value.title())
 
+
 class TimeControl(Enum):
     bullet = "Bullet"
     blitz = "Blitz"
     coups_rapide = "Coups rapide"
+
+
+class Results(Enum):
+    win = "W"
+    Loose = "L"
+    null = "N"
 
 
 

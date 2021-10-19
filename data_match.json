@@ -1,0 +1,6 @@
+[
+    { "id":1, "id_turn":1, "name":"E1",  "j1": "proute1", "j2": "prout2", "j1_result": "W", "j2_result": "L", "start_date": "2021-11-30 12:15:00", "end_date" : "2021-11-30 12:15:00", "time_control": "Bullet","description":"best place to loose time"},
+    { "id":2, "id_turn":1, "name":"E2",  "j1": "prouta", "j2": "prouteb", "j1_result": "W", "j2_result": "L", "start_date": "2021-11-30 12:15:00", "end_date" : "2021-11-30 12:15:00", "time_control": "Bullet","description":"best place to loose time"},
+    { "id":3, "id_turn":1, "name":"E3",  "j1": "proutec", "j2": "prouted", "j1_result": "W", "j2_result": "L", "start_date": "2021-11-30 12:15:00", "end_date" : "2021-11-30 12:15:00", "time_control": "Bullet","description":"best place to loose time"},
+    { "id":4, "id_turn":1, "name":"E4",  "j1": "proute", "j2": "proutef", "j1_result": "W", "j2_result": "L", "start_date": "2021-11-30 12:15:00", "end_date" : "2021-11-30 12:15:00", "time_control": "Bullet","description":"best place to loose time"}
+]

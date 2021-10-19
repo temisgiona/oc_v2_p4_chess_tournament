@@ -7,30 +7,6 @@ from pydantic import BaseModel
 import models
 #from time import time
 
-"""
-class Player:
-    def __init__(self, name, age, rank):
-        self.name = name
-        self.age = age
-        self.rank = rank
-
-
-class round:
-    def __init__(self, name, start_horodate, end_horodate):
-        self.name = name
-        self.start_horodate = start_horodate
-        self.end_horodate = end_horodate
-
-
-class echiquier(round):
-    def __init__(self, name, start_horodate, end_horodate, nom_echiquier, joueur1, joueur2, joueur_gagnant):
-        self.nom_echiquier = nom_echiquier
-        self.joueur1 = joueur1
-        self.joueur2 = joueur2
-        self.joueur_gagnant = joueur_gagnant
-
-        #super().__init__(name, start_horodate, end_horodate)
-"""
 
 def players_list():
     """
