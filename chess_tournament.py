@@ -1,33 +1,98 @@
-""" Ca me gave """
-from itertools import combinations
+from itertools import combinations, count
 from operator import itemgetter, attrgetter
 from typing import Optional
 from tkinter import *
 from pydantic import BaseModel
+import tinydb
+from manager_txt import Manager
 import models
+from view import *
+from tournament_controler import tournament_register
+
 #from time import time
+global DATAPATH
+global DB_PLAYERS
+global DB_PLAYER_TNMT
+global DB_TOURNAMENTS
 
+DATAPATH = './data_players2.json'
+DB_PLAYERS = 'players_list'
+DB_PLAYER_TNMT = 'players_tournament'
+DB_TOURNAMENTS = 'tournaments'
 
-def players_list():
+def set_global_var():
+    global DATAPATH
+    global DB_PLAYERS
+    global DB_PLAYER_TNMT
+    global DB_TOURNAMENTS
+
+    DATAPATH = './data_players2.json'
+    DB_PLAYERS = 'players_list'
+    DB_PLAYER_TNMT = 'players_tournament'
+    DB_TOURNAMENTS = 'tournaments'
+
+def player_register(data):
+    player_manager = Manager(DATAPATH, DB_PLAYERS)
+    player_manager.data_insert(data)
+    player_manager.id_readjust()
+
+def modify_player():
+    # to modify the rank of the player
+    print("a finir")
+
+def player_inscription(player_base=2, tournament_id=1):
+    # wrinting the list of player for the game
+    # send to players_t0  the player ready for the tournament
+    #print("list")
+    players_list_init = []
+    player_manager_tmnt = Manager(DATAPATH, DB_PLAYER_TNMT)
+    player_manager = Manager(DATAPATH, DB_PLAYERS)
+    player_query = player_manager.search_to_tinydb_by_id(player_base)
+    player_query_serialised = player_manager.serialize_query(player_query)
+    player_manager_tmnt.data_insert(player_query_serialised)
+    player_manager_tmnt.id_readjust()
+
+def players_list_old():
     """
     list of player for the tournament
-    affectation d'un id  compilant , dictionnaire 
+    affectation d'un id  compliant , dictionnaire 
 
     """
+    players_t0 = []
+    #players_t0.append(player_tnmt)
+
+    # player [lastname, firstname, rank, score, ind, id,id tournament]
+    #"""if len(players_t0) < 3:  
+    players_t0 = []
     players_t0 = [
-        ['t', 'g', 4, 0, 0],
-        ['e', 'f', 8, 0, 0],
-        ['a', 'b', 3, 0, 0],
-        ['k', 'l', 15, 0, 0],
-        ['m', 'n', 1000, 0, 0],
-        ['o', 'r', 100, 0, 0],
-        ['q', 's', 16, 0, 0],
-        ['p', 't', 16, 0, 0]
+        ['t', 'g', 4, 0, 0, 0],
+        ['e', 'f', 8, 0, 0, 0],
+        ['a', 'b', 3, 0, 0, 0],
+        ['k', 'l', 15, 0, 0, 0],
+        ['m', 'n', 1000, 0, 0, 0],
+        ['o', 'r', 100, 0, 0, 0],
+        ['q', 's', 16, 0, 0, 0],
+        ['p', 't', 16, 0, 0, 0]
         ]
     a = len(players_t0)
     print("la liste comporte", a, "joueurs")
     return players_t0  # , a as Optional
 
+def players_list():
+    tnmt_manager = Manager(DATAPATH, DB_PLAYER_TNMT)
+    players_t0 = []
+    # all_players, count = tnmt_manager.load_all_from_tinydb()
+    #for item in range(count):
+    print(tnmt_manager.player_serialized())
+        #players_t0.append(all_players[item])
+    players_t0 = tnmt_manager.player_serialized().copy
+
+
+def tournament_register(data):
+    # to create the database with data from view
+    tnmt_manager = Manager(DATAPATH, DB_TOURNAMENTS)
+    tnmt_manager.data_tmnt_insert(data)
+    tnmt_manager.id_readjust()
 
 def tri_players(players_list, column=3):
     """
@@ -412,7 +477,6 @@ def test_couple_ind_all(my_list, couple_player):
         return False
     
 
-
 def score_up(players_T0, player1, player2, gain):
     """
     send message for the statut of score added for player
@@ -455,7 +519,6 @@ def deroulement(players_t0, T_round, list_ind_tournament, nb_chess, round):
 
 
 def show_about():
-    
     # about_window = tkinter.Toplevel(app)
     about_window = tkinter.Toplevel()
     about_window.title("A propos")
@@ -495,7 +558,11 @@ def window_menu():
 def main():
     """
     """
-    players_t0 = players_list()
+    set_global_var()
+    menu_base()
+
+    players_t0 = players_list_old()
+    player_bis = players_list()
     players_t0 = tri_players(players_t0)
     list_ind = []
     list_ind_tournament = [] 

@@ -10,4 +10,3 @@ for item in range(len(db_players.all())):
     if el.doc_id != el["id"]:
         db_players.update({'id': el.doc_id}, doc_ids=[el.doc_id])
         print(el)
-  

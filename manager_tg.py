@@ -5,11 +5,12 @@ from typing import Any
 #from generic_models import Player
 
 class Manager:
-    def __init__(self, path, table, collection_type: Any):
-        self.collection = {}
+    # def __init__(self, path, table, collection_type: Any):
+    def __init__(self, path, table):
+        #self.collection = {}
         self.path = path
         self.table = table
-        self.collection_type = collection_type
+        #self.collection_type = collection_type
     
 
     def load_from_json(self, path):
@@ -51,15 +52,13 @@ class Manager:
         return query
 
     def data_insert(self, data):
-        #creation data player  to put in the tiny database
+        # creation data player  to put in the tiny database
 
         (TinyDB(self.path).table(self.table)).insert({"id": 1000, "lastname": data["lastname"],
                                                         "firstname": data["firstname"], "gender": data["gender"],
                                                         "birthdate": data["birthdate"], "rank": data["rank"], "score": data["score"]})
 
-                       
-
-           
+                                  
     def create(self, *args, **kwargs):
         # print(*args)
         # print(**kwargs)
@@ -79,12 +78,12 @@ class Manager:
 
 #__main__ = "__main__"
 players = {}
-manager = Manager('./data_players2.json', 'players_list',players )
+#manager = Manager('./data_players2.json', 'players_list',players )
+manager = Manager('./data_players2.json', 'players_list')
 all_db_data, count = manager.load_all_from_tinydb()
 m_query = manager.search_to_tinydb(5)
 print(all_db_data)
 print(m_query)
 test = manager.db_initial()
-
-
+print(test)
 

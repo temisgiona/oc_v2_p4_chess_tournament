@@ -24,8 +24,6 @@ class console_menu:
                 return option
 
 
-
-
 menu_options = {
     1: 'Joueurs',
     2: 'Tournoi',

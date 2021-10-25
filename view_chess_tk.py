@@ -5,7 +5,7 @@ import sqlite3
 from tkcalendar import Calendar, DateEntry
 from tinydb import TinyDB, Query, where
 
-from chess_tournament import players_list
+#from chess_tournament import players_list
 from manager_tg import *
 #import model_c_tg
 
@@ -219,23 +219,19 @@ class ChessLstPlayerFrame(ttk.Frame):
         x = self.tree.get_children()
         for item in x: 
             self.tree.delete(item)
+
+        tk_manager = Manager('./data_players2.json', 'players_list' )
+        all_db_data, count = tk_manager.load_all_from_tinydb()
         
-        #db_players = TinyDB('./data_players2.json').table('players_list')
-        # serialized_players = db_players.all()
-        players = {}
-        manager = Manager('./data_players2.json', 'players_list', players )
-        all_db_data, count = manager.load_all_from_tinydb()
-        
-        serialized_players = {}
+        """serialized_players = {}
 
         for db_item in all_db_data:
             serialized_players[db_item] = all_db_data[db_item]
 
         print(serialized_players)
-        values_lists = {}
+        values_lists = {}"""
 
         for player_item in range(count):
-            print(serialized_players[player_item])
             serial_d_player = all_db_data[player_item]
             #serial_d_player = serialized_players[player_item]
             """value_list = serial_d_player.values()
@@ -263,7 +259,7 @@ class ChessLstPlayerFrame(ttk.Frame):
             record = (item['values'])
             #  id , lastname, firstname, 
             print(record[0])
-        query = db_players.search(where('lastname') == record[1])
+        # query = db_players.search(where('lastname') == record[1])
         query = db_players.search(where('id') == record[0]) # on prends l'id
         if len(query) > 0:
             db_players.remove(where('lastname') == record[1])
@@ -280,6 +276,9 @@ class ChessLstPlayerFrame(ttk.Frame):
             oldrank = self.tree.item(self.tree.selection())['values'][5]
             self.msg["text"] = ""
 
+            player_id = self.tree.item(self.tree.selection())['values'][0]
+            self.msg["text"] = ""
+            
             self.tl = Tk()
             Label(self.tl, text='Nom:').grid(row=0, column=1, sticky='W')
             ne = Entry(self.tl)
@@ -298,7 +297,7 @@ class ChessLstPlayerFrame(ttk.Frame):
             newrk = Entry(self.tl, textvariable=newrk)
             newrk.grid(row=2, column=2, sticky='W')
         
-            upbtn = Button(self.tl, text='Modifier', command=lambda: self.update_record(newrk.get(), oldrank, name))
+            upbtn = Button(self.tl, text='Modifier', command=lambda: self.update_record(newrk.get(), oldrank, name, player_id))
             upbtn.grid(row=3, column=2, sticky=E)
             
             self.tl.mainloop()
@@ -316,14 +315,14 @@ class ChessLstPlayerFrame(ttk.Frame):
             #players_list = Query()
             #test = players_list.get(doc_id=1)
 
-            query = db_players.search(where('doc_id') == 1)
+            query = db_players.search(where('id') == id)
        
             if query:
-                db_players.update({'rank': newrank}, where('lastname') == name)
+                db_players.update({'rank': newrank}, where('id') == id)
                 self.msg["text"] = "Le classement de %s a été modifié" %name
             else:
-                query = db_players.search(where('doc_id') == 1)
-
+                query = db_players.search(where('lastname') == name)
+                db_players.update({'rank': newrank}, where('lastname') == name)
             self.tl.destroy()
 
         except IndexError as e:
