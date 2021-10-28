@@ -717,50 +717,54 @@ class ReportFrame(ttk.Frame):
         self.match_tree.heading("Player 2", text='Player 2', anchor=W)
         self.match_tree.heading("Results", text='Résultat gagnant', anchor=W)
 
-root = Tk()
-root.title("ChessMaster little Championship")
-#root.geometry("1024x728")
+def maintk():
+    root = Tk()
+    root.title("ChessMaster little Championship")
+    #root.geometry("1024x728")
 
-ntbk = ttk.Notebook(root)
-#n.pack(pady=10, expand=True)
-ntbk.grid(row=0, column=0, padx=20, pady=20)
-o1 = ttk.Notebook(ntbk)
-ChessLstPlayerFrame(o1)       # Ajout de l'onglet 1
+    ntbk = ttk.Notebook(root)
+    #n.pack(pady=10, expand=True)
+    ntbk.grid(row=0, column=0, padx=20, pady=20)
+    o1 = ttk.Notebook(ntbk)
+    ChessLstPlayerFrame(o1)       # Ajout de l'onglet 1
 
-#o1.pack()
-o1.grid(row=0,column=0,padx=25, pady=20)
+    #o1.pack()
+    o1.grid(row=0,column=0,padx=25, pady=20)
 
-o2 = ttk.Notebook(ntbk)       # Ajout de l'onglet 2
-#o2.pack()
-TournamentFrame(o2)
-o2.grid(row=0,column=0,padx=35, pady=20)
+    o2 = ttk.Notebook(ntbk)       # Ajout de l'onglet 2
+    #o2.pack()
+    TournamentFrame(o2)
+    o2.grid(row=0,column=0,padx=35, pady=20)
 
-o3 = ttk.Notebook(ntbk)
-ChessPlayer_Tour(o3)
-o3.grid(row=0,column=0,padx=45, pady=20)
+    o3 = ttk.Notebook(ntbk)
+    ChessPlayer_Tour(o3)
+    o3.grid(row=0,column=0,padx=45, pady=20)
 
-o4 = ttk.Notebook(ntbk)
-MatchFrame(o4)       # Ajout de l'onglet 3
-#o3.pack()
-o4.grid(row=0,column=0,padx=55, pady=20)
+    o4 = ttk.Notebook(ntbk)
+    MatchFrame(o4)       # Ajout de l'onglet 3
+    #o3.pack()
+    o4.grid(row=0,column=0,padx=55, pady=20)
 
-o5 = ttk.Frame(ntbk)       # Ajout de l'onglet 4
-#o4.pack()
-ReportFrame(o5)
-o5.grid(row=0,column=0,padx=65, pady=20)
+    o5 = ttk.Frame(ntbk)       # Ajout de l'onglet 4
+    #o4.pack()
+    ReportFrame(o5)
+    o5.grid(row=0,column=0,padx=65, pady=20)
 
-o6 = ttk.Frame(ntbk)
-GenericLayout(o6, 'test titre')
-o6.grid(row=0,column=0,padx=75, pady=20)
+    o6 = ttk.Frame(ntbk)
+    GenericLayout(o6, 'test titre')
+    o6.grid(row=0,column=0,padx=75, pady=20)
 
-ntbk.add(o1, text="Joueurs")      # Nom de l'onglet 1
-ntbk.add(o2, text="Tournois")      # Nom de l'onglet 2
-ntbk.add(o3, text="Joueurs en Tournois")      # Nom de l'onglet 3
-ntbk.add(o4, text="Matchs")      # Nom de l'onglet 4
-ntbk.add(o5, text="Rapports")      # Nom de l'onglet 5
-ntbk.add(o6, text="tests") 
+    ntbk.add(o1, text="Joueurs")      # Nom de l'onglet 1
+    ntbk.add(o2, text="Tournois")      # Nom de l'onglet 2
+    ntbk.add(o3, text="Joueurs en Tournois")      # Nom de l'onglet 3
+    ntbk.add(o4, text="Matchs")      # Nom de l'onglet 4
+    ntbk.add(o5, text="Rapports")      # Nom de l'onglet 5
+    ntbk.add(o6, text="tests") 
 
 
-#application = ChessPlayerFrame(root)
-#application = TournamentFrame(root)
-root.mainloop()
+    #application = ChessPlayerFrame(root)
+    #application = TournamentFrame(root)
+    root.mainloop()
+
+if __name__ == '__main__':
+    maintk()

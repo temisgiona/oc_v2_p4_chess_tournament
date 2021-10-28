@@ -82,8 +82,8 @@ players = {}
 manager = Manager('./data_players2.json', 'players_list')
 all_db_data, count = manager.load_all_from_tinydb()
 m_query = manager.search_to_tinydb(5)
-print(all_db_data)
+"""print(all_db_data)
 print(m_query)
 test = manager.db_initial()
-print(test)
+print(test)"""
 

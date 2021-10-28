@@ -51,27 +51,69 @@ class Manager:
             # query[0] is the is the id's position 
             serialized_data = query[0]  
             return serialized_data
+   
     def player_serialized(self):
         # catch the data list from tiny and format the list for matching system
+
         db_manager = (TinyDB(self.path).table(self.table))
         player_object_list = []
-        list_player_object =[]
+        list_player_object = []
         for item in range(len(db_manager.all())):
             element_id = db_manager.all()[item]
-            # on prend le doc id et on l'assigne id element
-            # pour simp^lifier la requete
+            print('element id ', element_id)
             #player_object_list.append(0].append(element_id["lastname"])
-            player_object_list.append(element_id["lastname"])
-            player_object_list.append(element_id["firstname"])        
-            player_object_list.append(element_id["rank"])
-            player_object_list.append(0)
-            player_object_list.append(0)
-            player_object_list.append(element_id["id"])
+            for d in range(7):
+                player_object_list.append(0)
+            player_object_list[0] = element_id["lastname"]
+            player_object_list[1] = element_id["firstname"]
+            player_object_list[2] = element_id["rank"]
+            player_object_list[3] = 0
+            player_object_list[4] = 0
+            player_object_list[5] = element_id["id"]
+
+            # player_object_list.append(element_id["id"])
+           
             list_player_object.append(player_object_list)
+            player_object_list = []
+            print(list_player_object)
         return list_player_object
+
+    def players_all_data_serialized(self):
+        #catch the data list from tiny and format the list for reporting system
+        db_manager = (TinyDB(self.path).table(self.table))
+        player_object_list = []
+        list_player_object = []
+        for item in range(len(db_manager.all())):
+            element_id = db_manager.all()[item]
+            # print('element id ', element_id)
+            # player_object_list.append(0].append(element_id["lastname"])
+            for d in range(7):
+                player_object_list.append(0)
+            player_object_list[0] = element_id["id"]    
+            player_object_list[1] = element_id["lastname"]
+            player_object_list[2] = element_id["firstname"]
+            player_object_list[3] = element_id["birthdate"]
+            player_object_list[4] = element_id["gender"]
+            player_object_list[5] = element_id["rank"]
+            player_object_list[6] = element_id["score"]
             
 
+            # player_object_list.append(element_id["id"])
+           
+            list_player_object.append(player_object_list)
+            player_object_list = []
+            # print(list_player_object)
+        return list_player_object
 
+
+    def update_player_tmnt(self, player_t0_u):
+        # update player indice , and score 26/10/2021
+        db_manager = (TinyDB(self.path).table(self.table))
+        m_query = Query()
+        db_manager.update({'score': player_t0[3]}, m_query.id == player_t0[5])
+        # db_manager.update({'score': player_t0[3]}, m_query.type'id') == player_t0[5])
+        print(player_t0)  
+            
     def id_readjust(self):
         # copy the id allowed by tiny to assign a the document
         # catching de doc_id and if different assign the doc_id  to id if element
@@ -92,6 +134,7 @@ class Manager:
                                                       "score": data["score"]})
                            
     def data_tmnt_insert(self, data):
+        # creation data tournament  to put in the tiny database
         (TinyDB(self.path).table(self.table)).insert({"id": 1000, "name": data["name"],
                                                      "place": data["place"], "start_date": data["start_date"],
                                                       "end_date": data["end_date"],

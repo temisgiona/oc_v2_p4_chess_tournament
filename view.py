@@ -4,7 +4,6 @@ import tournament_controler
 from datetime import datetime, date, timedelta
 
 
-
 menu_options = {
     1: 'Joueurs',
     2: 'Tournoi',
@@ -18,11 +17,10 @@ menu_options_rapports = {
     2: "liste de tous les acteurs par classement",
     3: "liste de tous les joueurs d'un tournois par ordre alphabetique",
     4: "liste de tous les joueurs d'un tournois par classement",
-    5: "liste de tous les joueurs d'un tournois par classement",
-    6: "liste de tous les tournois",
-    7: "liste de tous les tours d'un tournois",
-    8: "liste de tous les match d'un tournois par classement",
-    9: 'Retour menu principal <--',
+    5: "liste de tous les tournois",
+    6: "liste de tous les tours d'un tournois",
+    7: "liste de tous les match d'un tournois par classement",
+    8: 'Retour menu principal <--',
 }
 
 menu_options_joueurs = {
@@ -83,21 +81,22 @@ menu_options_player_register_tnmt = {
     }
 
 variable_player_register_tnmt = {
-    1: 'name',
-    2: 'id',
+    1: 'name_tnmt',
+    2: 'id_tnmt',
     3: 'name',
     4: 'id',
-    } 
-    
+    }
 
 
 def display_menu(menu):
     for key in menu.keys():
         print(key, '--', menu[key])
 
+
 def view_choice(option):
     #display the choice
     print('choix option \'Option\'', option)
+
 
 def data_resquested(question_list, var_list):
     
@@ -112,9 +111,10 @@ def data_resquested(question_list, var_list):
             if var_list == variable_player:
                 # le score est initialisé à zero
                 data[key[6]] = "0"
+            
             elif var_list == variable_tnmt:
-                # le nb de round passe a 8 par defaut
                 
+                # le nb de round passe a 8 par defaut
                 if data["start_date"] == "":
                     data['start_date'] = str(date.today())
                     
@@ -122,6 +122,7 @@ def data_resquested(question_list, var_list):
                     print(data['start_date'])
                     m_date = data['start_date']
                     date_1 = datetime.strptime(m_date, "%y-%m-%d")
+                    
                     # end_date = m_date + timedelta(days=4)
                     end_date = (m_date)
                     data['end_date'] = end_date
@@ -131,7 +132,7 @@ def data_resquested(question_list, var_list):
             print('fin de saisie')
             return data
         print('Saisir', question_list[key])
-        my_data = input("test")
+        my_data = input()
         # data[key] = input()
         # data.append(my_data)
         if key == 6 and var_list[key] == 'score':
@@ -141,21 +142,25 @@ def data_resquested(question_list, var_list):
         
     return data        
 
+
 def option_J1():
     print('bonjour')
     data = data_resquested(menu_options_creation_joueur, variable_player)
     return data
-    
-def option_T1():
-    #creation of player
-    #print('choix option \'Option 1\'')
-    
-    player_inscription(1)
+
+
+def option_player_inscription_tnmt():
+    # creation of player
+    # print('choix option \'Option 1\'')
+
+    data = data_resquested(menu_options_player_register_tnmt, variable_player_register_tnmt)
+    player_inscription(data)
+    players_database_list(db='dbplayers_tnmt', sort="")
 
 
 def option_tnmt_creat():
-    #option2():
-    #ihm information tournament
+    # option2():
+    # ihm information tournament
     print('choix option \'Option creation tournament\'')
     data = data_resquested(menu_options_creation_tnmt, variable_tnmt)
     return data
@@ -167,6 +172,7 @@ def option3():
 
 def option4():
     print('choix option \'Option 10\'')
+    graphic_mode()
 
 
 def option10():
@@ -201,19 +207,18 @@ def menu_base():
             option = saisie_donne(len(menu_options_joueurs))
             view_choice(option)
             if option == 1:
-                # saisie joueur 
-                # creation of the player 
-                
+                # saisie joueur
+                # creation of the player
                 data = option_J1()
                 player_register(data)
-                
+                display_menu(menu_options_joueurs)
+
         # ----------------------------------------
         #         tournament menu
         # ----------------------------------------
         elif option == 2:
             view_choice(option)
             option = ''
-            
             display_menu(menu_options_tournois)
             option = saisie_donne(len(menu_options_tournois))
             view_choice(option)
@@ -221,24 +226,41 @@ def menu_base():
                 # creation tournoi dans la base
                 data = option_tnmt_creat()
                 tournament_register(data)
+            
+            elif option == 2:
+                # registering the player into a tournament
+                data = option_player_inscription_tnmt()
+                # player_inscription(data)
+                            
             elif option == 3:
                 # demarrer ou reprendre un tournoi
                 main()
-                    
-
+            
         elif option == 3:
             option = ''
             display_menu(menu_options_rapports)
-            saisie_donne(len(menu_options_rapports))
-            option3()
-
+            option = saisie_donne(len(menu_options_rapports))
+            if option == 1:
+                result = players_database_list(db='dbplayers', sort="alpha")
+                print_players_database(result, 'alpha')
+            elif option == 2:
+                result = players_database_list(db='dbplayers', sort="rank")
+                print_players_database(result, 'rank')
+            elif option == 3:
+                result = players_database_list(db='dbplayers_tmnt', sort="alpha")
+                print_players_database(result, 'alpha', 'Liste des joueurs inscrit')
+            elif option == 4:
+                result = players_database_list(db='dbplayers_tmnt', sort="rank")
+                print_players_database(result, 'alpha', 'Liste des joueurs inscrit')
+            # option3()
+            
         elif option == 4:
             option4()
-            print('Au revoir et Merci !')
-            #exit()
+            # print('Au revoir et Merci !')
+            # exit()
 
         elif option == 5:
-            #option5()
+            # option5()
             print('Au revoir et Merci !')
             exit()
 
@@ -258,7 +280,7 @@ def menu_base():
             print('Invalide option. SVP, entrez un chiffre dans la bonne plage affichée ci dessus.')
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     print(chr(27) + '[2J')
 
     menu_base()

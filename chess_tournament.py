@@ -1,13 +1,14 @@
 from itertools import combinations, count
 from operator import itemgetter, attrgetter
 from typing import Optional
-from tkinter import *
 from pydantic import BaseModel
-import tinydb
+from tinydb import *
+from tinydb import database
 from manager_txt import Manager
 import models
 from view import *
-from tournament_controler import tournament_register
+from view_chess_tk import maintk
+from rapport import *
 
 #from time import time
 global DATAPATH
@@ -19,6 +20,7 @@ DATAPATH = './data_players2.json'
 DB_PLAYERS = 'players_list'
 DB_PLAYER_TNMT = 'players_tournament'
 DB_TOURNAMENTS = 'tournaments'
+
 
 def set_global_var():
     global DATAPATH
@@ -40,17 +42,31 @@ def modify_player():
     # to modify the rank of the player
     print("a finir")
 
-def player_inscription(player_base=2, tournament_id=1):
+
+def player_inscription(data):
     # wrinting the list of player for the game
     # send to players_t0  the player ready for the tournament
-    #print("list")
+
     players_list_init = []
-    player_manager_tmnt = Manager(DATAPATH, DB_PLAYER_TNMT)
+    player_manager_tnmt = Manager(DATAPATH, DB_PLAYER_TNMT)
     player_manager = Manager(DATAPATH, DB_PLAYERS)
-    player_query = player_manager.search_to_tinydb_by_id(player_base)
-    player_query_serialised = player_manager.serialize_query(player_query)
-    player_manager_tmnt.data_insert(player_query_serialised)
-    player_manager_tmnt.id_readjust()
+    tnmt_manager = Manager(DATAPATH, DB_TOURNAMENTS)
+
+    try:
+        player_query = player_manager.search_to_tinydb_by_id(int(data['id']))
+        player_query_tnmt = tnmt_manager.search_to_tinydb_by_id(int(data['id_tnmt']))
+        if len(player_query) == 1 and len(player_query_tnmt) == 1:
+            # on transfere les données de la base player en la formattant
+            player_query_serialised = player_manager.serialize_query(player_query)
+            player_manager_tnmt.data_insert(player_query_serialised)
+        else:
+            print("valeur absente")
+    except ValueError:
+        print("valeur absente")
+        raise
+    
+    # player_manager_tmnt.id_readjust()
+
 
 def players_list_old():
     """
@@ -59,14 +75,14 @@ def players_list_old():
 
     """
     players_t0 = []
-    #players_t0.append(player_tnmt)
+    # players_t0.append(player_tnmt)
 
     # player [lastname, firstname, rank, score, ind, id,id tournament]
-    #"""if len(players_t0) < 3:  
+    # """if len(players_t0) < 3:  
     players_t0 = []
     players_t0 = [
-        ['t', 'g', 4, 0, 0, 0],
-        ['e', 'f', 8, 0, 0, 0],
+        ['temis', 'giona', 4, 0, 0, 0],
+        ['eric', 'fortunato', 8, 0, 0, 0],
         ['a', 'b', 3, 0, 0, 0],
         ['k', 'l', 15, 0, 0, 0],
         ['m', 'n', 1000, 0, 0, 0],
@@ -75,17 +91,62 @@ def players_list_old():
         ['p', 't', 16, 0, 0, 0]
         ]
     a = len(players_t0)
-    print("la liste comporte", a, "joueurs")
+    print("la liste comporte", a, "joueurs inscrits")
+    # print_row_tab_player(players_t0)
     return players_t0  # , a as Optional
 
+
+def players_database_list(db='dbplayers', sort=""):
+    # catch list player in a db , and sorted by
+    # alphabetical name , rank or by chronology
+    if db == 'dbplayers':
+        database_name = DB_PLAYERS
+    elif db == 'dbplayer_tnmt':
+        database_name = DB_PLAYER_TNMT
+    
+    player_manager = Manager(DATAPATH, database_name)
+    players_all_db = []
+    players_all_db = player_manager.players_all_data_serialized()
+    if sort == 'alpha':
+        # alphabetical name sorted
+        players_alpha_sorted = sorted(players_all_db, key=itemgetter(1, 5))
+        return players_alpha_sorted
+    elif sort == 'rank':
+        # rank  sorted
+        players_rank_sorted = sorted(players_all_db, key=itemgetter(5, 0), reverse=True)
+        return players_rank_sorted
+    else:
+        # not sorted, or sorted by id
+        players_all_db
+    # print(players_all_db)
+        return players_all_db
+
+
+def players_tmnt_db_list():
+    player_manager = Manager(DATAPATH, DB_PLAYER_TNMT)
+    players_all_db = []
+    players_all_db = player_manager.players_all_data_serialized()
+    # print(players_all_db)
+    return players_all_db
+
+
 def players_list():
-    tnmt_manager = Manager(DATAPATH, DB_PLAYER_TNMT)
-    players_t0 = []
+    # catch the player document in db to list for match making
+    player_manager_tmnt = Manager(DATAPATH, DB_PLAYER_TNMT)
+    players_t0_tmnt = []
     # all_players, count = tnmt_manager.load_all_from_tinydb()
-    #for item in range(count):
-    print(tnmt_manager.player_serialized())
-        #players_t0.append(all_players[item])
-    players_t0 = tnmt_manager.player_serialized().copy
+    # for item in range(count):
+    #
+    # print(player_manager_tmnt.player_serialized())
+    # players_t0.append(all_players[item])
+    players_t0_tmnt = player_manager_tmnt.player_serialized()
+    # print(players_t0_tmnt)
+    return players_t0_tmnt
+ 
+
+def player_update_to_db(player):
+    # update the score to the db with manager
+    print("test")
 
 
 def tournament_register(data):
@@ -93,6 +154,7 @@ def tournament_register(data):
     tnmt_manager = Manager(DATAPATH, DB_TOURNAMENTS)
     tnmt_manager.data_tmnt_insert(data)
     tnmt_manager.id_readjust()
+
 
 def tri_players(players_list, column=3):
     """
@@ -121,7 +183,8 @@ def assign_id(players_list, column=3):
         # players_list[i][3] = chr(ord(d) + i)
         players_list[i][column] = chr(ord(d) + i)
         list_ind.append(chr(ord(d) + i))
-        print(players_list[i][column])
+        # affichage debug
+        # print(players_list[i][column])
     return players_list, list_ind
 
 
@@ -157,11 +220,11 @@ def couple_list_T0(players_list):
             round_0_list.append(players_list[(i+a)][3])
             round_0_list.append(10)
             # print(round_0_list)
-    for j in enumerate(round_0_list):
-        print(j)
+    """for j in enumerate(round_0_list):
+        print(j)"""
 
     return round_0_list
-    
+
 
 def couple_list_T1_write(T1, player1, player2):
     """
@@ -176,7 +239,6 @@ def couple_list_T1_write(T1, player1, player2):
     # base pour recuperer le nombre de parties au tour 0 , nb participants / 2, parties à 1 contre 1'
     # a = int(a/2)
     # T1 = []
-    
         
     if (a % 2 == 0):
         T1.append("E" + str(int(a/4+1)))
@@ -197,8 +259,8 @@ def results_T0(T0, round=0):
     player_exist = False
 
     while player_exist is False:
-        ind_player_1 = (input("Tour "+ str(round) + " : Donner l'indice alphabétique du joueur gagnant : ")).upper()
-        player_exist = search_player(T0, ind_player_1)
+        ind_player_1 = (input("Tour " + str(round+1) + " : Donner l'indice alphabétique du joueur gagnant : ")).upper()
+        player_exist = search_player(T0, ind_player_1, round)
         """#print("Ce joueur n'a pas été trouvé ! ")"""
     gain = 0
     dim_list = len(T0)
@@ -259,7 +321,7 @@ def search_player(player_list, player, round=0):
             # pos_play2 = a+1
             ind_player2 = player_list[(a+1)]
             print("Le joueur", ind_player2, "est trouvé dans l'échiquier", nom_echiq)
-            #print(player_list)
+            # print(player_list)
 
         elif player_list[(a-2)][0] == "E" and len(player_list[(a-2)]) >= 2:          # position 2 dans la liste
             "test"
@@ -267,7 +329,7 @@ def search_player(player_list, player, round=0):
             nom_echiq = player_list[(a-2)]
             # pos_play2 = a-1
             ind_player2 = player_list[(a-1)]
-            #print(player_list)
+            # print(player_list)
             print("Le joueur", ind_player2, "est trouvé dans l'échiquier", nom_echiq)
             
         elif player_list[(a-3)][0] == "E" and len(player_list[(a-3)]) >= 2:          # a déjà gagné ! modifier  ?
@@ -361,7 +423,7 @@ def round_tournament(player_lists, list_tmp_tournament, T0_results, round=0, col
     #creation des combinaisons sur un tour ou round complet
     list_combinaison = list(combinations(couple_list_temp2, int(len(player_lists2)/2)))
         #tart_time = time.time()
-    #nettoyage des doublons pour avoir 1 joueur / tour
+    #nettoyage des doublons pour avoir 1 seul joueur / tour
     for item in range(len(list_combinaison)):
         var_temp401 = ""
 
@@ -389,12 +451,13 @@ def round_tournament(player_lists, list_tmp_tournament, T0_results, round=0, col
             
             player1 = j[0]
             player2 = j[1]
-            
+            #formule de calcul  on associe le point de chaque joueur + son rang divisé par mille
             for players in range(len(player_lists2)):
                 if player1 == player_lists2[players][3]:
-                    point_player1 = player_lists2[players][4] + (player_lists2[players][4]/1000)
+                    point_player1 = player_lists2[players][4] + (player_lists2[players][2]/10000)
+                
                 if player2 == player_lists2[players][3]:
-                    point_player2 = player_lists2[players][4] + (player_lists2[players][4]/1000)
+                    point_player2 = player_lists2[players][4] + (player_lists2[players][2]/10000)
             
             point_ech_partiel = point_player1 * point_player2
             point_echiquier_total = point_echiquier_total + point_ech_partiel
@@ -504,16 +567,18 @@ def deroulement(players_t0, T_round, list_ind_tournament, nb_chess, round):
     
     while nb_free > 0:
         # print("liste round0", T0)
-        print(len(T_round))
-        print(T_round)
+        # print(len(T_round))
+        # print(T_round)
+        print_row_tab_round(round, T_round)
         T0_results, player_indice, pt_gain, player_indice2 = results_T0(T_round, round)
         list_ind_tournament = add_couplelist(list_ind_tournament, player_indice, player_indice2)
         players_t0 = score_up(players_t0, player_indice, player_indice2, pt_gain)
         nb_free = test_search(T0_results)  # trying to find "10", is the flag to chess party is not 
-    print("fin de la partie Round " + str(round))
+    print("fin de la partie Round " + str(round+1))
     # print(players_t0)
-    for i in range(len(players_t0)):
+    """for i in range(len(players_t0)):
         print(players_t0[i])
+    """
 
     return T0_results, list_ind_tournament
 
@@ -524,6 +589,10 @@ def show_about():
     about_window.title("A propos")
     lb = tkinter.Label(about_window, text="\n écrit et conçu par: \n TGIONA pour OpenclassRooms prj4! \n Tous droits reservés 2021.")
     lb.pack()
+
+
+def graphic_mode():
+    maintk()
 
 
 def window_menu():
@@ -560,9 +629,9 @@ def main():
     """
     set_global_var()
     menu_base()
-
+    # player_t0_bis = []
     players_t0 = players_list_old()
-    player_bis = players_list()
+    player_t0_bis = players_list()
     players_t0 = tri_players(players_t0)
     list_ind = []
     list_ind_tournament = [] 
@@ -572,32 +641,38 @@ def main():
     # list_ind__tournament = permutation_cpl(list_ind)
     # print(list_ind__tournament)
     # test_couple_ind(list_ind_tournament, 'A','Z')
-    print(players_t0)
-    
+    #print(players_t0)
+    print_row_tab_player(players_t0)
     nb_chess = int((len(players_t0))*0.5)   # ex d
     T0 = []
     T1 = []
     if (nb_chess % 2) == 0:        # test si nb_chess est paire via le modulo == 0
     
         for round in range(nb_chess):    
-            print("Creation des parties tour " + str(round))
+            print("Creation des parties Round " + str(round+1))
+            
             if round == 0:
                 
                 T0 = couple_list_T0(players_t0)
+                print_row_tab_round(round, T0)
                 # T0_results, player_indice, pt_gain, player_indice2 = results_T0(T0, nb_chess)
                 T0_results, list_ind_tournament = deroulement(players_t0, T0, list_ind_tournament, nb_chess, round)
+                print_row_tab_player(players_t0)
             else:
                 if len(T1) > 16:
 
                     T1, list_ind_tournament = round_tournament(players_t0, list_ind_tournament, T1, round)
                     
-                    T1_temp = T1[:]
-                    del T1_temp[0:15]
-                    print(T1_temp)
+                    """T1_temp = T1[:]
+                    del T1_temp[0:17]
+                    # print(T1_temp, "test") """
+                    print_row_tab_player(players_t0)
+
                 else:
                     T1, list_ind_tournament = round_tournament(players_t0, list_ind_tournament, T0_results, round)
                 
                 deroulement(players_t0, T1, list_ind_tournament, nb_chess, round)
+                print_row_tab_player(players_t0)
 
             #  tour0 =  1 quand tous les resultats sont saisi dans le T0_results
             #tour0 = 0
