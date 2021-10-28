@@ -61,7 +61,7 @@ class Manager:
         for item in range(len(db_manager.all())):
             element_id = db_manager.all()[item]
             print('element id ', element_id)
-            #player_object_list.append(0].append(element_id["lastname"])
+            # player_object_list.append(0].append(element_id["lastname"])
             for d in range(7):
                 player_object_list.append(0)
             player_object_list[0] = element_id["lastname"]
@@ -79,14 +79,13 @@ class Manager:
         return list_player_object
 
     def players_all_data_serialized(self):
-        #catch the data list from tiny and format the list for reporting system
+        # catch the data list from tiny and format the list for reporting system
         db_manager = (TinyDB(self.path).table(self.table))
         player_object_list = []
         list_player_object = []
         for item in range(len(db_manager.all())):
             element_id = db_manager.all()[item]
-            # print('element id ', element_id)
-            # player_object_list.append(0].append(element_id["lastname"])
+                        
             for d in range(7):
                 player_object_list.append(0)
             player_object_list[0] = element_id["id"]    
@@ -97,14 +96,10 @@ class Manager:
             player_object_list[5] = element_id["rank"]
             player_object_list[6] = element_id["score"]
             
-
-            # player_object_list.append(element_id["id"])
-           
             list_player_object.append(player_object_list)
             player_object_list = []
             # print(list_player_object)
         return list_player_object
-
 
     def update_player_tmnt(self, player_t0_u):
         # update player indice , and score 26/10/2021
@@ -149,8 +144,6 @@ class Manager:
                     round_number: PositiveInt
                     time_control: TimeControl
                     description: str = """
-
-
 
     def create(self, *args, **kwargs):
         # print(*args)
