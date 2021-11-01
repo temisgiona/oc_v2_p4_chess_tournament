@@ -20,3 +20,4 @@ generic_models.py
 test_alt_pe.py
 init_db.py
 test_affichage_db.py
+test_affichage_db_tmnt.py

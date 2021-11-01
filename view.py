@@ -96,12 +96,13 @@ def display_menu(menu):
 def view_choice(option):
     #display the choice
     print('choix option \'Option\'', option)
+    print('')
 
 
 def data_resquested(question_list, var_list):
     
     data = {}
-    #data[0] = 'id'
+    # data[0] = 'id'
     for key in question_list:
         if key == 1:
             # data.append("id": 1000)
@@ -110,7 +111,7 @@ def data_resquested(question_list, var_list):
         elif question_list[key] == 'Retour menu principal <--':
             if var_list == variable_player:
                 # le score est initialisé à zero
-                data[key[6]] = "0"
+                data['score'] = "0"
             
             elif var_list == variable_tnmt:
                 
@@ -121,12 +122,12 @@ def data_resquested(question_list, var_list):
                     # data['start_date'] = datetime.now()
                     print(data['start_date'])
                     m_date = data['start_date']
-                    date_1 = datetime.strptime(m_date, "%y-%m-%d")
+                    # date_1 = datetime.strptime(m_date, "%y-%m-%d")
                     
                     # end_date = m_date + timedelta(days=4)
                     end_date = (m_date)
                     data['end_date'] = end_date
-                data["round_number"] = 8
+                data["round_number"] = 4
 
 
             print('fin de saisie')
@@ -137,7 +138,7 @@ def data_resquested(question_list, var_list):
         # data.append(my_data)
         if key == 6 and var_list[key] == 'score':
             data[var_list[key]] = 0
-        else :
+        else:
             data[var_list[key]] = my_data
         
     return data        
@@ -155,7 +156,9 @@ def option_player_inscription_tnmt():
 
     data = data_resquested(menu_options_player_register_tnmt, variable_player_register_tnmt)
     player_inscription(data)
-    players_database_list(db='dbplayers_tnmt', sort="")
+    result = players_database_list(db='dbplayer_tnmt', sort="")
+    print_players_database(result, '', 'Liste des joueurs inscrits')
+
 
 
 def option_tnmt_creat():
@@ -183,8 +186,9 @@ def saisie_donne(max_value):
     while(True):
         try:
             choice = int(input('Entrez votre choix: '))
-            #return option
-        except:
+            
+            # return option
+        except ValueError:
             print('Mauvaise saisie ! SVP, entrez un chiffre...')
         if choice > max_value:
             print('Mauvaise saisie ! SVP, entrez un chiffre dans la plage')
@@ -194,6 +198,7 @@ def saisie_donne(max_value):
 
 def menu_base():
     while(True):
+        print('')
         display_menu(menu_options)
         
         option = saisie_donne(len(menu_options))
@@ -212,6 +217,9 @@ def menu_base():
                 data = option_J1()
                 player_register(data)
                 display_menu(menu_options_joueurs)
+            elif option == 3:
+                result = players_database_list(db='dbplayers', sort="")
+                print_players_database(result, '')
 
         # ----------------------------------------
         #         tournament menu
@@ -229,6 +237,10 @@ def menu_base():
             
             elif option == 2:
                 # registering the player into a tournament
+                result = players_database_list(db='dbplayers', sort="")
+                print_players_database(result, title2='')
+                result2 = tmnt_database_list()
+                print_tournament_database(result2,'open', "Tournoi disponible")
                 data = option_player_inscription_tnmt()
                 # player_inscription(data)
                             
@@ -240,18 +252,27 @@ def menu_base():
             option = ''
             display_menu(menu_options_rapports)
             option = saisie_donne(len(menu_options_rapports))
+            
             if option == 1:
+                #player sorted by alpah
                 result = players_database_list(db='dbplayers', sort="alpha")
                 print_players_database(result, 'alpha')
+            
             elif option == 2:
                 result = players_database_list(db='dbplayers', sort="rank")
                 print_players_database(result, 'rank')
+            
             elif option == 3:
-                result = players_database_list(db='dbplayers_tmnt', sort="alpha")
+                result = players_database_list(db='dbplayer_tnmt', sort="alpha")
                 print_players_database(result, 'alpha', 'Liste des joueurs inscrit')
+            
             elif option == 4:
-                result = players_database_list(db='dbplayers_tmnt', sort="rank")
+                result = players_database_list(db='dbplayer_tnmt', sort="rank")
                 print_players_database(result, 'alpha', 'Liste des joueurs inscrit')
+            
+            elif option == 5:
+                result = tmnt_database_list()
+                print_tournament_database(result, 'all')        
             # option3()
             
         elif option == 4:

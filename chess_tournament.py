@@ -15,11 +15,13 @@ global DATAPATH
 global DB_PLAYERS
 global DB_PLAYER_TNMT
 global DB_TOURNAMENTS
+global DB_MATCH_TMNT
 
 DATAPATH = './data_players2.json'
 DB_PLAYERS = 'players_list'
 DB_PLAYER_TNMT = 'players_tournament'
 DB_TOURNAMENTS = 'tournaments'
+DB_MATCH_TMNT = 'match'
 
 
 def set_global_var():
@@ -33,10 +35,12 @@ def set_global_var():
     DB_PLAYER_TNMT = 'players_tournament'
     DB_TOURNAMENTS = 'tournaments'
 
+
 def player_register(data):
     player_manager = Manager(DATAPATH, DB_PLAYERS)
     player_manager.data_insert(data)
     player_manager.id_readjust()
+
 
 def modify_player():
     # to modify the rank of the player
@@ -44,7 +48,7 @@ def modify_player():
 
 
 def player_inscription(data):
-    # wrinting the list of player for the game
+    # writing the list of player for the game
     # send to players_t0  the player ready for the tournament
 
     players_list_init = []
@@ -54,11 +58,16 @@ def player_inscription(data):
 
     try:
         player_query = player_manager.search_to_tinydb_by_id(int(data['id']))
-        player_query_tnmt = tnmt_manager.search_to_tinydb_by_id(int(data['id_tnmt']))
-        if len(player_query) == 1 and len(player_query_tnmt) == 1:
+        tmnt_query = tnmt_manager.search_to_tinydb_by_id(int(data['id_tnmt']))
+        player_query_tmnt = player_manager_tnmt.search_to_tinydb_by_id(int(data['id']))
+
+        if len(player_query) == 1 and len(tmnt_query) == 1:
+            if len(player_query_tmnt) > 0:
+                print("ce joueur est déjà inscrit !")
             # on transfere les données de la base player en la formattant
-            player_query_serialised = player_manager.serialize_query(player_query)
-            player_manager_tnmt.data_insert(player_query_serialised)
+            else:
+                player_query_serialised = player_manager.serialize_query(player_query)
+                player_manager_tnmt.data_insert(player_query_serialised)
         else:
             print("valeur absente")
     except ValueError:
@@ -80,6 +89,7 @@ def players_list_old():
     # player [lastname, firstname, rank, score, ind, id,id tournament]
     # """if len(players_t0) < 3:  
     players_t0 = []
+    
     players_t0 = [
         ['temis', 'giona', 4, 0, 0, 0],
         ['eric', 'fortunato', 8, 0, 0, 0],
@@ -90,6 +100,8 @@ def players_list_old():
         ['q', 's', 16, 0, 0, 0],
         ['p', 't', 16, 0, 0, 0]
         ]
+
+
     a = len(players_t0)
     print("la liste comporte", a, "joueurs inscrits")
     # print_row_tab_player(players_t0)
@@ -122,27 +134,33 @@ def players_database_list(db='dbplayers', sort=""):
         return players_all_db
 
 
-def players_tmnt_db_list():
-    player_manager = Manager(DATAPATH, DB_PLAYER_TNMT)
-    players_all_db = []
-    players_all_db = player_manager.players_all_data_serialized()
-    # print(players_all_db)
-    return players_all_db
+def tmnt_database_list():
+    tmnt_manager = Manager(DATAPATH, DB_TOURNAMENTS)
+    tmnt_all_db = []
+    tmnt_all_db = tmnt_manager.tmnt_all_datadb_serialized()
+    return tmnt_all_db
+
+
+def tmnt_match_database_serialising(data):
+    # send info to the database
+    tmnt_match_manager = Manager(DATAPATH, DB_MATCH_TMNT)
+    tmnt_match_manager.match_db_serialising(data)
+
+def tmnt_match_database_tomatchmaking():
+    # send info to the database
+    tmnt_match_manager = Manager(DATAPATH, DB_MATCH_TMNT)
+    tmnt_match_manager.match_db_unserialising()
 
 
 def players_list():
     # catch the player document in db to list for match making
     player_manager_tmnt = Manager(DATAPATH, DB_PLAYER_TNMT)
     players_t0_tmnt = []
-    # all_players, count = tnmt_manager.load_all_from_tinydb()
-    # for item in range(count):
-    #
-    # print(player_manager_tmnt.player_serialized())
-    # players_t0.append(all_players[item])
+
     players_t0_tmnt = player_manager_tmnt.player_serialized()
     # print(players_t0_tmnt)
     return players_t0_tmnt
- 
+
 
 def player_update_to_db(player):
     # update the score to the db with manager
@@ -420,10 +438,10 @@ def round_tournament(player_lists, list_tmp_tournament, T0_results, round=0, col
     for j in range(len(list_temp3)): 
         if test_couple_ind_all(list_tmp_tournament, list_temp3[j]) is False:
             couple_list_temp2.append(list_temp3[j])
-    #creation des combinaisons sur un tour ou round complet
+    # creation des combinaisons sur un tour ou round complet
     list_combinaison = list(combinations(couple_list_temp2, int(len(player_lists2)/2)))
-        #tart_time = time.time()
-    #nettoyage des doublons pour avoir 1 seul joueur / tour
+    # start_time = time.time()
+    # nettoyage des doublons pour avoir 1 seul joueur / tour
     for item in range(len(list_combinaison)):
         var_temp401 = ""
 
@@ -437,11 +455,11 @@ def round_tournament(player_lists, list_tmp_tournament, T0_results, round=0, col
             list_combinaison2.append(list_combinaison[item])
         
     print("il y a", len(list_combinaison2), "possibilités")
-        #list_temp6 = set(list_temp401)
-        #list_temp4b = [.split(item) for item in list_combinaison]
+        # list_temp6 = set(list_temp401)
+        # list_temp4b = [.split(item) for item in list_combinaison]
     
-        #end_time = time.time()
-        #print("la fonction a pris : ", (end_time - star_time), "s")
+        # end_time = time.time()
+        # print("la fonction a pris : ", (end_time - star_time), "s")
     
     list_combinaison_charg = []
     for i in range(len(list_combinaison2)):
@@ -451,7 +469,7 @@ def round_tournament(player_lists, list_tmp_tournament, T0_results, round=0, col
             
             player1 = j[0]
             player2 = j[1]
-            #formule de calcul  on associe le point de chaque joueur + son rang divisé par mille
+            # formule de calcul  on associe le point de chaque joueur + son rang divisé par mille
             for players in range(len(player_lists2)):
                 if player1 == player_lists2[players][3]:
                     point_player1 = player_lists2[players][4] + (player_lists2[players][2]/10000)
@@ -464,7 +482,7 @@ def round_tournament(player_lists, list_tmp_tournament, T0_results, round=0, col
 
         liste_advers.append(point_echiquier_total)
         list_combinaison2[i] = liste_advers
-    
+
     list_combinaison_charg = tri_players_T1(list_combinaison2, 4)
     print("fin de calcul_echiquier")
     for i in range(int(len(player_lists)/2)):
@@ -473,7 +491,7 @@ def round_tournament(player_lists, list_tmp_tournament, T0_results, round=0, col
         list_tmp_tournament = add_couplelist(list_tmp_tournament, players[0], players[1])
     return T1, list_tmp_tournament
 
-    
+
 def permutation_cpl(iterable, r=2):
     """
     creation of the iteration about to listing all possibilities of meeting in the tournament
@@ -532,10 +550,10 @@ def test_couple_ind_all(my_list, couple_player):
     try:
         # for i in range(len(my_list)):
         if my_list.index(couple_player) >= 0:
-            #print("ok")
+            # print("ok")
             return True
     except:
-        #print("le couple", couple_player, "n'a pas joué ensemble")
+        # print("le couple", couple_player, "n'a pas joué ensemble")
         
         return False
     
@@ -570,6 +588,7 @@ def deroulement(players_t0, T_round, list_ind_tournament, nb_chess, round):
         # print(len(T_round))
         # print(T_round)
         print_row_tab_round(round, T_round)
+
         T0_results, player_indice, pt_gain, player_indice2 = results_T0(T_round, round)
         list_ind_tournament = add_couplelist(list_ind_tournament, player_indice, player_indice2)
         players_t0 = score_up(players_t0, player_indice, player_indice2, pt_gain)
@@ -637,11 +656,14 @@ def main():
     list_ind_tournament = [] 
     players_t0, list_ind = assign_id(players_t0)
 
+
+
     #  window_menu()
     # list_ind__tournament = permutation_cpl(list_ind)
     # print(list_ind__tournament)
     # test_couple_ind(list_ind_tournament, 'A','Z')
-    #print(players_t0)
+    # print(players_t0)
+
     print_row_tab_player(players_t0)
     nb_chess = int((len(players_t0))*0.5)   # ex d
     T0 = []
@@ -654,6 +676,7 @@ def main():
             if round == 0:
                 
                 T0 = couple_list_T0(players_t0)
+
                 print_row_tab_round(round, T0)
                 # T0_results, player_indice, pt_gain, player_indice2 = results_T0(T0, nb_chess)
                 T0_results, list_ind_tournament = deroulement(players_t0, T0, list_ind_tournament, nb_chess, round)
