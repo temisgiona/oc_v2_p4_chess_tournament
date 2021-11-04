@@ -10,7 +10,7 @@ from view import *
 from view_chess_tk import maintk
 from rapport import *
 
-#from time import time
+# from time import time
 global DATAPATH
 global DB_PLAYERS
 global DB_PLAYER_TNMT
@@ -100,8 +100,7 @@ def players_list_old():
         ['q', 's', 16, 0, 0, 0],
         ['p', 't', 16, 0, 0, 0]
         ]
-
-
+        
     a = len(players_t0)
     print("la liste comporte", a, "joueurs inscrits")
     # print_row_tab_player(players_t0)
@@ -145,6 +144,7 @@ def tmnt_match_database_serialising(data):
     # send info to the database
     tmnt_match_manager = Manager(DATAPATH, DB_MATCH_TMNT)
     tmnt_match_manager.match_db_serialising(data)
+
 
 def tmnt_match_database_tomatchmaking():
     # send info to the database
@@ -227,9 +227,10 @@ def couple_list_T0(players_list):
     a = len(players_list)
 
     # base pour recuperer le nombre de parties au tour 0 , nb participants / 2, parties à 1 contre 1'
-    
+    tab_round_all_match=[]
     a = int(a/2)
     round_0_list = []
+    round_0_listb = []
     for i in range(a):
         if (a % 2 == 0):
 
@@ -238,10 +239,49 @@ def couple_list_T0(players_list):
             round_0_list.append(players_list[(i+a)][3])
             round_0_list.append(10)
             # print(round_0_list)
+        if (a % 4 == 0):
+            # second_list to remplace  T0
+            round_0_listb.append("E" + str(i+1))
+            round_0_listb.append(players_list[(i)][3])
+            round_0_listb.append(players_list[(i+a)][3])
+            round_0_listb.append(10)
+            round_0_listb.append(players_list[(i)][0])
+            round_0_listb.append(players_list[(i+a)][0])
+            round_0_listb.append(1)                         # this the round number
+            tab_round_all_match.append(round_0_listb)
+            round_0_listb = []
     """for j in enumerate(round_0_list):
         print(j)"""
+    return round_0_list, tab_round_all_match
 
-    return round_0_list
+
+def convert_T0_2_T0_s(T0, T0_s, players_t0, round):
+    # convert T0 (linear list) to  list of list with more information
+    a = len(T0)
+    tab_round_all_match=[]
+        
+    round_0_listb = []
+    j = 0
+    for i in range(0, a, 4):
+        
+        if (i % 4 == 0):
+            j = int(i/4)   # 1 match of T0 is writed with 4 elements
+            # second_list to remplace  T0
+            round_0_listb.append(T0[i])
+            round_0_listb.append(T0[i+1])
+            round_0_listb.append(T0[i+2])
+            round_0_listb.append(T0[i+3])
+            p_name1 = search_player_by_indice(players_t0, T0[i+1])
+            name1 = players_t0[p_name1][0]
+            p_name2 = search_player_by_indice(players_t0, T0[i+2])
+            name2 = players_t0[p_name2][0]
+            round_0_listb.append(name1)
+            round_0_listb.append(name2)
+            round_0_listb.append(round+1)                         # this the round number
+            tab_round_all_match.append(round_0_listb)
+            round_0_listb = []
+            
+    return tab_round_all_match
 
 
 def couple_list_T1_write(T1, player1, player2):
@@ -257,12 +297,14 @@ def couple_list_T1_write(T1, player1, player2):
     # base pour recuperer le nombre de parties au tour 0 , nb participants / 2, parties à 1 contre 1'
     # a = int(a/2)
     # T1 = []
+    T1_s = []
         
     if (a % 2 == 0):
         T1.append("E" + str(int(a/4+1)))
         T1.append(player1)
         T1.append(player2)
         T1.append(10)
+
     else: 
         print("erreur sur la liste Tournoi secondaire")
     return T1
@@ -279,6 +321,53 @@ def results_T0(T0, round=0):
     while player_exist is False:
         ind_player_1 = (input("Tour " + str(round+1) + " : Donner l'indice alphabétique du joueur gagnant : ")).upper()
         player_exist = search_player(T0, ind_player_1, round)
+        """#print("Ce joueur n'a pas été trouvé ! ")"""
+    gain = 0
+    dim_list = len(T0)
+    for pos in range(dim_list):
+        if (ind_player_1 == T0[pos]):
+            while gain < 0.5:
+                b = input("taper G pour gagnant ou N pour null ex-aequo : ")
+                b = b.upper()
+                gain = 0
+                
+                if b == "G":
+                    "test"
+                    # result_maker = search_player(T0, a)
+                    gain = 1
+                    
+                elif b == "N":
+                    gain = 0.5
+                
+                else:
+                    b = "G"
+                    gain = 1
+            
+            player_exist, pos_result, ind_player_2 = search_player(T0, ind_player_1, round)
+            if player_exist:
+                
+                if b == 'G':
+                    T0[pos_result] = ind_player_1
+                else:
+                    T0[pos_result] = 0
+                break
+            else:
+                print("le joueur n'a pas été trouvé ! ")
+    return(T0, ind_player_1, gain, ind_player_2)
+
+
+def results2_T0(T0, round=0):
+    """
+    recupere la saisie du  resultat  du gagnant
+    jusqu'a ce que tous les gagnants soient saisi
+    """
+    # print("Tour 0 : Donner le nom du joueur gagnant")
+    player_exist = False
+
+    while player_exist is False:
+        ind_player_1 = (input("Tour " + str(round+1) + " : Donner l'indice alphabétique du joueur gagnant : ")).upper()
+        player_exist = search_player(T0, ind_player_1, round)
+
         """#print("Ce joueur n'a pas été trouvé ! ")"""
     gain = 0
     dim_list = len(T0)
@@ -377,12 +466,14 @@ def player_score_up(players_t0, player_indice, pt_gain):
     """
     array_pos = search_player_by_indice(players_t0, player_indice)
     players_t0[array_pos][4] = players_t0[array_pos][4] + pt_gain
+
     return players_t0
 
 
 def search_player_by_indice(players_t0, player_indice):
     """
     cherche le joueur selon son identifiant alphabetique
+    search the player by "ind" and send the "player pos" in the list players_t0
     """
     r = len(players_t0)
     for i in range(r):
@@ -399,6 +490,14 @@ def test_search(T0, value=10):
     nb_value = T0.count(value)
     return nb_value
 
+
+def test_search_2(T0_s, value=10):
+    # search the value into list of list
+    nb_value = 0
+    for row in range(len(T0_s)):
+        if T0_s[row][3].count(value) == 1:
+            nb_value += 1
+    return nb_value
 
 def read_player_file():
     """
@@ -472,10 +571,10 @@ def round_tournament(player_lists, list_tmp_tournament, T0_results, round=0, col
             # formule de calcul  on associe le point de chaque joueur + son rang divisé par mille
             for players in range(len(player_lists2)):
                 if player1 == player_lists2[players][3]:
-                    point_player1 = player_lists2[players][4] + (player_lists2[players][2]/10000)
+                    point_player1 = player_lists2[players][4] + (int(player_lists2[players][2])/10000)
                 
                 if player2 == player_lists2[players][3]:
-                    point_player2 = player_lists2[players][4] + (player_lists2[players][2]/10000)
+                    point_player2 = player_lists2[players][4] + (int(player_lists2[players][2])/10000)
             
             point_ech_partiel = point_player1 * point_player2
             point_echiquier_total = point_echiquier_total + point_ech_partiel
@@ -489,6 +588,7 @@ def round_tournament(player_lists, list_tmp_tournament, T0_results, round=0, col
         players = (list_combinaison_charg[0])[i]
         T1 = couple_list_T1_write(T1, players[0], players[1])
         list_tmp_tournament = add_couplelist(list_tmp_tournament, players[0], players[1])
+
     return T1, list_tmp_tournament
 
 
@@ -542,7 +642,6 @@ def test_couple_ind(my_list, player_ind_1, player_ind_2):
 
 def test_couple_ind_all(my_list, couple_player):
     """
-    
     this section is checking if the couple exists in the meeting_list
     if yes it returns true
     if not   error retuned  so the association has the agrement
@@ -552,11 +651,10 @@ def test_couple_ind_all(my_list, couple_player):
         if my_list.index(couple_player) >= 0:
             # print("ok")
             return True
-    except:
-        # print("le couple", couple_player, "n'a pas joué ensemble")
-        
+    except ValueError:
+        # print("le couple", couple_player, "n'a pas joué ensemble")     
         return False
-    
+
 
 def score_up(players_T0, player1, player2, gain):
     """
@@ -573,26 +671,31 @@ def score_up(players_T0, player1, player2, gain):
 
         print("le joueur", player1, "gagne", gain, "point")
         print("le joueur", player2, "gagne 0 point")
-    
+
     return players_T0
 
 
-def deroulement(players_t0, T_round, list_ind_tournament, nb_chess, round):
+def deroulement(players_t0, T_round, list_ind_tournament, nb_chess, round, T0_s):
     """
 
     """
     nb_free = 1
-    
+    nb_free_2 = 1
     while nb_free > 0:
-        # print("liste round0", T0)
-        # print(len(T_round))
-        # print(T_round)
-        print_row_tab_round(round, T_round)
+
+        if not T0_s:
+            print_row_tab_round(round, T_round)
+        else:
+            print_row_tab_round_2(round, T0_s)
 
         T0_results, player_indice, pt_gain, player_indice2 = results_T0(T_round, round)
+        T0_s = convert_T0_2_T0_s(T0_results, T0_s, players_t0, round)
+
         list_ind_tournament = add_couplelist(list_ind_tournament, player_indice, player_indice2)
         players_t0 = score_up(players_t0, player_indice, player_indice2, pt_gain)
-        nb_free = test_search(T0_results)  # trying to find "10", is the flag to chess party is not 
+
+        nb_free = test_search(T0_results)  # trying to find "10", is the flag to chess party is not
+        # nb_free_2 = test_search_2(T0_results)  # trying to find "10", is the flag to chess party is not
     print("fin de la partie Round " + str(round+1))
     # print(players_t0)
     """for i in range(len(players_t0)):
@@ -647,16 +750,15 @@ def main():
     """
     """
     set_global_var()
-    menu_base()
+    # menu_base()
     # player_t0_bis = []
-    players_t0 = players_list_old()
-    player_t0_bis = players_list()
+    # players_t0 = players_list_old()
+    # player_t0_bis = players_list()
+    players_t0 = players_list()
     players_t0 = tri_players(players_t0)
     list_ind = []
-    list_ind_tournament = [] 
+    list_ind_tournament = []
     players_t0, list_ind = assign_id(players_t0)
-
-
 
     #  window_menu()
     # list_ind__tournament = permutation_cpl(list_ind)
@@ -665,27 +767,29 @@ def main():
     # print(players_t0)
 
     print_row_tab_player(players_t0)
+    
     nb_chess = int((len(players_t0))*0.5)   # ex d
     T0 = []
+    T0_s = []  # matrice of match , it will remplace T0
     T1 = []
     if (nb_chess % 2) == 0:        # test si nb_chess est paire via le modulo == 0
-    
-        for round in range(nb_chess):    
-            print("Creation des parties Round " + str(round+1))
-            
-            if round == 0:
-                
-                T0 = couple_list_T0(players_t0)
 
-                print_row_tab_round(round, T0)
+        for round in range(nb_chess):
+            print("Creation des parties Round " + str(round+1))
+            if round == 0:
+                # matchs creation in a round
+                T0, T0_s = couple_list_T0(players_t0)
+
+                # print_row_tab_round(round, T0)
+                # print_row_tab_round_2(round, T0_s)
                 # T0_results, player_indice, pt_gain, player_indice2 = results_T0(T0, nb_chess)
-                T0_results, list_ind_tournament = deroulement(players_t0, T0, list_ind_tournament, nb_chess, round)
+                T0_results, list_ind_tournament = deroulement(players_t0, T0, list_ind_tournament, nb_chess, round, T0_s)
                 print_row_tab_player(players_t0)
             else:
                 if len(T1) > 16:
 
                     T1, list_ind_tournament = round_tournament(players_t0, list_ind_tournament, T1, round)
-                    
+                    T0_s = convert_T0_2_T0_s(T1, T0_s, players_t0, round+1)
                     """T1_temp = T1[:]
                     del T1_temp[0:17]
                     # print(T1_temp, "test") """
@@ -693,16 +797,16 @@ def main():
 
                 else:
                     T1, list_ind_tournament = round_tournament(players_t0, list_ind_tournament, T0_results, round)
-                
-                deroulement(players_t0, T1, list_ind_tournament, nb_chess, round)
+                    T0_s = convert_T0_2_T0_s(T1, T0_s, players_t0, round+1)
+                deroulement(players_t0, T1, list_ind_tournament, nb_chess, round, T0_s)
                 print_row_tab_player(players_t0)
 
             #  tour0 =  1 quand tous les resultats sont saisi dans le T0_results
-            #tour0 = 0
+            # tour0 = 0
 
     else:
         exit
-            
+
 
 if __name__ == '__main__':
     main()
