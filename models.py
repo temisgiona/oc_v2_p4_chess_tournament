@@ -4,7 +4,7 @@ from typing import List
 from pydantic import BaseModel, validator
 # import databases
 from pydantic.class_validators import Validator
-from pydantic.types import PositiveInt
+from pydantic.types import PositiveFloat, PositiveInt
 # import sqlalchemy
 from datetime import datetime, date
 from custom_types import Name, Gender, Results, TimeControl
@@ -54,13 +54,16 @@ class Match(BaseModel):
     id_turn: PositiveInt
     id_tournament: PositiveInt
     name: Name
-    j1: str
-    j2: str
-    j1_result: Results
-    j2_result: Results
-    start_date: datetime = None
-    end_date: datetime = None
-    time_control: TimeControl
+    player1_id: PositiveInt
+    player2_id: PositiveInt
+    player1_ind: str = None
+    player2_ind: str = None
+    player1_result: float = None
+    player2_result: float = None
+    start_date: date = None
+    end_date: date = None
+    # time_control: TimeControl = None
+    # time_control: str
   
 
 

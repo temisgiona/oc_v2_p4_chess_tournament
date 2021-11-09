@@ -8,7 +8,7 @@ def convert_date_to_check_is_past(birth_date):
     birth_date = date(2001, 10, 10)
     today = date.today()
     if today > birth_date:
-        print('today is', today)
+        #print('today is', today)
         return True
     else:
         print(

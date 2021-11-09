@@ -129,7 +129,6 @@ def data_resquested(question_list, var_list):
                     data['end_date'] = end_date
                 data["round_number"] = 4
 
-
             print('fin de saisie')
             return data
         print('Saisir', question_list[key])
@@ -247,7 +246,10 @@ def menu_base():
             elif option == 3:
                 # demarrer ou reprendre un tournoi
                 main()
-            
+
+        # ----------------------------------------
+        #         rapports
+        # ----------------------------------------            
         elif option == 3:
             option = ''
             display_menu(menu_options_rapports)
@@ -274,7 +276,9 @@ def menu_base():
                 result = tmnt_database_list()
                 print_tournament_database(result, 'all')        
             # option3()
-            
+        # ----------------------------------------
+        #         escape menu
+        # ----------------------------------------            
         elif option == 4:
             option4()
             # print('Au revoir et Merci !')

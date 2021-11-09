@@ -9,6 +9,7 @@ import models
 from view import *
 from view_chess_tk import maintk
 from rapport import *
+from datetime import date
 
 # from time import time
 global DATAPATH
@@ -47,6 +48,103 @@ def modify_player():
     print("a finir")
 
 
+def match_db_update(t_round, players_t0, round):
+    # update the db tmnt by match making
+    # create linear list of _macth to a list of list of all match
+    match_tmnt_manager = Manager(DATAPATH, DB_MATCH_TMNT)
+    match_data_formated = match_tmnt_database_list(t_round, players_t0, round)
+
+    match_serialized_list = match_tmnt_manager.match_db_serialising(match_data_formated)
+    
+    m_data = match_tmnt_manager.match_querying_by_id(2, 'id_tournament')
+
+
+def match_tmnt_database_list(t_round, players_t0, round, nb_match=4,  play1_result="", play2_result="", st_date="", end_date=""):
+    # 
+    data_round_list = []
+    data_round = []
+    """for dat in range(13):
+        data_round.append(0)"""
+        
+    nb_match_t = int(len(t_round)/4)
+    nb_round = int(len(players_t0)/2)
+    
+    """
+    for item in range(13):
+        data_round.append(0)
+        data_round[item] = ""
+        """
+    a = 0
+
+    """for it in range(nb_match_t):
+        data_round_list.append(0)"""
+    match = 0
+    start_round = round * nb_match * nb_round
+    for a in range(start_round, len(t_round), nb_match):
+
+        if t_round[a+3] != 10:
+            data_round_list.append(0)
+            
+            for item in range(13):
+                data_round.append("")
+                # data_round[item] = ""
+            data_round[0] = 1 + int(a/nb_match)
+            data_round[1] = round
+            data_round[2] = players_t0[search_player_by_indice(players_t0, t_round[a+1])][6]              # id_tnmt
+            data_round[3] = t_round[a]      # name
+            
+            data_round[4] = players_t0[search_player_by_indice(players_t0, t_round[a+1])][5]              # player1
+            data_round[5] = players_t0[search_player_by_indice(players_t0, t_round[a+2])][5]              # player2
+            data_round[6] = t_round[a+1]
+            data_round[7] = t_round[a+2]
+            if t_round[a+3] == 0:
+                data_round[8] = 0.5
+                data_round[9] = 0.5
+            elif t_round[a+3] == t_round[a+1]:
+                data_round[8] = 1
+                data_round[9] = 0
+            elif t_round[a+3] == t_round[a+2]:
+                data_round[8] = 0
+                data_round[9] = 1
+            else:
+                data_round[8] = ""
+                data_round[9] = ""
+
+            if data_round[10] == "":
+                data_round[10] = str(date.today())
+            if t_round[a+3] != 10:
+                data_round[11] = str(date.today())
+
+            else:
+                data_round[11] = ""
+            data_round[12] = ""
+            
+            data_round_list[match] = data_round.copy()
+            match += 1
+
+        
+        
+    return data_round_list
+
+
+def query_id_open_state_tnmt():
+    # query id tnmt with statut open 
+    
+    tnmt_manager = Manager(DATAPATH, DB_TOURNAMENTS)
+    query_tmnt = tnmt_manager.search_to_tiny_is_open()
+    id_tmnt = query_tmnt[0]["id"]
+    return id_tmnt
+
+
+def assign_id_tnmt(players_t0):
+    # assign id tnmt with state open to player list
+    id_tmnt = query_id_open_state_tnmt()
+    for row in range(len(players_t0)):
+        players_t0[row][6] = id_tmnt
+    
+    return(players_t0)
+    
+
 def player_inscription(data):
     # writing the list of player for the game
     # send to players_t0  the player ready for the tournament
@@ -68,6 +166,7 @@ def player_inscription(data):
             else:
                 player_query_serialised = player_manager.serialize_query(player_query)
                 player_manager_tnmt.data_insert(player_query_serialised)
+
         else:
             print("valeur absente")
     except ValueError:
@@ -146,11 +245,44 @@ def tmnt_match_database_serialising(data):
     tmnt_match_manager.match_db_serialising(data)
 
 
-def tmnt_match_database_tomatchmaking():
+def update_math_db(T0_s, players_t0):
+    # update the match base 
+    print("test match_update")
+
+
+def tmnt_match_database_to_matchmaking():
     # send info to the database
     tmnt_match_manager = Manager(DATAPATH, DB_MATCH_TMNT)
     tmnt_match_manager.match_db_unserialising()
 
+
+def match_report_with_name(id_value=23, id_name='id'):
+    # mastering data for displaying information with the name of player
+
+    match_with_name = []
+    match_with_name_list = []
+    match_tmnt_manager = Manager(DATAPATH, DB_MATCH_TMNT)
+    # m_data = match_tmnt_manager.match_querying_by_id(2, 'id_tournament')
+    m_data = match_tmnt_manager.match_querying_by_id(id_value, id_name)
+    for play in range(len(m_data)):
+        my_match = models.Match(**m_data[play])
+        print(my_match.name)
+        player_manager = Manager(DATAPATH, DB_PLAYERS)
+        my_player_data1 = player_manager.search_to_tinydb_by_id(my_match.player1_id)
+        my_player_data2 = player_manager.search_to_tinydb_by_id(my_match.player2_id)
+
+        my_player1 = models.Player(**my_player_data1[0])
+        my_player2 = models.Player(**my_player_data2[0])
+
+        match_with_name = match_tmnt_manager.match_object_db_unserialising(my_match)
+        
+        match_with_name[0][4] = my_player1.lastname + " " + my_player1.firstname
+        match_with_name[0][5] = my_player2.lastname + " " + my_player2.firstname
+        
+        match_with_name_list.append(*match_with_name)
+
+    return match_with_name_list
+ 
 
 def players_list():
     # catch the player document in db to list for match making
@@ -158,13 +290,19 @@ def players_list():
     players_t0_tmnt = []
 
     players_t0_tmnt = player_manager_tmnt.player_serialized()
+
     # print(players_t0_tmnt)
     return players_t0_tmnt
 
 
-def player_update_to_db(player):
+def player_update_to_db(players_T0):
     # update the score to the db with manager
-    print("test")
+    # print("test")
+    player_tmnt_manager = Manager(DATAPATH, DB_PLAYER_TNMT)
+    
+    for row in range(len(players_T0)):
+    
+        player_tmnt_manager.update_player_tmnt(players_T0[row])
 
 
 def tournament_register(data):
@@ -227,12 +365,12 @@ def couple_list_T0(players_list):
     a = len(players_list)
 
     # base pour recuperer le nombre de parties au tour 0 , nb participants / 2, parties à 1 contre 1'
-    tab_round_all_match=[]
+    tab_round_all_match = []
     a = int(a/2)
     round_0_list = []
     round_0_listb = []
     for i in range(a):
-        if (a % 2 == 0):
+        if ((len(players_list)) % 2 == 0):
 
             round_0_list.append("E" + str(i+1))
             round_0_list.append(players_list[(i)][3])
@@ -258,7 +396,7 @@ def couple_list_T0(players_list):
 def convert_T0_2_T0_s(T0, T0_s, players_t0, round):
     # convert T0 (linear list) to  list of list with more information
     a = len(T0)
-    tab_round_all_match=[]
+    tab_round_all_match = []
         
     round_0_listb = []
     j = 0
@@ -277,10 +415,9 @@ def convert_T0_2_T0_s(T0, T0_s, players_t0, round):
             name2 = players_t0[p_name2][0]
             round_0_listb.append(name1)
             round_0_listb.append(name2)
-            round_0_listb.append(round+1)                         # this the round number
+            round_0_listb.append(round+1)                         # this is the round number
             tab_round_all_match.append(round_0_listb)
             round_0_listb = []
-            
     return tab_round_all_match
 
 
@@ -316,6 +453,7 @@ def results_T0(T0, round=0):
     jusqu'a ce que tous les gagnants soient saisi
     """
     # print("Tour 0 : Donner le nom du joueur gagnant")
+
     player_exist = False
 
     while player_exist is False:
@@ -409,8 +547,11 @@ def search_player(player_list, player, round=0):
 
     """
     try:
+        nb_round = int(len(player_list)/4)
+        nb_round = int(nb_round/(round+1))
         if round > 0:
-            start_search = round * 4 * 4
+            
+            start_search = round * 4 * nb_round
         else:
             start_search = 0
 
@@ -474,6 +615,7 @@ def search_player_by_indice(players_t0, player_indice):
     """
     cherche le joueur selon son identifiant alphabetique
     search the player by "ind" and send the "player pos" in the list players_t0
+    resend the position in the data list
     """
     r = len(players_t0)
     for i in range(r):
@@ -498,6 +640,7 @@ def test_search_2(T0_s, value=10):
         if T0_s[row][3].count(value) == 1:
             nb_value += 1
     return nb_value
+
 
 def read_player_file():
     """
@@ -674,6 +817,14 @@ def score_up(players_T0, player1, player2, gain):
 
     return players_T0
 
+def init_match_db(nb_chess, my_match, id_tournament=2):
+    # initialisation of the matrice of match an round
+    match_tmnt_manager = Manager(DATAPATH, DB_MATCH_TMNT)
+    # match_tmnt_manager.truncate()
+    for match in range(nb_chess*nb_chess):
+        data = [match, "", id_tournament,"", "", "", "","","","","","",""]
+        match_tmnt_manager.data_match_tmnt_insert_by_objet(my_match)
+        match_tmnt_manager.id_readjust()
 
 def deroulement(players_t0, T_round, list_ind_tournament, nb_chess, round, T0_s):
     """
@@ -690,9 +841,26 @@ def deroulement(players_t0, T_round, list_ind_tournament, nb_chess, round, T0_s)
 
         T0_results, player_indice, pt_gain, player_indice2 = results_T0(T_round, round)
         T0_s = convert_T0_2_T0_s(T0_results, T0_s, players_t0, round)
-
+        
         list_ind_tournament = add_couplelist(list_ind_tournament, player_indice, player_indice2)
         players_t0 = score_up(players_t0, player_indice, player_indice2, pt_gain)
+        player_update_to_db(players_t0)
+        # ================================
+        data_round = match_tmnt_database_list(T0_results, players_t0, round, nb_match=4,  play1_result="", play2_result="", st_date="", end_date="")
+
+        match_tmnt_manager = Manager(DATAPATH, DB_MATCH_TMNT)
+        data_round_s = match_tmnt_manager.match_db_serialising(data_round)
+        for row in range(len(data_round_s)):
+            m_query = Query()
+            #print(data_round_s[row]['id'])
+            match_exist = match_tmnt_manager.search_to_tinydb_by_id(data_round_s[row]['id'])
+            match_tmnt_manager.match_updating_2(data_round_s[row]['id'],data_round_s[row])
+            """if match_exist == 1 :
+                match_tmnt_manager.update(data_round_s[row]), m_query.id == data_round_s[row][element]
+            else:
+                match_tmnt_manager.insert(data_round_s[row])"""
+        
+        # ==================================================
 
         nb_free = test_search(T0_results)  # trying to find "10", is the flag to chess party is not
         # nb_free_2 = test_search_2(T0_results)  # trying to find "10", is the flag to chess party is not
@@ -750,14 +918,16 @@ def main():
     """
     """
     set_global_var()
-    # menu_base()
+    #menu_base()
     # player_t0_bis = []
     # players_t0 = players_list_old()
     # player_t0_bis = players_list()
     players_t0 = players_list()
+    
     players_t0 = tri_players(players_t0)
     list_ind = []
     list_ind_tournament = []
+    players_t0 = assign_id_tnmt(players_t0)
     players_t0, list_ind = assign_id(players_t0)
 
     #  window_menu()
@@ -772,7 +942,27 @@ def main():
     T0 = []
     T0_s = []  # matrice of match , it will remplace T0
     T1 = []
-    if (nb_chess % 2) == 0:        # test si nb_chess est paire via le modulo == 0
+    match_data = {'id': 1, 'id_turn': 1, 'id_tournament': 1,
+                  'name': "", 'player1_id': 1, "player2_id": 2}
+    """,
+                  "player1_ind": "", "player2_ind": "",
+                  "player1_result": 0, "player2_result": 0,
+                  "start_date": "", "end_date": "", 'time_control': "Coups rapide"}"""
+
+    my_match = models.Match(**match_data)
+
+    test_saisie = input("un tournoi est en cours , continuer ? (Oui= O, Non=N)")
+    test_saisie = test_saisie.upper()
+    if test_saisie == "O":
+        
+        my_match.id_tournament = query_id_open_state_tnmt()
+        print('ok')
+    else: 
+        init_match_db(nb_chess, my_match)
+        
+        print( "test")
+
+    if ((len(players_t0)) % 2) == 0:        # test si nb_chess est paire via le modulo == 0
 
         for round in range(nb_chess):
             print("Creation des parties Round " + str(round+1))
@@ -786,10 +976,11 @@ def main():
                 T0_results, list_ind_tournament = deroulement(players_t0, T0, list_ind_tournament, nb_chess, round, T0_s)
                 print_row_tab_player(players_t0)
             else:
-                if len(T1) > 16:
+                if len(T1) > (len(players_t0)/2*4):
 
                     T1, list_ind_tournament = round_tournament(players_t0, list_ind_tournament, T1, round)
-                    T0_s = convert_T0_2_T0_s(T1, T0_s, players_t0, round+1)
+                    T0_s = convert_T0_2_T0_s(T1, T0_s, players_t0, round)
+                    player_update_to_db(players_t0)
                     """T1_temp = T1[:]
                     del T1_temp[0:17]
                     # print(T1_temp, "test") """
@@ -797,7 +988,8 @@ def main():
 
                 else:
                     T1, list_ind_tournament = round_tournament(players_t0, list_ind_tournament, T0_results, round)
-                    T0_s = convert_T0_2_T0_s(T1, T0_s, players_t0, round+1)
+                    T0_s = convert_T0_2_T0_s(T1, T0_s, players_t0, round)
+                    player_update_to_db(players_t0)
                 deroulement(players_t0, T1, list_ind_tournament, nb_chess, round, T0_s)
                 print_row_tab_player(players_t0)
 
@@ -809,4 +1001,5 @@ def main():
 
 
 if __name__ == '__main__':
+    # menu_base()
     main()

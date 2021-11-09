@@ -3,16 +3,17 @@ def print_row_tab_player(player_serialized):
     #print the information of player a the end of round
     tab = "    "
     print("")
-    print("Nom", tab, "Prenom", tab, "rang", tab, "Ind", tab, "Score", tab, "ID")
+    print("Nom", tab, tab, "Prenom", tab, "rang", tab, "Ind", tab, "Score", tab, "ID")
     print("")
     for row in range(len(player_serialized)):
         # for column in range (6):
-        print('%-8s' % player_serialized[row][0],
+        print('%-13s' % player_serialized[row][0],
               '%-12s' % player_serialized[row][1],
               '%-8s' % player_serialized[row][2],
               '%-10s' % player_serialized[row][3],
               '%-8s' % player_serialized[row][4],
-              '%-8s' % player_serialized[row][5])
+              '%-8s' % player_serialized[row][5]
+              )
     print("")
 
 
@@ -35,6 +36,27 @@ def print_row_tab_round(round, match):
                   '%-10s' % match_view[m_row])
     print("")
 
+
+def print_row_tab_round_2(round, match):
+    # print the result of a round  match/match 
+    match_view = match.copy()
+    tab = "    "
+    print("")
+    print("Nom Echiquier", tab, "indice joueur 1", tab, "indice Joueur2", tab, "Resultat")
+    print("")
+    for row in range(len(match)):
+        m_row = row
+        # print (match[m_row])
+        if match[row][3] == 10:
+            match_view[row][3] = 'Non joué'
+    # for column in range (6):
+            print('%-20s' % match[row][0],
+                  '%-3s' % match[row][1],
+                  '%-17s' % match[row][4],
+                  '%-3s' % match[row][2],
+                  '%-13s' % match[row][5],
+                  '%-6s' % match_view[m_row][3])
+    print("")
 
 def print_players_database(player_serialized, title2='rank', title="Liste des joueurs du club"):
     # print all data of the player database
@@ -116,8 +138,8 @@ def print_tournament_database(tmnt_serialized, title2='open', title="Liste des t
     else:
         for row in range(len(tmnt_serialized)):
             print('%-7s' % tmnt_serialized[row][0],
-                  '%-12s' % tmnt_serialized[row][1],
-                  '%-12s' % tmnt_serialized[row][2],
+                  '%-15s' % tmnt_serialized[row][1],
+                  '%-16s' % tmnt_serialized[row][2],
                   '%-15s' % tmnt_serialized[row][3],
                   '%-25s' % tmnt_serialized[row][4],
                   '%-15s' % tmnt_serialized[row][5],
@@ -143,21 +165,22 @@ def print_match_tmnt_datase(data_serialized, title2='open', title="Liste des mat
     if not title2 == "":
         print('%-25s' % tab, title2b)
 
-    print("ID", tab, "Nom", tab, tab, "Joueur 1", tab,"joueur 2" "Date de début", tab, "Date de fin", tab,
-          "Controle temps", tab, "Nbr Round", tab, "r")
+    print("round", tab, "Nom", tab, "Joueur 1", tab, tab, tab, "joueur 2", tab, tab, 'score joueur 1', tab, 'score joueur 2', tab, "Date de début", tab, "Date de fin", tab,
+          "Controle temps")
     print("")
     if title2 == 'open':
         for row in range(len(data_serialized)):
             # for column in range (6):
             #if data_serialized[row][13] == "open":
-            print('%-7s' % data_serialized[row][0],
-                    '%-12s' % data_serialized[row][3],
-                    '%-12s' % data_serialized[row][2],
-                    '%-15s' % data_serialized[row][3],
-                    '%-25s' % data_serialized[row][4],
-                    '%-15s' % data_serialized[row][5],
-                    '%-10s' % data_serialized[row][6],
-                    '%-10s' % data_serialized[row][7],
+            print('%-10s' % data_serialized[row][2],
+                    '%-7s' % data_serialized[row][3],
+                    '%-24s' % data_serialized[row][4],
+                    '%-25s' % data_serialized[row][5],
+                    '%-18s' % data_serialized[row][6],
+                    '%-13s' % data_serialized[row][7],
+                    '%-18s' % data_serialized[row][8],
+                    '%-22s' % data_serialized[row][9],
+                    '%-10s' % data_serialized[row][10],
                     )
     
 

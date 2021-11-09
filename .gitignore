@@ -21,3 +21,5 @@ test_alt_pe.py
 init_db.py
 test_affichage_db.py
 test_affichage_db_tmnt.py
+test_conver_t0_t0s.py
+test_affichage_db_tmnt2.py
