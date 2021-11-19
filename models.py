@@ -30,28 +30,27 @@ class Player(BaseModel):
 
 
 class Tournament(BaseModel):
-    id: PositiveInt
+    id: int
     name: Name
     place: Name
     start_date: datetime = datetime.today()
     end_date: datetime = None
     round_number: PositiveInt
     time_control: TimeControl
-    description: str = ""
+    # description: str = ""
 
 
-class Turn(BaseModel):
-    id: PositiveInt
-    id_tournament: PositiveInt
-    number = PositiveInt
-    start_date: datetime = None
-    end_date: datetime = None
-    description: str = ""
+"""class Turn(BaseModel):
+    id: int
+    id_tournament: int
+    number = int
+    start_date: date = None
+    end_date: date = None"""
 
 
 class Match(BaseModel):
     id: PositiveInt
-    id_turn: PositiveInt
+    id_turn: int
     id_tournament: PositiveInt
     name: Name
     player1_id: PositiveInt
@@ -64,6 +63,27 @@ class Match(BaseModel):
     end_date: date = None
     # time_control: TimeControl = None
     # time_control: str
-  
 
+    def serialized(self):
+        return {'id': self.id, 'id_tournament': self.id_tournament,
+                "start_date": self.start_date, "end_date": self.end_date}
+
+
+class Turn:
+    def __init__(self, data_type: any):
+        # self.data = {}
+        self.id = data_type['id']
+        self.id_tournament = data_type['id_tournament']
+        self.number = data_type['number']
+        self.start_date = data_type['start_date']
+        self.end_date = data_type['end_date']
+
+    def serialized(self):
+        return {'id': self.id, 'id_tournament': self.id_tournament, 'number': self.number,
+                "start_date": self.start_date, "end_date": self.end_date}
+
+
+class GameTemp:
+    def __init__(self, game: any):
+        self.game = game
 

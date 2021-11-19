@@ -15,11 +15,11 @@ menu_options = {
 menu_options_rapports = {
     1: "liste de tous les acteurs par ordre alphabetique",
     2: "liste de tous les acteurs par classement",
-    3: "liste de tous les joueurs d'un tournois par ordre alphabetique",
-    4: "liste de tous les joueurs d'un tournois par classement",
+    3: "liste de tous les joueurs d'un tournoi par ordre alphabetique",
+    4: "liste de tous les joueurs d'un tournoi par classement",
     5: "liste de tous les tournois",
-    6: "liste de tous les tours d'un tournois",
-    7: "liste de tous les match d'un tournois par classement",
+    6: "liste de tous les tours d'un tournoi",
+    7: "liste de tous les match d'un tournoi par classement",
     8: 'Retour menu principal <--',
 }
 
@@ -61,7 +61,7 @@ menu_options_creation_tnmt = {
     3: 'la date de début prévue (AAAA-MM-JJ)',
     4: 'la date de fin prévisionnelle (AAAA-MM-JJ)',
     5: 'la gestion du temps ( rapide, eclair ou normal)',
-    6:'Retour menu principal <--',
+    6: 'Retour menu principal <--',
 }
 variable_tnmt = {
     1: 'name',
@@ -261,24 +261,44 @@ def menu_base():
                 print_players_database(result, 'alpha')
             
             elif option == 2:
+                #player sorted by rank
                 result = players_database_list(db='dbplayers', sort="rank")
                 print_players_database(result, 'rank')
             
             elif option == 3:
+                # tournament players list alphad sorted 
                 result = players_database_list(db='dbplayer_tnmt', sort="alpha")
                 print_players_database(result, 'alpha', 'Liste des joueurs inscrit')
             
             elif option == 4:
+                # tournament players list rank sorted 
                 result = players_database_list(db='dbplayer_tnmt', sort="rank")
                 print_players_database(result, 'alpha', 'Liste des joueurs inscrit')
             
             elif option == 5:
+                # all tournament list
                 result = tmnt_database_list()
-                print_tournament_database(result, 'all')        
-            # option3()
+                print_tournament_database(result, 'all')
+
+            elif option == 6:
+                # all round of a selected tournament
+                result = tmnt_database_list()
+                print_tournament_database(result, 'all')
+                id_tournament = input("Saisir l'id  du tournoi  pour l'affichage des informations ")
+                data_serialized = round_report_by_id(id_tournament, id_name='id_tournament')
+                print_round_tmnt_datase(data_serialized,title2="", title="Liste des Round ou Tours")
+
+            elif option == 7:
+                # all match of a selected tournament
+                result = tmnt_database_list()
+                print_tournament_database(result, 'all')
+                id_tournament = input("Saisir l'id  du tournoi  pour l'affichage des informations ")
+                data_serialized = match_report_with_name(id_value=id_tournament, id_name='id_tournament')
+                print_match_tmnt_datase(data_serialized, title2="", title="Liste des match")
+
         # ----------------------------------------
         #         escape menu
-        # ----------------------------------------            
+        # ----------------------------------------
         elif option == 4:
             option4()
             # print('Au revoir et Merci !')

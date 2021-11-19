@@ -1,6 +1,6 @@
 
 def print_row_tab_player(player_serialized):
-    #print the information of player a the end of round
+    # print the information of player a the end of round
     tab = "    "
     print("")
     print("Nom", tab, tab, "Prenom", tab, "rang", tab, "Ind", tab, "Score", tab, "ID")
@@ -18,7 +18,7 @@ def print_row_tab_player(player_serialized):
 
 
 def print_row_tab_round(round, match):
-    # print the result of a round  match/match 
+    # print the result of a round  match/match
     match_view = match.copy()
     tab = "    "
     print("")
@@ -38,7 +38,7 @@ def print_row_tab_round(round, match):
 
 
 def print_row_tab_round_2(round, match):
-    # print the result of a round  match/match 
+    # print the result of a round  match/match
     match_view = match.copy()
     tab = "    "
     print("")
@@ -58,11 +58,12 @@ def print_row_tab_round_2(round, match):
                   '%-6s' % match_view[m_row][3])
     print("")
 
+
 def print_players_database(player_serialized, title2='rank', title="Liste des joueurs du club"):
     # print all data of the player database
 
     tab = "    "
-    #method of sorting 
+    # method of sorting
     if title2 == 'rank':
         title2b = "rangé par classement"
     elif title2 == 'alpha':
@@ -94,7 +95,7 @@ def print_tournament_database(tmnt_serialized, title2='open', title="Liste des t
     # print all data of the tournament database
 
     tab = "    "
-    #method of sorting 
+    # method of sorting
     if title2 == 'open':
         title2b = "en cours"
     elif title2 == 'finished':
@@ -107,7 +108,7 @@ def print_tournament_database(tmnt_serialized, title2='open', title="Liste des t
     if not title2 == "":
         print('%-25s' % tab, title2b)
 
-    print("ID", tab, "Nom", tab, tab, "Lieu", tab, "Date de début", tab, "Date de fin", tab,
+    print("ID", tab, "Nom", tab, tab, tab, tab, "Lieu", tab, tab, tab, "Date de début", tab, "Date de fin", tab,
           "Controle temps", tab, "Nbr Round", tab, "Statut")
     print("")
     if title2 == 'open':
@@ -115,9 +116,9 @@ def print_tournament_database(tmnt_serialized, title2='open', title="Liste des t
             # for column in range (6):
             if tmnt_serialized[row][7] == "open":
                 print('%-7s' % tmnt_serialized[row][0],
-                      '%-12s' % tmnt_serialized[row][1],
-                      '%-12s' % tmnt_serialized[row][2],
-                      '%-15s' % tmnt_serialized[row][3],
+                      '%-22s' % tmnt_serialized[row][1],
+                      '%-20s' % tmnt_serialized[row][2],
+                      '%-20s' % tmnt_serialized[row][3],
                       '%-25s' % tmnt_serialized[row][4],
                       '%-15s' % tmnt_serialized[row][5],
                       '%-10s' % tmnt_serialized[row][6],
@@ -128,9 +129,9 @@ def print_tournament_database(tmnt_serialized, title2='open', title="Liste des t
         for row in range(len(tmnt_serialized)):
             if tmnt_serialized[row][7] == "closed":
                 print('%-7s' % tmnt_serialized[row][0],
-                      '%-12s' % tmnt_serialized[row][1],
-                      '%-12s' % tmnt_serialized[row][2],
-                      '%-15s' % tmnt_serialized[row][3],
+                      '%-22s' % tmnt_serialized[row][1],
+                      '%-20s' % tmnt_serialized[row][2],
+                      '%-20s' % tmnt_serialized[row][3],
                       '%-25s' % tmnt_serialized[row][4],
                       '%-15s' % tmnt_serialized[row][5],
                       '%-10s' % tmnt_serialized[row][6]
@@ -138,9 +139,9 @@ def print_tournament_database(tmnt_serialized, title2='open', title="Liste des t
     else:
         for row in range(len(tmnt_serialized)):
             print('%-7s' % tmnt_serialized[row][0],
-                  '%-15s' % tmnt_serialized[row][1],
-                  '%-16s' % tmnt_serialized[row][2],
-                  '%-15s' % tmnt_serialized[row][3],
+                  '%-22s' % tmnt_serialized[row][1],
+                  '%-20s' % tmnt_serialized[row][2],
+                  '%-20s' % tmnt_serialized[row][3],
                   '%-25s' % tmnt_serialized[row][4],
                   '%-15s' % tmnt_serialized[row][5],
                   '%-10s' % tmnt_serialized[row][6],
@@ -149,10 +150,32 @@ def print_tournament_database(tmnt_serialized, title2='open', title="Liste des t
 
     print("")
 
-def print_match_tmnt_datase(data_serialized, title2='open', title="Liste des match" ):
-    print ('test beta')
+
+def print_round_tmnt_datase(data_serialized, title2="", title="Liste des round"):
+    # print('test beta')
     tab = "    "
-    #method of sorting 
+
+    title2b = ""
+
+    print("")
+    print('%-25s' % tab, title)
+    if not title2 == "":
+        print('%-25s' % tab, title2b)
+
+    print("round", tab, "Date de début", tab, "Date de fin")
+    print("")
+
+    for row in range(len(data_serialized)):
+        print('%-10s' % data_serialized[row]["id"],
+              '%-19s' % data_serialized[row]["start_date"],
+              '%-5s' % data_serialized[row]["end_date"]
+              )
+
+
+def print_match_tmnt_datase(data_serialized, title2='open', title="Liste des match"):
+    # print('test beta')
+    tab = "    "
+    # method of sorting
     if title2 == 'open':
         title2b = "en cours"
     elif title2 == 'finished':
@@ -165,33 +188,18 @@ def print_match_tmnt_datase(data_serialized, title2='open', title="Liste des mat
     if not title2 == "":
         print('%-25s' % tab, title2b)
 
-    print("round", tab, "Nom", tab, "Joueur 1", tab, tab, tab, "joueur 2", tab, tab, 'score joueur 1', tab, 'score joueur 2', tab, "Date de début", tab, "Date de fin", tab,
-          "Controle temps")
+    print("round", tab, "Nom", tab, "Joueur 1", tab, tab, tab, "joueur 2", tab, tab, 'score joueur 1', tab,
+          'score joueur 2', tab, "Date de début", tab, "Date de fin")
     print("")
-    if title2 == 'open':
-        for row in range(len(data_serialized)):
-            # for column in range (6):
-            #if data_serialized[row][13] == "open":
-            print('%-10s' % data_serialized[row][2],
-                    '%-7s' % data_serialized[row][3],
-                    '%-24s' % data_serialized[row][4],
-                    '%-25s' % data_serialized[row][5],
-                    '%-18s' % data_serialized[row][6],
-                    '%-13s' % data_serialized[row][7],
-                    '%-18s' % data_serialized[row][8],
-                    '%-22s' % data_serialized[row][9],
-                    '%-10s' % data_serialized[row][10],
-                    )
-    
 
-player_t0 = [
-        ['temis', 'giona', 4, 0, 0, 0],
-        ['eric', 'fortunato', 8, 0, 0, 0],
-        ['a', 'b', 3, 0, 0, 0],
-        ['k', 'l', 15, 0, 0, 0],
-        ['m', 'n', 1000, 0, 0, 0],
-        ['o', 'r', 100, 0, 0, 0],
-        ['q', 's', 16, 0, 0, 0],
-        ['p', 't', 16, 0, 0, 0]
-        ]
-# print_row_tab_player(player_serialized)
+    for row in range(len(data_serialized)):
+
+        print('%-10s' % data_serialized[row][1],
+              '%-7s' % data_serialized[row][3],
+              '%-24s' % data_serialized[row][4],
+              '%-25s' % data_serialized[row][5],
+              '%-18s' % data_serialized[row][6],
+              '%-13s' % data_serialized[row][7],
+              '%-18s' % data_serialized[row][8],
+              '%-22s' % data_serialized[row][9],
+              )
