@@ -88,7 +88,7 @@ def print_players_database(player_serialized, title2='rank', title="Liste des jo
               '%-10s' % player_serialized[row][4],
               '%-10s' % player_serialized[row][5],
               '%-5s' % player_serialized[row][6])
-    print("")
+    print("Nombre de joueurs :", len(player_serialized))
 
 
 def print_tournament_database(tmnt_serialized, title2='open', title="Liste des tournois"):

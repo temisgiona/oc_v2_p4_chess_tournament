@@ -87,3 +87,17 @@ class GameTemp:
     def __init__(self, game: any):
         self.game = game
 
+
+class Player_Chess:
+    def __init__(self, data_type: any):
+        self.id = data_type['id']
+        self.lastname = data_type['lastname']
+        self.firstname = data_type['firstname']
+        self.birthdate = data_type['birthdate']
+        self.gender = data_type['gender']
+        self.rank = data_type['rank']
+        self.score = data_type['score']
+    
+    def serialized(self):
+        return {'id': self.id, 'lastname': self.lastname, 'firstname': self.firstname, 'birthdate': self.birthdate,
+                'gender': self.gender, 'rank': self.gender, 'score': self.score}

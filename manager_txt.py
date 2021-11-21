@@ -89,9 +89,11 @@ class Manager:
         return data_doc_id.doc_id
 
     def search_by_doc_id_2(self, id_tournament):
-        
+        data_doc_id = []
         m_query = Query()
+        count = self.db_initial().count(m_query.id_tournament == id_tournament)
         data_doc_id = self.db_initial().get(m_query.id_tournament == id_tournament)
+        
         #print(data_doc_id.doc_id)
         return data_doc_id.doc_id
 
@@ -169,7 +171,7 @@ class Manager:
             match_object_list[2] = element_id["firstname"]
             match_object_list[3] = element_id["birthdate"]
             match_object_list[4] = element_id["gender"]
-            match_object_list[5] = element_id["rank"]
+            match_object_list[5] = int(element_id["rank"])
             match_object_list[6] = element_id["score"]
 
             list_player_object.append(match_object_list)
@@ -355,7 +357,7 @@ class Manager:
             match_object_list.append(0)
 
         match_object_list[0] = data.id
-        match_object_list[1] = data.id_t
+        match_object_list[1] = data.id_turn
         match_object_list[2] = data.id_tournament
         match_object_list[3] = data.name
         match_object_list[4] = data.player1_id
@@ -417,6 +419,26 @@ class Manager:
         # print(match)
         return match
 
+    def match_querying_by_id2(self, id, key='id', id_tmnt=2):
+        # query of for a match
+        if isinstance(id, str):
+            id = int(id)
+        if isinstance(id_tmnt, str):
+            id_tmnt = int(id_tmnt)
+
+        db_manager = (TinyDB(self.path).table(self.table))
+        match_query = Query()
+        if key == 'id':
+            match = db_manager.search(match_query.id == id)
+        elif key == 'id_tournament':
+            match = db_manager.search(match_query.id_tournament == id)
+        elif key == 'id_turn':
+            match = db_manager.search((match_query.id_turn == id) & (match_query.id_tournament == id_tmnt))
+        elif key == 'name':
+            match = db_manager.search(match_query.name == id)
+        # print(match)
+        return match
+
     def match_updating(self, id, data):
         db_manager = (TinyDB(self.path).table(self.table))
         match_query = Query()
@@ -425,17 +447,26 @@ class Manager:
             db_manager.update({data[item]}, match_query.id == id)
             print(item)
 
-    def match_updating_2(self, id, data):
-        # upsert the database by id
+    def match_updating_2(self, id, data, id_tmnt):
+        # update the database by id
         db_manager = (TinyDB(self.path).table(self.table))
         match_query = Query()
-        match = db_manager.search(match_query.id == id)
-        db_manager.update(data, match_query.id == id)
+        count_match = db_manager.count((match_query.id == id) & (match_query.id_tournament == id_tmnt))
+        if count_match == 0:
+            db_manager.insert({"id": data["id"], "id_turn": data["id_turn"], "id_tournament": data["id_tournament"]})
+        match2 = db_manager.get((match_query.id == id) & (match_query.id_tournament == id_tmnt))
+        id_match = match2.doc_id
+        db_manager.update(data, doc_ids=[id_match])
 
     def update_player_tmnt(self, player_t0_u):
         # update player indice , and score 26/10/2021
         m_query = Query()
         self.db_initial().update({'score': player_t0_u[4]}, m_query.id == player_t0_u[5])
+
+    def update_player_rank(self, player_object):
+        # update the player in the db wih player object
+        query = Query()
+        self.db_initial().update({"rank": player_object.rank}, query.id == player_object.id)
 
     def update_turn_tmnt(self, turn_object):
         print("test")
