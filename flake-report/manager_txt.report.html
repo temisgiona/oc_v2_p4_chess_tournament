@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>flake8 violations: .\manager_txt.py</title>
+      <meta http-equiv="Content-Type" value="text/html; charset=UTF-8">
+      <link rel="stylesheet" href="styles.css">
+<script>
+function bindHandler(link) {
+   var code = link.getAttribute('data-code');
+   var key = location.pathname + '#' + code;
+
+   var ul = link.parentNode.querySelector('.details');
+   if (sessionStorage[key] != 'open') {
+      ul.style.display = 'none';
+   }
+   link.addEventListener('click', function (event) {
+      if (!ul.style.display || ul.style.display == 'none') {
+         ul.style.display = 'block';
+         sessionStorage[key] = 'open';
+      } else {
+         ul.style.display = 'none';
+         sessionStorage[key] = 'closed';
+      }
+   });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+   var links = document.querySelectorAll('#index > li > a');
+   for (var i = 0; i < links.length; i++) {
+      bindHandler(links[i]);
+   }
+});
+</script>
+   </head>
+   <body>
+      <div id="masthead" class="sev-1"></div>
+      <div id="page">
+         <p id="srclink">
+            <a title="View full annotated source"
+               href="manager_txt.source.html">
+               <img src="file.svg" alt="&#x2261;">
+            </a></p>
+         <h1>
+            <a href="index.html">
+               <img src="back.svg" alt="&#x2B05;">
+               .\manager_txt.py
+            </a>
+         </h1>
+
+         <ul id="index">
+         
+         <li>
+            <a data-code="F841">
+               <span class="count sev-1">
+                  9
+               </span>
+               <strong>F841:</strong> local variable 'count' is assigned to but never used
+               
+                  (and 7 similar)
+               
+            </a>
+            <ul class="details">
+            <li>
+               
+               <p>Local variable 'count' is assigned to but never used:</p>
+               
+               <a href="manager_txt.source.html#l93">
+                  <tt><i>93</i>         <span class="n">count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db_initial</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">m_query</span><span class="o">.</span><span class="n">id_tournament</span> <span class="o">==</span> <span class="n">id_tournament</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Local variable 'm_query' is assigned to but never used:</p>
+               
+               <a href="manager_txt.source.html#l100">
+                  <tt><i>100</i>         <span class="n">m_query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">()</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Local variable 'turn_object_list' is assigned to but never used:</p>
+               
+               <a href="manager_txt.source.html#l215">
+                  <tt><i>215</i>         <span class="n">turn_object_list</span> <span class="o">=</span> <span class="p">[]</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Local variable 'list_turn_object' is assigned to but never used:</p>
+               
+               <a href="manager_txt.source.html#l216">
+                  <tt><i>216</i>         <span class="n">list_turn_object</span> <span class="o">=</span> <span class="p">[]</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Local variable 'match_object_list' is assigned to but never used:</p>
+               
+               <a href="manager_txt.source.html#l286">
+                  <tt><i>286</i>         <span class="n">match_object_list</span> <span class="o">=</span> <span class="p">[]</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Local variable 'element_id' is assigned to but never used:</p>
+               
+               <a href="manager_txt.source.html#l291">
+                  <tt><i>291</i>             <span class="n">element_id</span> <span class="o">=</span> <span class="n">datadb</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>            </tt>
+               </a>
+            </li><li>
+               
+               <p>Local variable 'db_manager' is assigned to but never used:</p>
+               
+               <a href="manager_txt.source.html#l352">
+                  <tt><i>352</i>         <span class="n">db_manager</span> <span class="o">=</span> <span class="p">(</span><span class="n">TinyDB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">))</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Local variable 'db_manager' is assigned to but never used:</p>
+               
+               <a href="manager_txt.source.html#l376">
+                  <tt><i>376</i>         <span class="n">db_manager</span> <span class="o">=</span> <span class="p">(</span><span class="n">TinyDB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">))</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Local variable 'match' is assigned to but never used:</p>
+               
+               <a href="manager_txt.source.html#l444">
+                  <tt><i>444</i>         <span class="n">match</span> <span class="o">=</span> <span class="n">db_manager</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">match_query</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="nb">id</span><span class="p">)</span></tt>
+               </a>
+            </li>
+            </ul>
+         </li>
+         
+         <li>
+            <a data-code="F821">
+               <span class="count sev-1">
+                  2
+               </span>
+               <strong>F821:</strong> undefined name 'data'
+               
+            </a>
+            <ul class="details">
+            <li>
+               
+               <a href="manager_txt.source.html#l246">
+                  <tt><i>246</i>             <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="p">(</span><span class="n">data</span><span class="p">):</span></tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l247">
+                  <tt><i>247</i>                 <span class="n">db_manager</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">data</span><span class="p">[</span><span class="n">item</span><span class="p">]},</span> <span class="p">((</span><span class="n">turn_query</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">turn_object_db</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">turn_query</span><span class="o">.</span><span class="n">id_tournament</span> <span class="o">==</span> <span class="n">turn_object_db</span><span class="o">.</span><span class="n">id_tournament</span><span class="p">)))</span></tt>
+               </a>
+            </li>
+            </ul>
+         </li>
+         
+         <li>
+            <a data-code="F401">
+               <span class="count sev-1">
+                  1
+               </span>
+               <strong>F401:</strong> 'typing.Any' imported but unused
+               
+            </a>
+            <ul class="details">
+            <li>
+               
+               <a href="manager_txt.source.html#l3">
+                  <tt><i>3</i> <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span></tt>
+               </a>
+            </li>
+            </ul>
+         </li>
+         
+         <li>
+            <a data-code="W293">
+               <span class="count sev-2">
+                  18
+               </span>
+               <strong>W293:</strong> blank line contains whitespace
+               
+            </a>
+            <ul class="details">
+            <li>
+               
+               <a href="manager_txt.source.html#l37">
+                  <tt><i>37</i>         </tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l54">
+                  <tt><i>54</i>             </tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l84">
+                  <tt><i>84</i>         </tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l95">
+                  <tt><i>95</i>         </tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l152">
+                  <tt><i>152</i>            </tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l188">
+                  <tt><i>188</i>                         </tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l220">
+                  <tt><i>220</i>                         </tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l292">
+                  <tt><i>292</i>             </tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l295">
+                  <tt><i>295</i>                             </tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l312">
+                  <tt><i>312</i>                 </tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l323">
+                  <tt><i>323</i>         </tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l326">
+                  <tt><i>326</i>         </tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l329">
+                  <tt><i>329</i>                         </tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l347">
+                  <tt><i>347</i>         </tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l379">
+                  <tt><i>379</i>         </tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l382">
+                  <tt><i>382</i>         </tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l385">
+                  <tt><i>385</i>                     </tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l403">
+                  <tt><i>403</i>         </tt>
+               </a>
+            </li>
+            </ul>
+         </li>
+         
+         <li>
+            <a data-code="W291">
+               <span class="count sev-2">
+                  7
+               </span>
+               <strong>W291:</strong> trailing whitespace
+               
+            </a>
+            <ul class="details">
+            <li>
+               
+               <a href="manager_txt.source.html#l191">
+                  <tt><i>191</i>             <span class="n">match_object_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">element_id</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>    </tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l284">
+                  <tt><i>284</i>         <span class="c1"># catch information from match making db to database </span></tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l291">
+                  <tt><i>291</i>             <span class="n">element_id</span> <span class="o">=</span> <span class="n">datadb</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>            </tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l333">
+                  <tt><i>333</i>             <span class="n">match_object_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">element_id</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> </tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l343">
+                  <tt><i>343</i>             <span class="n">match_object_list</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="n">element_id</span><span class="p">[</span><span class="s2">&quot;time_control&quot;</span><span class="p">]</span>            </tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l389">
+                  <tt><i>389</i>         <span class="n">match_object_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">element_id</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> </tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l399">
+                  <tt><i>399</i>         <span class="n">match_object_list</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="n">element_id</span><span class="p">[</span><span class="s2">&quot;time_control&quot;</span><span class="p">]</span>            </tt>
+               </a>
+            </li>
+            </ul>
+         </li>
+         
+         <li>
+            <a data-code="E501">
+               <span class="count sev-2">
+                  4
+               </span>
+               <strong>E501:</strong> line too long (139 > 119 characters)
+               
+                  (and 3 similar)
+               
+            </a>
+            <ul class="details">
+            <li>
+               
+               <p>Line too long (139 > 119 characters):</p>
+               
+               <a href="manager_txt.source.html#l245">
+                  <tt><i>245</i>             <span class="n">db_manager</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="o">*</span><span class="n">turn_r</span><span class="p">},</span> <span class="p">(</span><span class="n">turn_query</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">turn_object_db</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">turn_query</span><span class="o">.</span><span class="n">id_tournament</span> <span class="o">==</span> <span class="n">turn_object_db</span><span class="o">.</span><span class="n">id_tournament</span><span class="p">))</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (148 > 119 characters):</p>
+               
+               <a href="manager_txt.source.html#l247">
+                  <tt><i>247</i>                 <span class="n">db_manager</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">data</span><span class="p">[</span><span class="n">item</span><span class="p">]},</span> <span class="p">((</span><span class="n">turn_query</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">turn_object_db</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">turn_query</span><span class="o">.</span><span class="n">id_tournament</span> <span class="o">==</span> <span class="n">turn_object_db</span><span class="o">.</span><span class="n">id_tournament</span><span class="p">)))</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (161 > 119 characters):</p>
+               
+               <a href="manager_txt.source.html#l475">
+                  <tt><i>475</i>         <span class="n">db_manager</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;end_date&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">turn_object</span><span class="o">.</span><span class="n">end_date</span><span class="p">)},</span> <span class="p">((</span><span class="n">turn_query</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">turn_object</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">turn_query</span><span class="o">.</span><span class="n">id_tournament</span> <span class="o">==</span> <span class="n">turn_object</span><span class="o">.</span><span class="n">id_tournament</span><span class="p">)))</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (165 > 119 characters):</p>
+               
+               <a href="manager_txt.source.html#l476">
+                  <tt><i>476</i>         <span class="n">db_manager</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;start_date&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">turn_object</span><span class="o">.</span><span class="n">start_date</span><span class="p">)},</span> <span class="p">((</span><span class="n">turn_query</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">turn_object</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">turn_query</span><span class="o">.</span><span class="n">id_tournament</span> <span class="o">==</span> <span class="n">turn_object</span><span class="o">.</span><span class="n">id_tournament</span><span class="p">)))</span></tt>
+               </a>
+            </li>
+            </ul>
+         </li>
+         
+         <li>
+            <a data-code="E265">
+               <span class="count sev-2">
+                  3
+               </span>
+               <strong>E265:</strong> block comment should start with '# '
+               
+            </a>
+            <ul class="details">
+            <li>
+               
+               <a href="manager_txt.source.html#l87">
+                  <tt><i>87</i>         <span class="c1">#print(data_doc_id.doc_id)</span></tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l96">
+                  <tt><i>96</i>         <span class="c1">#print(data_doc_id.doc_id)</span></tt>
+               </a>
+            </li><li>
+               
+               <a href="manager_txt.source.html#l380">
+                  <tt><i>380</i>         <span class="c1">#for item in range(len(db_manager.all())):</span></tt>
+               </a>
+            </li>
+            </ul>
+         </li>
+         
+         <li>
+            <a data-code="E115">
+               <span class="count sev-2">
+                  1
+               </span>
+               <strong>E115:</strong> expected an indented block (comment)
+               
+            </a>
+            <ul class="details">
+            <li>
+               
+               <a href="manager_txt.source.html#l325">
+                  <tt><i>325</i>         <span class="c1"># for item in range(len(db_manager.all())):</span></tt>
+               </a>
+            </li>
+            </ul>
+         </li>
+         
+         <li>
+            <a data-code="E116">
+               <span class="count sev-2">
+                  1
+               </span>
+               <strong>E116:</strong> unexpected indentation (comment)
+               
+            </a>
+            <ul class="details">
+            <li>
+               
+               <a href="manager_txt.source.html#l402">
+                  <tt><i>402</i>             <span class="c1"># print(list_player_object)</span></tt>
+               </a>
+            </li>
+            </ul>
+         </li>
+         
+         <li>
+            <a data-code="E303">
+               <span class="count sev-2">
+                  1
+               </span>
+               <strong>E303:</strong> too many blank lines (3)
+               
+            </a>
+            <ul class="details">
+            <li>
+               
+               <a href="manager_txt.source.html#l8">
+                  <tt><i>8</i> <span class="k">class</span> <span class="nc">Manager</span><span class="p">:</span></tt>
+               </a>
+            </li>
+            </ul>
+         </li>
+         
+         </ul>
+      </div>
+   </body>
+</html>

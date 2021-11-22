@@ -1,9 +1,8 @@
 "crud db tiny"
-# import json
 from tinydb import TinyDB, Query, where
 from typing import Any
 import models
-# from generic_models import Player
+
 
 
 class Manager:
@@ -98,9 +97,13 @@ class Manager:
         return data_doc_id.doc_id
 
     def del_by_doc_id(self, id):
-        m_query = Query()
         # self.db_initial().remove(m_query.doc_id == id)
         self.db_initial().remove(doc_ids=[id])
+
+    def del_by_id(self, id):
+        # delete with id request (not doc_id) 
+        M_query = Query()
+        self.db_initial().remove(M_query.id == id)
 
     def count_doc(self, id_tnmt):
         m_query = Query()
@@ -143,7 +146,7 @@ class Manager:
                 match_object_list.append(0)
             match_object_list[0] = element_id["lastname"]
             match_object_list[1] = element_id["firstname"]
-            match_object_list[2] = element_id["rank"]
+            match_object_list[2] = int(element_id["rank"])
             match_object_list[3] = 0
             match_object_list[4] = 0
             # match_object_list[5] = 0
@@ -445,7 +448,7 @@ class Manager:
         match = db_manager.search(match_query.id == id)
         for item in (data):
             db_manager.update({data[item]}, match_query.id == id)
-            print(item)
+            # print(item)
 
     def match_updating_2(self, id, data, id_tmnt):
         # update the database by id

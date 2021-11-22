@@ -1,5 +1,0 @@
-[
-    { "id":1, "name": "Paris 2020 World Master", "place": "Paris", "start_date": "2020-09-10 12:45:58" , "end_date": "2020-09-10 13:45:58", "round_number":5, "time_control":"Bullet", "description":"best place to loose time"},
-    { "id":2, "name": "Montlucçon 2020 Cosmics Masters", "place": "Montluçon", "start_date":"2020-09-11 12:45:58" , "end_date": "2020-09-11 14:45:58", "round_number":5, "time_control":"Bullet", "description":"best place to get lucky, nobody are happy"},
-    { "id":3, "name": "Massalia 2020 Mediterranea Domini", "place": "Marseille", "start_date":"2020-09-10 12:45:58" , "end_date": "2020-09-12 15:45:58", "round_number":6, "time_control":"Bullet", "description":"best place to get bed bugs"}
-]

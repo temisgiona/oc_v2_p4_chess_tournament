@@ -33,8 +33,9 @@ menu_options_joueurs = {
 menu_options_tournois = {
     1: 'Créer Tournoi',
     2: 'Inscrire Joueur',
-    3: 'Voir ou Reprendre Tournois',
-    4: 'Retour menu principal <--',
+    3: 'Supprimer un Joueur du tournoi',
+    4: 'Voir ou Reprendre Tournois',
+    5: 'Retour menu principal <--',
 }
 
 menu_options_creation_joueur = {
@@ -182,7 +183,7 @@ def option3():
 
 
 def option4():
-    print('choix option \'Option 10\'')
+    print('mode graphique tkinter activé')
     graphic_mode()
 
 
@@ -266,11 +267,21 @@ def menu_base():
 
             elif option == 3:
                 # demarrer ou reprendre un tournoi
+                result = players_database_list(db='dbplayer_tnmt', sort="")
+                print_players_database(result, title2='')
+                result2 = int(input("Saisir l'iD du joueur à retirer de la liste :"))
+                player_unscription(result2)
+                result = players_database_list(db='dbplayer_tnmt', sort="")
+                print_players_database(result, title2='')
+
+            elif option == 4:
+                # demarrer ou reprendre un tournoi
                 main()
+
 
         # ----------------------------------------
         #         rapports
-        # ----------------------------------------            
+        # ----------------------------------------
         elif option == 3:
             option = ''
             display_menu(menu_options_rapports)
@@ -296,7 +307,7 @@ def menu_base():
                 print_players_database(result2, 'alpha', 'Liste des joueurs inscrit')
 
             elif option == 4:
-                # tournament players list rank sorted 
+                # tournament players list rank sorted
                 result = tmnt_database_list()
                 print_tournament_database(result, 'all')
                 id_tournament = input("Saisir l'id  du tournoi  pour l'affichage des informations :")
@@ -337,15 +348,6 @@ def menu_base():
             # option5()
             print('Au revoir et Merci !')
             exit()
-
-        elif option == 6:
-            option6()
-
-        elif option == 7:
-            option7()
-
-        elif option == 8:
-            option8()
 
         elif option == 10:
             print('Au revoir et Merci !')

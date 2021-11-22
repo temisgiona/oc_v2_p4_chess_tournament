@@ -1,6 +1,0 @@
-[
-    { "id":1, "id_tournament": 1, "number": 1, "start_date" : "2021-10-25 12:10:00", "end_date" : "2021-11-30 12:15:00", "description":""},
-    { "id":2, "id_tournament": 1, "number": 2, "start_date" : "2021-10-26 12:15:00", "end_date" : "2021-11-30 12:15:00", "description":""},
-    { "id":3, "id_tournament": 1, "number": 3, "start_date" : "2021-10-27 12:25:00", "end_date" : "2021-11-30 12:15:00", "description":""},
-    { "id":4, "id_tournament": 1, "number": 4, "start_date" : "2021-10-28 12:20:00", "end_date" : "2021-11-30 12:15:00", "description":""}
-]
