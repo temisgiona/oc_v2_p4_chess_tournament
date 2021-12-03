@@ -1,7 +1,90 @@
+
 from manager_txt import *
+# from chess_tournament import player_inscription
+# from chess_tournament import players_database_list
+# from chess_tournament import player_register, graphic_mode, modify_player
+from chess_tournament import modify_player
 from chess_tournament import *
 import tournament_controler
-from datetime import datetime, date, timedelta
+import models
+from typing import Any, List, Tuple
+from rapport import print_round_tmnt_datase, print_match_tmnt_datase, print_players_database, print_tournament_database
+
+class View:
+    """ Affiche un titre & un contenu """
+    def __init__(self, title: str, content: str = ""):
+        self.title = title
+        self.content = content
+
+    def show(self):
+        print("*"*len(self.title)*5)
+        print(self.title)
+        print("*"*len(self.title)*5)
+        if self.content:
+            print(self.content)
+
+
+class Menu(View):
+    """ Demande à l'utilisateur de faire un choix parmi plusieurs options et renvoi un entier """
+    def __init__(self, title: str, options: List[str]):
+        content = "\n".join(
+            [f"{nb} - {option}" for nb, option in enumerate(options, start=1)])
+        super().__init__(title, content=content)
+        self.options = options
+
+    def show(self):
+        super().show()
+        while True:
+            try:
+                choice = int(input(": "))
+                if 0 < choice < len(self.options):
+                    return choice
+            except ValueError:
+                pass
+
+
+class Form(View):
+    """ Demande à l'utilisateur de remplir des champs et renvoi un dictionnaire de données """
+    def __init__(self, title: str, fields: List[Tuple[str, str, Any]]):
+        super().__init__(title)
+        self.fields = fields
+
+    def show(self):
+        data = {}
+        super().show()
+        for name, description, _type in self.fields:
+            while True:
+                try:
+                    data[name] = _type(input("saisir  " + description + " ? "))
+
+                    break
+                except ValueError:
+                    pass
+        return data
+
+
+class MenuPrincipal(View):
+    """menu principal with choice"""
+
+    def __init__(self, title: str, data: any):
+        super().__init__(title)
+        self.data = data
+
+    def display_menu(self):
+        for key in self.data.keys():
+            print('')
+            print(key, '--', self.data[key])
+        print('')
+
+    def saisie_donne(self):
+        while(True):
+            print('')
+            try:
+                choice = int(input('Entrez votre choix: '))
+
+                return choice
+            except ValueError:
+                print('Mauvaise saisie ! SVP, entrez un chiffre correct')
 
 
 menu_options = {
@@ -38,71 +121,30 @@ menu_options_tournois = {
     5: 'Retour menu principal <--',
 }
 
-menu_options_creation_joueur = {
-    1: 'le Nom',
-    2: 'le Prénom',
-    3: 'le Genre (M ou F)',
-    4: 'la date de naissance (AAAA-MM-JJ)',
-    5: 'le Rang',
-    6: 'Retour menu principal <--',
-}
-
-variable_player = {
-    1: 'lastname',
-    2: 'firstname',
-    3: 'gender',
-    4: 'birthdate',
-    5: 'rank',
-    6: 'score',
-}
-
-menu_options_creation_tnmt = {
-    1: 'le Nom du tournois',
-    2: 'le lieu du tournois',
-    3: 'la date de début prévue (AAAA-MM-JJ)',
-    4: 'la date de fin prévisionnelle (AAAA-MM-JJ)',
-    5: 'la gestion du temps ( rapide, eclair ou normal)',
-    6: 'Retour menu principal <--',
-}
-variable_tnmt = {
-    1: 'name',
-    2: 'place',
-    3: 'start_date',
-    4: 'end_date',
-    5: 'time_control',
-    6: 'round_number',
-    }
-
-"""menu_options_player_register_tnmt = {
-    1: 'le Nom du tournoi',
-    2: 'ID tournoi',
-    3: 'le nom du joueur',
-    4: 'ID du joueur',
-    5: 'Retour menu principal <--',
-    }"""
-
-menu_options_player_register_tnmt = {
-    1: 'ID tournoi',
-    2: 'ID du joueur',
-    3: 'Retour menu principal <--',
-    }
-
-"""variable_player_register_tnmt = {
-    1: 'name_tnmt',
-    2: 'id_tnmt',
-    3: 'name',
-    4: 'id',
-    }"""
-
-variable_player_register_tnmt = {
-    1: 'id_tnmt',
-    2: 'id'
-    }
+form_player = [('lastname', 'le Nom ', str), ('firstname', 'le Prénom  ', str),
+               ('gender', 'le Genre (M ou F)  ', str),
+               ('birthdate', 'la date de naissance (AAAA-MM-JJ)  ', str),
+               ('rank', 'le Rang  ', int)]
 
 
-def display_menu(menu):
-    for key in menu.keys():
-        print(key, '--', menu[key])
+tmnt_form = [('name', 'le Nom du tournoi', str), ('place', 'le lieu du tournoi', str),
+             ('start_date', 'la date de début prévue (AAAA-MM-JJ)', str),
+             ('end_date', 'la date de fin prévisionnelle (AAAA-MM-JJ)', str),
+             ('time_control', 'la gestion du temps ( rapide, eclair ou normal)', str),
+             ("", 'Retour menu principal <--', str)]
+
+
+player_tmnt_registering = [('id_tnmt', 'ID tournoi ', str),
+                           ('id', 'ID du joueur ', str)]
+
+
+def display_menu_obj(title, data_menu):
+    # display the mneu with an object
+    My_menu = MenuPrincipal(title, data_menu)
+    My_menu.show()
+    My_menu.display_menu()
+    option = My_menu.saisie_donne()
+    return option
 
 
 def view_choice(option):
@@ -111,71 +153,58 @@ def view_choice(option):
     print('')
 
 
-def data_resquested(question_list, var_list):
+def data_resquested(title, form_player):
+    # request section and using the form object
+    data_m = {}
+    data_m = Form(title, form_player).show()
 
-    data = {}
-    # data[0] = 'id'
-    for key in question_list:
-        if key == 1:
-            # data.append("id": 1000)
-            data['id'] = 1000
-
-        elif question_list[key] == 'Retour menu principal <--':
-            if var_list == variable_player:
-                # le score est initialisé à zero
-                data['score'] = "0"
-
-            elif var_list == variable_tnmt:
-                # le nb de round passe a 8 par defaut
-                if data["start_date"] == "":
-                    data['start_date'] = str(date.today())
-
-                    # data['start_date'] = datetime.now()
-                    print(data['start_date'])
-                    m_date = data['start_date']
-                    # date_1 = datetime.strptime(m_date, "%y-%m-%d")
-
-                    # end_date = m_date + timedelta(days=4)
-                    end_date = (m_date)
-                    data['end_date'] = end_date
-                data["round_number"] = 4
-
-            print('fin de saisie')
-            return data
-        print('Saisir', question_list[key])
-        my_data = input()
-        # data[key] = input()
-        # data.append(my_data)
-        if key == 6 and var_list[key] == 'score':
-            data[var_list[key]] = 0
-        else:
-            data[var_list[key]] = my_data
-
-    return data
+    print('fin de saisie')
+    return data_m
 
 
 def option_J1():
-    print('bonjour')
-    data = data_resquested(menu_options_creation_joueur, variable_player)
-    return data
+    # creation of the new player in db base
+    # return to db data type {id, , lastname, firstname, birth, gender, rank, score}
+    my_new_player = models.Player_Chess({'id': 1000, 'lastname': "", 'firstname': "", 'birthdate': "", "gender": "M",
+                                        'rank': 0, 'score': 0})
+
+    data = data_resquested("Création de joueur", form_player)
+    my_new_player.lastname = data['lastname']
+    my_new_player.firstname = data['firstname']
+    my_new_player.birthdate = data['birthdate']
+    my_new_player.gender = data['gender'].upper()
+    my_new_player.rank = data['rank']
+
+    return my_new_player.serialized()
 
 
 def option_player_inscription_tnmt():
     # creation of player
-    # print('choix option \'Option 1\'')
 
-    data = data_resquested(menu_options_player_register_tnmt, variable_player_register_tnmt)
+    data = data_resquested("Inscription d'un joueur au tournoi", player_tmnt_registering)
+
     player_inscription(data)
     result = players_database_list(db='dbplayer_tnmt', sort="")
     print_players_database(result, '', 'Liste des joueurs inscrits')
 
 
 def option_tnmt_creat():
-    # option2():
     # ihm information tournament
     print('choix option \'Option creation tournament\'')
-    data = data_resquested(menu_options_creation_tnmt, variable_tnmt)
-    return data
+    t_data = {'id': 1000, 'name': "", 'place': ""}
+    my_tmnt = models.Tournament(**t_data)
+    try:
+        data = data_resquested("Ouverture d'un tournoi", tmnt_form)
+        my_tmnt.name = data['name']
+        my_tmnt.place = data['place']
+        my_tmnt.start_date = data["start_date"]
+        my_tmnt.end_date = data['end_date']
+        my_tmnt.time_control = data['time_control']
+        my_tmnt.round_number = 0
+        return my_tmnt.serialized_tnmt()
+
+    except ValueError:
+        pass
 
 
 def option3():
@@ -191,42 +220,28 @@ def option10():
     print('choix option \'Option 10\'')
 
 
-def saisie_donne(max_value):
-    while(True):
-        try:
-            choice = int(input('Entrez votre choix: '))
-
-            # return option
-        except ValueError:
-            print('Mauvaise saisie ! SVP, entrez un chiffre...')
-        if choice > max_value:
-            print('Mauvaise saisie ! SVP, entrez un chiffre dans la plage')
-        else:
-            return choice
-
-
 def menu_base():
+
     while(True):
         print('')
-        display_menu(menu_options)
 
-        option = saisie_donne(len(menu_options))
+        option = display_menu_obj("Chess Tournament", menu_options)
         # ----------------------------------------
         #         player menu
         # ----------------------------------------
         if option == 1:
             view_choice(option)
             option = ''
-            display_menu(menu_options_joueurs)
-            option = saisie_donne(len(menu_options_joueurs))
+
+            option = display_menu_obj("Menu_joueurs", menu_options_joueurs)
+
             view_choice(option)
             if option == 1:
                 # saisie joueur
                 # creation of the player
                 data = option_J1()
                 player_register(data)
-                display_menu(menu_options_joueurs)
-            
+
             elif option == 2:
                 # modification of player rank
                 result = players_database_list(db='dbplayers', sort="")
@@ -247,10 +262,10 @@ def menu_base():
         elif option == 2:
             view_choice(option)
             option = ''
-            display_menu(menu_options_tournois)
-            option = saisie_donne(len(menu_options_tournois))
+
+            option = display_menu_obj("Menu Tournoi", menu_options_tournois)
             view_choice(option)
-            
+
             if option == 1:
                 # creation tournoi dans la base
                 data = option_tnmt_creat()
@@ -261,9 +276,8 @@ def menu_base():
                 result = players_database_list(db='dbplayers', sort="")
                 print_players_database(result, title2='')
                 result2 = tmnt_database_list()
-                print_tournament_database(result2,'open', "Tournoi disponible")
+                print_tournament_database(result2, 'open', "Tournoi disponible")
                 data = option_player_inscription_tnmt()
-                # player_inscription(data)
 
             elif option == 3:
                 # demarrer ou reprendre un tournoi
@@ -278,14 +292,13 @@ def menu_base():
                 # demarrer ou reprendre un tournoi
                 main()
 
-
         # ----------------------------------------
         #         rapports
         # ----------------------------------------
         elif option == 3:
             option = ''
-            display_menu(menu_options_rapports)
-            option = saisie_donne(len(menu_options_rapports))
+
+            option = display_menu_obj("Menu Rapports", menu_options_rapports)
 
             if option == 1:
                 # player sorted by alpah
@@ -308,10 +321,11 @@ def menu_base():
 
             elif option == 4:
                 # tournament players list rank sorted
+
                 result = tmnt_database_list()
                 print_tournament_database(result, 'all')
                 id_tournament = input("Saisir l'id  du tournoi  pour l'affichage des informations :")
-                # result2 = players_database_list(db='dbplayer_tnmt', sort="alpha")
+
                 result2 = player_of_tmnt_to_report(int(id_tournament), sort="rank")
                 print_players_database(result2, 'rank', 'Liste des joueurs inscrit')
 
@@ -326,7 +340,7 @@ def menu_base():
                 print_tournament_database(result, 'all')
                 id_tournament = input("Saisir l'id  du tournoi  pour l'affichage des informations ")
                 data_serialized = round_report_by_id(id_tournament, id_name='id_tournament')
-                print_round_tmnt_datase(data_serialized,title2="", title="Liste des Round ou Tours")
+                print_round_tmnt_datase(data_serialized, title2="", title="Liste des Round ou Tours")
 
             elif option == 7:
                 # all match of a selected tournament
@@ -357,5 +371,4 @@ def menu_base():
 
 
 if __name__ == '__main__':
-    print(chr(27) + '[2J')
     menu_base()

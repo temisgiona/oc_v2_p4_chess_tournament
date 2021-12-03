@@ -1,13 +1,7 @@
-# from os import name
-from typing import List
-# from fastapi import FastAPI, Depends
 from pydantic import BaseModel, validator
-# import databases
-from pydantic.class_validators import Validator
-from pydantic.types import PositiveFloat, PositiveInt
-# import sqlalchemy
+from pydantic.types import PositiveInt
 from datetime import datetime, date
-from custom_types import Name, Gender, Results, TimeControl
+from custom_types import Name, Gender, TimeControl
 from utils import convert_date_to_check_is_past
 
 
@@ -33,19 +27,15 @@ class Tournament(BaseModel):
     id: int
     name: Name
     place: Name
-    start_date: datetime = datetime.today()
-    end_date: datetime = None
-    round_number: PositiveInt
-    time_control: TimeControl
-    # description: str = ""
+    start_date: datetime = date.today()
+    end_date: datetime = date.today()
+    round_number: PositiveInt = 0
+    time_control: TimeControl = ""
 
-
-"""class Turn(BaseModel):
-    id: int
-    id_tournament: int
-    number = int
-    start_date: date = None
-    end_date: date = None"""
+    def serialized_tnmt(self):
+        return {'id': self.id, 'name': self.name, 'place': self.place,
+                "start_date": self.start_date, "end_date": self.end_date, "round_number": self.round_number,
+                "time_control": self.time_control}
 
 
 class Match(BaseModel):
@@ -61,8 +51,6 @@ class Match(BaseModel):
     player2_result: float = None
     start_date: date = None
     end_date: date = None
-    # time_control: TimeControl = None
-    # time_control: str
 
     def serialized(self):
         return {'id': self.id, 'id_tournament': self.id_tournament,
@@ -71,7 +59,6 @@ class Match(BaseModel):
 
 class Turn:
     def __init__(self, data_type: any):
-        # self.data = {}
         self.id = data_type['id']
         self.id_tournament = data_type['id_tournament']
         self.number = data_type['number']
@@ -97,7 +84,11 @@ class Player_Chess:
         self.gender = data_type['gender']
         self.rank = data_type['rank']
         self.score = data_type['score']
-    
+
     def serialized(self):
         return {'id': self.id, 'lastname': self.lastname, 'firstname': self.firstname, 'birthdate': self.birthdate,
-                'gender': self.gender, 'rank': self.gender, 'score': self.score}
+                'gender': self.gender, 'rank': self.rank, 'score': self.score}
+
+
+if __name__ == '__main__':
+    print("test")
