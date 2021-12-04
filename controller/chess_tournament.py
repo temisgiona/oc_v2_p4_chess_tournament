@@ -6,33 +6,34 @@ from view import menu_base
 from view_chess_tk import maintk
 from rapport import print_row_tab_player, print_row_tab_round, print_row_tab_round_2
 from datetime import date"""
+from itertools import combinations, permutations
+from operator import itemgetter
+from datetime import date
 import sys
-import os, sys
 from os.path import dirname, join, abspath
+import model
+from model import models
+from model.manager_txt import Manager
+from view import rapport
+from view.view_chess_tk import maintk
+# from view.rapport import *
+# import view
 sys.path.insert(0, abspath(join(dirname(__file__), '..')))
 # from root_folder import file_name
 sys.path.append('..model')
 sys.path.append('..view')
 # sys.path.insert(0,'../chess_tournament/model')
 # sys.path.insert(0,'../chess_tournament/view')
-
-from itertools import combinations, permutations
-from operator import itemgetter
 # from typing import Optional
 # from pydantic import BaseModel
 # from tinydb import *
 # from tinydb import database
-from model.manager_txt import Manager
-import model.models
-from view.view2 import *
-from view.view2 import menu_base
+# from view.view2 import *
+# from view.view2 import menu_base
 # from rapport import print_row_tab_player, print_row_tab_round, print_row_tab_round_2, print_players_database
 # import view
-from view.view_chess_tk import maintk
 # import view_chess_tk
-from view.rapport import *
 # import rapport
-from datetime import date
 
 
 global DATAPATH
@@ -83,7 +84,7 @@ def modify_player(id, new_rank):
 
     except ValueError:
         print("Le joueur n'existe pas !")
-        menu_base()
+        # view2.menu_base()
 
 
 def game_loader():
@@ -409,7 +410,7 @@ def turn_object_database_(id, id_tnmt):
 def turn_upgrade_date_internal(turn_object, date='start'):
     # date upgrade  to tiny db
     turn_manager = Manager(DATAPATH, DB_TURN_TMNT)
-    data = turn_manager.search_to_tinydb_by_id_2(turn_object.id, turn_object.id_tournament)
+    # data = turn_manager.search_to_tinydb_by_id_2(turn_object.id, turn_object.id_tournament)
     turn_manager.turn_upgrade_date(turn_object, date='start')
     # print("test")
 
@@ -459,13 +460,12 @@ def match_report_with_name(id_value=23, id_name='id'):
     m_data = match_tmnt_manager.match_querying_by_id(id_value, id_name)
     for play in range(len(m_data)):
         if len(m_data[play]) > 3:
-            my_match = models.Match(**m_data[play])
+            my_match = model.models.Match(**m_data[play])
             player_manager = Manager(DATAPATH, DB_PLAYERS)
             my_player_data1 = player_manager.search_to_tinydb_by_id(my_match.player1_id)
             my_player_data2 = player_manager.search_to_tinydb_by_id(my_match.player2_id)
-
-            my_player1 = models.Player(**my_player_data1[0])
-            my_player2 = models.Player(**my_player_data2[0])
+            my_player1 = model.models.Player(**my_player_data1[0])
+            my_player2 = model.models.Player(**my_player_data2[0])
 
             match_with_name = match_tmnt_manager.match_object_db_unserialising(my_match)
 
@@ -481,9 +481,7 @@ def round_report_by_id(id_value=23, id_name='id_tournament'):
 
     turn_list = []
     turn_tmnt_manager = Manager(DATAPATH, DB_TURN_TMNT)
-
     m_data = turn_tmnt_manager.match_querying_by_id(id_value, id_name)
-
     for play in range(len(m_data)):
         my_turn = models.Turn(m_data[play])
         turn_name2 = my_turn.serialized()
@@ -1014,15 +1012,15 @@ def deroulement(players_t0, T_round, list_ind_tournament, nb_chess, round, T0_s)
             return T_round, list_ind_tournament
 
         if not T0_s:
-            print_row_tab_round(round, T_round)
+            rapport.print_row_tab_round(round, T_round)
 
         else:
-            print_row_tab_round_2(round, T0_s)
+            rapport.print_row_tab_round_2(round, T0_s)
 
         T0_results, player_indice, pt_gain, player_indice2 = results_T0(T_round, round, nb_chess)
         T0_s = convert_T0_2_T0_s(T0_results, T0_s, players_t0, round)
 
-        my_game_temp = models.GameTemp(serialised_game(T0_results))
+        my_game_temp = model.models.GameTemp(serialised_game(T0_results))
         game_update(my_game_temp.game)
 
         list_ind_tournament = add_couplelist(list_ind_tournament, player_indice, player_indice2)
@@ -1076,7 +1074,7 @@ def main():
     players_t0 = assign_id_tnmt(players_t0)
     players_t0, list_ind = assign_id(players_t0)
 
-    print_row_tab_player(players_t0)
+    rapport.print_row_tab_player(players_t0)
 
     nb_chess = int((len(players_t0))*0.5)   # ex d
     T0 = []
@@ -1139,7 +1137,7 @@ def main():
                 T0_results, list_ind_tournament = deroulement(players_t0, T0, list_ind_tournament,
                                                               nb_chess, round, T0_s)
 
-                print_row_tab_player(players_t0)
+                rapport.print_row_tab_player(players_t0)
                 turn_upgrade_date_internal(my_turn, date="end")
             else:
                 nb_free = test_search(T0_results)
@@ -1159,7 +1157,7 @@ def main():
 
                     player_update_to_db(players_t0)
 
-                    print_row_tab_player(players_t0)
+                    rapport.print_row_tab_player(players_t0)
 
                 else:
 
@@ -1172,7 +1170,7 @@ def main():
                     T0_s = convert_T0_2_T0_s(T1, T0_s, players_t0, round)
                     player_update_to_db(players_t0)
                 deroulement(players_t0, T1, list_ind_tournament, nb_chess, round, T0_s)
-                print_row_tab_player(players_t0)
+                rapport.print_row_tab_player(players_t0)
 
             round += 1
 

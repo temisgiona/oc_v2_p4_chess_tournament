@@ -1,8 +1,8 @@
 from pydantic import BaseModel, validator
 from pydantic.types import PositiveInt
 from datetime import datetime, date
-from custom_types import Name, Gender, TimeControl
-from utils import convert_date_to_check_is_past
+from model.custom_types import Name, Gender, TimeControl
+from model.utils import convert_date_to_check_is_past
 
 
 class Player(BaseModel):
@@ -90,5 +90,3 @@ class Player_Chess:
                 'gender': self.gender, 'rank': self.rank, 'score': self.score}
 
 
-if __name__ == '__main__':
-    print("test")

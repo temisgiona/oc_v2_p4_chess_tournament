@@ -1,5 +1,6 @@
 from tinydb import TinyDB, Query, where
-import models
+# import model
+from model import models
 
 
 class Manager:

@@ -1,10 +1,10 @@
 """
 from datetime import date
 #from chess_tournament import player_inscription, players_database_list
-from chess_tournament import player_register, graphic_mode, modify_player
-from chess_tournament import tournament_register, tmnt_database_list, player_unscription
-from chess_tournament import main, player_of_tmnt_to_report, round_report_by_id, match_report_with_name
-from rapport import print_round_tmnt_datase, print_match_tmnt_datase, print_players_database, print_tournament_database
+from controller.chess_tournament import player_register, graphic_mode, modify_player
+from controller.chess_tournament import tournament_register, tmnt_database_list, player_unscription
+from controller.chess_tournament import main, player_of_tmnt_to_report, round_report_by_id, match_report_with_name
+from view.rapport import print_round_tmnt_datase, print_match_tmnt_datase, print_players_database, print_tournament_database
 # from manager_txt import *
 # import manager_txt
 """

@@ -1,14 +1,24 @@
-
-from manager_txt import *
-# from chess_tournament import player_inscription
-# from chess_tournament import players_database_list
-# from chess_tournament import player_register, graphic_mode, modify_player
-from chess_tournament import modify_player
-from chess_tournament import *
-import tournament_controler
-import models
+import sys
+from os.path import dirname, join, abspath
+sys.path.insert(0, abspath(join(dirname(__file__), '..')))
+sys.path.append('..model')
+sys.path.append('..view')
+import model
+from controller import chess_tournament
+from controller.chess_tournament import player_inscription
+from controller.chess_tournament import player_register, graphic_mode
 from typing import Any, List, Tuple
-from rapport import print_round_tmnt_datase, print_match_tmnt_datase, print_players_database, print_tournament_database
+from view.rapport import print_round_tmnt_datase, print_match_tmnt_datase
+from view.rapport import print_players_database, print_tournament_database
+
+# from controller.chess_tournament import modify_player, players_database_list
+# import os, sys
+# from controller.chess_tournament import *
+# import controller.tournament_controler
+# import controller
+# from model import models
+# from model import manager_txt
+
 
 class View:
     """ Affiche un titre & un contenu """
@@ -165,8 +175,8 @@ def data_resquested(title, form_player):
 def option_J1():
     # creation of the new player in db base
     # return to db data type {id, , lastname, firstname, birth, gender, rank, score}
-    my_new_player = models.Player_Chess({'id': 1000, 'lastname': "", 'firstname': "", 'birthdate': "", "gender": "M",
-                                        'rank': 0, 'score': 0})
+    my_new_player = model.models.Player_Chess({'id': 1000, 'lastname': "", 'firstname': "", 'birthdate': "",
+                                               "gender": "M", 'rank': 0, 'score': 0})
 
     data = data_resquested("Création de joueur", form_player)
     my_new_player.lastname = data['lastname']
@@ -180,6 +190,7 @@ def option_J1():
 
 def option_player_inscription_tnmt():
     # creation of player
+    from controller.chess_tournament import players_database_list
 
     data = data_resquested("Inscription d'un joueur au tournoi", player_tmnt_registering)
 
@@ -192,7 +203,7 @@ def option_tnmt_creat():
     # ihm information tournament
     print('choix option \'Option creation tournament\'')
     t_data = {'id': 1000, 'name': "", 'place': ""}
-    my_tmnt = models.Tournament(**t_data)
+    my_tmnt = model.models.Tournament(**t_data)
     try:
         data = data_resquested("Ouverture d'un tournoi", tmnt_form)
         my_tmnt.name = data['name']
@@ -244,6 +255,9 @@ def menu_base():
 
             elif option == 2:
                 # modification of player rank
+                # from controller.chess_tournament import modify_player
+                from controller.chess_tournament import modify_player, players_database_list
+
                 result = players_database_list(db='dbplayers', sort="")
                 print_players_database(result, '')
                 id_player = input("saisir l'id du joueur à modifier: ")
@@ -253,6 +267,8 @@ def menu_base():
                 print_players_database(result, '')
 
             elif option == 3:
+                from controller.chess_tournament import players_database_list
+
                 result = players_database_list(db='dbplayers', sort="")
                 print_players_database(result, '')
 
@@ -269,28 +285,30 @@ def menu_base():
             if option == 1:
                 # creation tournoi dans la base
                 data = option_tnmt_creat()
-                tournament_register(data)
+                chess_tournament.tournament_register(data)
 
             elif option == 2:
                 # registering the player into a tournament
                 result = players_database_list(db='dbplayers', sort="")
                 print_players_database(result, title2='')
-                result2 = tmnt_database_list()
+                result2 = chess_tournament.tmnt_database_list()
                 print_tournament_database(result2, 'open', "Tournoi disponible")
                 data = option_player_inscription_tnmt()
 
             elif option == 3:
                 # demarrer ou reprendre un tournoi
+                from controller.chess_tournament import players_database_list
+
                 result = players_database_list(db='dbplayer_tnmt', sort="")
                 print_players_database(result, title2='')
                 result2 = int(input("Saisir l'iD du joueur à retirer de la liste :"))
-                player_unscription(result2)
+                chess_tournament.player_unscription(result2)
                 result = players_database_list(db='dbplayer_tnmt', sort="")
                 print_players_database(result, title2='')
 
             elif option == 4:
                 # demarrer ou reprendre un tournoi
-                main()
+                chess_tournament.main()
 
         # ----------------------------------------
         #         rapports
@@ -299,9 +317,10 @@ def menu_base():
             option = ''
 
             option = display_menu_obj("Menu Rapports", menu_options_rapports)
-
+            from controller.chess_tournament import players_database_list
             if option == 1:
                 # player sorted by alpah
+
                 result = players_database_list(db='dbplayers', sort="alpha")
                 print_players_database(result, 'alpha')
 
@@ -312,42 +331,43 @@ def menu_base():
 
             elif option == 3:
                 # tournament players list alphad sorted
-                result = tmnt_database_list()
+                result = chess_tournament.tmnt_database_list()
                 print_tournament_database(result, 'all')
                 id_tournament = input("Saisir l'id  du tournoi  pour l'affichage des informations :")
                 # result2 = players_database_list(db='dbplayer_tnmt', sort="alpha")
-                result2 = player_of_tmnt_to_report(int(id_tournament), sort="alpha")
+                result2 = chess_tournament.player_of_tmnt_to_report(int(id_tournament), sort="alpha")
                 print_players_database(result2, 'alpha', 'Liste des joueurs inscrit')
 
             elif option == 4:
                 # tournament players list rank sorted
 
-                result = tmnt_database_list()
+                result = chess_tournament.tmnt_database_list()
                 print_tournament_database(result, 'all')
                 id_tournament = input("Saisir l'id  du tournoi  pour l'affichage des informations :")
 
-                result2 = player_of_tmnt_to_report(int(id_tournament), sort="rank")
+                result2 = chess_tournament.player_of_tmnt_to_report(int(id_tournament), sort="rank")
                 print_players_database(result2, 'rank', 'Liste des joueurs inscrit')
 
             elif option == 5:
                 # all tournament list
-                result = tmnt_database_list()
+                result = chess_tournament.tmnt_database_list()
                 print_tournament_database(result, 'all')
 
             elif option == 6:
                 # all round of a selected tournament
-                result = tmnt_database_list()
+                result = chess_tournament.tmnt_database_list()
                 print_tournament_database(result, 'all')
                 id_tournament = input("Saisir l'id  du tournoi  pour l'affichage des informations ")
-                data_serialized = round_report_by_id(id_tournament, id_name='id_tournament')
+                data_serialized = chess_tournament.round_report_by_id(id_tournament, id_name='id_tournament')
                 print_round_tmnt_datase(data_serialized, title2="", title="Liste des Round ou Tours")
 
             elif option == 7:
                 # all match of a selected tournament
-                result = tmnt_database_list()
+                result = chess_tournament.tmnt_database_list()
                 print_tournament_database(result, 'all')
                 id_tournament = input("Saisir l'id  du tournoi  pour l'affichage des informations ")
-                data_serialized = match_report_with_name(id_value=id_tournament, id_name='id_tournament')
+                data_serialized = chess_tournament.match_report_with_name(id_value=id_tournament,
+                                                                          id_name='id_tournament')
                 print_match_tmnt_datase(data_serialized, title2="", title="Liste des match")
 
         # ----------------------------------------

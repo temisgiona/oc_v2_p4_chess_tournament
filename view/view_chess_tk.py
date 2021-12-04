@@ -1,10 +1,17 @@
-import tkinter as Tk
-from tkinter import Frame, StringVar, ttk, Label, LabelFrame, Entry, PhotoImage, StringVar, IntVar
 import sqlite3
+import tkinter
+from tkinter import Tk
+from tkinter import Frame, StringVar, ttk, Label, LabelFrame, Entry, PhotoImage, IntVar
 from tkinter.constants import END
 from tkcalendar import Calendar, DateEntry
-from tinydb import TinyDB, where, Query
-from manager_tg import Manager
+from tinydb import TinyDB, where
+import sys
+from os.path import dirname, join, abspath
+sys.path.insert(0, abspath(join(dirname(__file__), '..')))
+sys.path.append('..model')
+sys.path.append('..view')
+from model import manager_tg
+from model.manager_tg import Manager
 
 
 def treeview_sort_column(tv, col, reverse):
@@ -635,12 +642,12 @@ class MatchFrame(ttk.Frame):
         # ===============================================================
         self.tree = ttk.Treeview(fr, height=6, columns=("start_date", "end_date", "Player 1", "Player 2", "Results"))
         self.tree.grid(row=1, column=0, sticky='nw', pady=10)
-        self.tree.heading('#0', text='Echiquier', anchor='W')
-        self.tree.heading("start_date", text='Date début', anchor='W')
-        self.tree.heading("end_date", text='Date de fin', anchor='W')
-        self.tree.heading("Player 1", text='Player 1', anchor='W')
-        self.tree.heading("Player 2", text='Player 2', anchor='W')
-        self.tree.heading("Results", text='Résultat gagnant', anchor='W')
+        self.tree.heading('#0', text='Echiquier', anchor='w')
+        self.tree.heading("start_date", text='Date début', anchor='w')
+        self.tree.heading("end_date", text='Date de fin', anchor='w')
+        self.tree.heading("Player 1", text='Player 1', anchor='w')
+        self.tree.heading("Player 2", text='Player 2', anchor='w')
+        self.tree.heading("Results", text='Résultat gagnant', anchor='w')
 
 
 class ReportFrame(ttk.Frame):
@@ -684,7 +691,7 @@ class ReportFrame(ttk.Frame):
 
 
 def maintk():
-    root = Tk()
+    root = tkinter.Tk()
     root.title("ChessMaster little Championship")
     # root.geometry("1024x728")
 
