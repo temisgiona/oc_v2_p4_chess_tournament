@@ -1,5 +1,5 @@
 chess_tournament.py (mode console) 
-Pour lancer le programme, il faut lancer en mode console le fichier chess_tournament.py
+Pour lancer le programme, il faut lancer en mode console le fichier view2.py
 Notice utilisation :
 Le menu comprend 3 sections utilisables : 
 1 -- Joueurs

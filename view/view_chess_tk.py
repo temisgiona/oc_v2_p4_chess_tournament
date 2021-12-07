@@ -1,17 +1,12 @@
-import sqlite3
 import tkinter
 from tkinter import Tk
 from tkinter import Frame, StringVar, ttk, Label, LabelFrame, Entry, PhotoImage, IntVar
 from tkinter.constants import END
 from tkcalendar import Calendar, DateEntry
 from tinydb import TinyDB, where
-import sys
-from os.path import dirname, join, abspath
-sys.path.insert(0, abspath(join(dirname(__file__), '..')))
-sys.path.append('..model')
-sys.path.append('..view')
-from model import manager_tg
-from model.manager_tg import Manager
+from model import models, manager_txt
+from model.manager_txt import Manager
+# from model.manager_txt import Manager
 
 
 def treeview_sort_column(tv, col, reverse):
@@ -33,7 +28,7 @@ class ChessMaster:
     def __init__(self, notebook, frame):
         self.notebook = notebook
         self.frame = frame
-        ntbk = ttk.Notebook()
+        # ntbk = ttk.Notebook()
 
 
 class GenericLayout(ttk.Frame):
@@ -41,7 +36,7 @@ class GenericLayout(ttk.Frame):
         ttk.Frame.__init__(self, master)
         label_frame = LabelFrame(master, text=title)
         label_frame.grid(row=0, column=1, sticky='n')
-        mlabel = Label(label_frame, text='Nom du tournoi :').grid(row=0, column=0, sticky='nw', pady=2)
+        # mlabel = Label(label_frame, text='Nom du tournoi :').grid(row=0, column=0, sticky='nw', pady=2)
 
 
 class ChessLstPlayerFrame(ttk.Frame):
@@ -50,14 +45,9 @@ class ChessLstPlayerFrame(ttk.Frame):
         self.title = title
 
         photo = PhotoImage(file='icons/knight-horse-chess-player.gif')
-        birthdate_valid = None
         player_fr = LabelFrame(master, text='Créer un nouveau joueur')
 
         player_fr.grid(row=0, column=0, ipadx=0, ipady=50, sticky='wn')
-
-        cal1 = Calendar(player_fr, selectmode='day', year=1980, month=6, day=15)
-        print(cal1.selection_get())
-        cal1.grid(row=0, column=0, sticky='n')
 
         lst_player_fr = LabelFrame(player_fr, text='liste des joueurs Club')
         lst_player_fr.grid(row=1, column=0, ipadx=10, ipady=20, sticky='sw')
@@ -89,7 +79,7 @@ class ChessLstPlayerFrame(ttk.Frame):
         Label(player_fr, text='Date de naissance:').grid(row=0, column=0, sticky='nw', padx=100, pady=85)
         self.birthdate = StringVar()
 
-        self.birthdatefield = DateEntry(player_fr, width=12, background='darkblue',
+        self.birthdatefield = DateEntry(player_fr, width=17, background='darkblue',
                                         foreground='white', borderwidth=2)
         self.birthdatefield.grid(row=0, column=0, sticky='nw', padx=210, pady=85)
 
@@ -184,11 +174,6 @@ class ChessLstPlayerFrame(ttk.Frame):
         self.msg["text"] = ("le classement de %s a été ajouté" % lastname)
         self.view_records()
 
-    def view_records_old(self):
-        x = self.tree.get_children()
-        for item in x:
-            self.tree.delete(item)
-
         db_players = TinyDB('./data_players2.json').table('players_list')
         serialized_players = {}
         i = 0
@@ -207,8 +192,8 @@ class ChessLstPlayerFrame(ttk.Frame):
             value_list = serial_d_player.values()
             value_list = list(value_list)
             values_lists[player_item] = value_list
-            rank_sorted = sorted(values_lists.items(), key=lambda t: t[1][5])
-            alpha_sorted = sorted(values_lists.items(), key=lambda t: t[1][1])
+            """rank_sorted = sorted(values_lists.items(), key=lambda t: t[1][5])
+            alpha_sorted = sorted(values_lists.items(), key=lambda t: t[1][1])"""
             print(value_list)
             self.tree.insert("", END, text="", values=value_list[0:-1])
 
@@ -263,22 +248,22 @@ class ChessLstPlayerFrame(ttk.Frame):
             self.msg["text"] = ""
 
             self.tl = Tk()
-            Label(self.tl, text='Nom:').grid(row=0, column=1, sticky='W')
+            Label(self.tl, text='Nom:').grid(row=0, column=1, sticky='w')
             ne = Entry(self.tl)
-            ne.grid(row=0, column=2, sticky='W')
+            ne.grid(row=0, column=2, sticky='w')
             ne.insert(0, name)
             ne.config(state='readonly')
 
-            Label(self.tl, text='Ancien classement:').grid(row=1, column=1, sticky='W')
+            Label(self.tl, text='Ancien classement:').grid(row=1, column=1, sticky='w')
             ope = Entry(self.tl)
-            ope.grid(row=1, column=2, sticky='W')
+            ope.grid(row=1, column=2, sticky='w')
             ope.insert(0, str(oldrank))
             ope.config(state='readonly')
 
-            Label(self.tl, text='Nouveau classement:').grid(row=2, column=1, sticky='W')
+            Label(self.tl, text='Nouveau classement:').grid(row=2, column=1, sticky='w')
             newrk = StringVar()
             newrk = Entry(self.tl, textvariable=newrk)
-            newrk.grid(row=2, column=2, sticky='W')
+            newrk.grid(row=2, column=2, sticky='w')
 
             upbtn = ttk.Button(self.tl, text='Modifier', command=lambda: self.update_record(newrk.get(),
                                oldrank, name, player_id))
@@ -286,7 +271,7 @@ class ChessLstPlayerFrame(ttk.Frame):
 
             self.tl.mainloop()
 
-        except IndexError as e:
+        except IndexError:
             self.msg["text"] = "Please Select Item to Modify"
 
     def update_record(self, newrank, oldrank, name, id=None):
@@ -306,7 +291,7 @@ class ChessLstPlayerFrame(ttk.Frame):
                 db_players.update({'rank': newrank}, where('lastname') == name)
             self.tl.destroy()
 
-        except IndexError as e:
+        except IndexError:
             self.msg["text"] = "Please Select Item to Modify"
         self.view_records()
 
@@ -323,7 +308,7 @@ class ChessPlayer_Tour(ChessLstPlayerFrame):
         self.tr_select_field['values'] = ("tour1", 'tour2')
         self.tr_select_field.grid(row=0, column=0, sticky='w', padx=100, pady=46)
         self.tr_select_field.current(0)
-
+        # self.tr_select_field.bind("<<ComboboxSelected>>", callbackFunc(self.tree, 'players'))
         ttk.Button(
             ins_trm_fr, text='Ajouter joueur au tournoi', command=self.create_record).grid(
             row=3, column=0, sticky='nw', padx=220, pady=35
@@ -348,6 +333,25 @@ class ChessPlayer_Tour(ChessLstPlayerFrame):
         self.tree_trn.heading("firstname", text='Prénom', anchor='w')
         self.tree_trn.heading("rank", text='Classement', anchor='w')
 
+    """def callbackFunc(self, the_tree, db):
+
+        view_records_player(the_tree, db)"""
+
+    def view_records_player(self, the_tree, db):
+        """view player db"""
+
+        x = self.the_tree.get_children()
+        for item in x:
+            self.the_tree.delete(item)
+
+        tk_manager = manager_txt.Manager('./data_players2.json', db)
+        all_db_data, count = tk_manager.load_all_from_tinydb()
+
+        for item in range(count):
+            serial_d_player = all_db_data[item]
+
+            self.the_tree.insert("", END, text="", values=serial_d_player)
+
 
 class TournamentFrame(ttk.Frame):
     def __init__(self, master):
@@ -356,7 +360,7 @@ class TournamentFrame(ttk.Frame):
         chess_fr = LabelFrame(master, text='Créer un nouveau tournoi')
         chess_fr.grid(row=0, column=0, padx=8, pady=8, sticky='n')
 
-        lst_chess_fr = LabelFrame(chess_fr, text="Liste des tournois du club")
+        lst_chess_fr = LabelFrame(chess_fr, text="Liste des tournois du club ")
         lst_chess_fr.grid(row=4, column=0, padx=8, pady=8, sticky='n')
 
         photo = PhotoImage(file='icons/chess_tournament.gif')
@@ -378,12 +382,17 @@ class TournamentFrame(ttk.Frame):
 
         Label(chess_fr, text='Date ouverture :').grid(row=0, column=0, sticky='nw', padx=150, pady=60)
         self.start_date = StringVar()
-        self.start_datefield = Entry(chess_fr, textvariable=self.start_date)
+        self.start_datefield = DateEntry(chess_fr, width=17, background='darkblue',
+                                         foreground='white', borderwidth=2)
         self.start_datefield.grid(row=0, column=0, sticky='nw', padx=260, pady=60)
+        """        self.birthdatefield = DateEntry(player_fr, width=12, background='darkblue',
+                                        foreground='white', borderwidth=2)
+        self.birthdatefield.grid(row=0, column=0, sticky='nw', padx=210, pady=85)"""
 
         Label(chess_fr, text='Date fermeture :').grid(row=0, column=0, sticky='nw', padx=150, pady=85)
         self.end_date = StringVar()
-        self.end_datefield = Entry(chess_fr, textvariable=self.end_date)
+        self.end_datefield = DateEntry(chess_fr, width=17, background='darkblue',
+                                       foreground='white', borderwidth=2)
         self.end_datefield.grid(row=0, column=0, sticky='nw', padx=260, pady=85)
 
         Label(chess_fr, text='Gestion du temps :').grid(row=0, column=0, sticky='nw', padx=150,  pady=110)
@@ -393,120 +402,147 @@ class TournamentFrame(ttk.Frame):
         self.time_controlfield.grid(row=0, column=0, sticky='nw', padx=260, pady=110)
         self.time_controlfield.current(1)
 
-        Label(lst_chess_fr, text='Affichage liste:').grid(row=0, column=0, sticky='nw', padx=50,  pady=50)
-        self.lst_chess = StringVar()
-        self.lst_chessfield = ttk.Combobox(lst_chess_fr, width=22, textvariable=self.lst_chess)
-        self.lst_chessfield['values'] = ("Classement alphabétique", "Classement par rang")
-        self.lst_chessfield.grid(row=0, column=0, sticky='nw', padx=150, pady=50)
-        self.lst_chessfield.current(1)
+        ajout_btn = ttk.Button(chess_fr, text='Ajouter à la liste', command=self.create_record)
+        ajout_btn.grid(row=0, column=0, sticky='nw', padx=150, pady=135)
 
         # ===============================================================
-        #  liste
+        #  boutons
         # ===============================================================
 
         showbtn = ttk.Button(lst_chess_fr, text="Voir la liste", command=self.view_records)
-        showbtn.grid(row=2, column=0, sticky='w')
-
+        showbtn.grid(row=0, column=0, padx=20, pady=20, sticky='nw')
         self.msg = Label(lst_chess_fr, text='', fg='red')
-        self.msg.grid(row=1, column=1, sticky='e')
+        self.msg.grid(row=0, column=0, sticky='nw')
 
-        self.tree_chess = ttk.Treeview(
-            lst_chess_fr, height=6, columns=("place", "start_date", "end_date", "time_control")
-            )
-        self.tree_chess.grid(row=3, column=0, columnspan=100)
-        self.tree_chess.heading('#0', text='Nom', anchor='w')
-        self.tree_chess.heading("place", text='Lieu', anchor='w')
-        self.tree_chess.heading("start_date", text='Date début', anchor='w')
-        self.tree_chess.heading("end_date", text='Date de fin', anchor='w')
-        self.tree_chess.heading("time_control", text='Gestion du temps', anchor='w')
+        delbtn = ttk.Button(lst_chess_fr, text="Del Selection", command=self.delete_record)
+        delbtn.grid(row=0, column=0, padx=210, pady=20, sticky='nw')
 
-        delbtn = ttk.Button(lst_chess_fr, text="Delete Selected", command=self.delete_record)
-        delbtn.grid(row=2, column=0, pady=2, sticky='nw')
+        updtbtn = ttk.Button(lst_chess_fr, text="Modifier Selection", command=self.open_modify_window)
+        updtbtn.grid(row=0, column=0, padx=105, pady=20, sticky='nw')
+        # ===============================================================
+        # liste affichage
+        # ===============================================================
+        my_columns = ("ID", "Nom", "Lieu", "Date début", "Date de fin", "Gestion du temps", "NB round", "Etat",)
+        self.tree_chess = ttk.Treeview(lst_chess_fr, height=10, columns=my_columns)
+        self.tree_chess.grid(row=0, column=0, columnspan=100, padx=5, pady=50, sticky='nw')
+        self.tree_chess.heading('#0', text='', anchor='w')
+        self.tree_chess.column("#0", minwidth=1, width=2)
 
-        updtbtn = ttk.Button(lst_chess_fr, text="Modify Selected", command=self.open_modify_window)
-        updtbtn.grid(row=2, column=1, pady=2, sticky='nw')
+        for col in my_columns:
+            self.tree_chess.heading(col, text=col, anchor='w',
+                                    command=lambda c=col: treeview_sort_column(self.tree_chess, c, False))
 
     def create_record(self):
-        name = self.namefield.get()
-        place = self.placefield.get()
-        if name == "":
-            self.msg["text"] = "Please Enter name"
-            return
-        if place == "":
-            self.msg["text"] = "Please Enter Lieu"
-            return
-        conn = sqlite3.connect('phonebook.db')
-        c = conn.cursor()
-        c.execute("INSERT INTO players VALUES(NULL,?, ?)", (name, place))
-        conn.commit()
-        c.close()
-        self.namefield.delete(0, END)
-        self.placefield.delete(0, END)
-        self.msg["text"] = "le tournoi de %s a été ajouté" % name
+        # creation of a new tournament
+        data_tmnt = {"id": 1000,
+                     "name": self.namefield.get(),
+                     "place": self.placefield.get(),
+                     "start_date": self.start_datefield.get(),
+                     "end_date": self.end_datefield.get(),
+                     "time_control": self.time_controlfield.get(),
+                     "nb_round": 0,
+                     "state": "open"}
+        my_tmnt = models.Tournament(**data_tmnt)
+        manager = Manager('./data_players2.json', 'tournaments')
+        manager.data_tmnt_insert(my_tmnt.serialized_tnmt())
+        manager.id_readjust()
+        self.msg["text"] = ("le tournoi de %s a été ajouté" % my_tmnt.name)
         self.view_records()
 
     def view_records(self):
         x = self.tree_chess.get_children()
         for item in x:
-            self.tree.delete(item)
-        conn = sqlite3.connect('phonebook.db')
-        c = conn.cursor()
+            self.tree_chess.delete(item)
 
-        list = c.execute("SELECT * FROM contacts ORDER BY name desc")
-        for row in list:
-            self.tree_chess.insert("", 0, text=row[1], values=row[2])
-        c.close()
+        tk_manager = manager_txt.Manager('./data_players2.json', 'tournaments')
+        all_db_data, count = tk_manager.load_all_from_tinydb()
+
+        for item in range(count):
+            serial_d_player = all_db_data[item]
+
+            self.tree_chess.insert("", END, text="", values=serial_d_player)
 
     def delete_record(self):
         self.msg["text"] = ""
-        conn = sqlite3.connect('phonebook.db')
-        c = conn.cursor()
-        name = self.tree.item(self.tree_chess.selection())['text']
-        query = "DELETE FROM contacts WHERE name = '%s';" % name
-        c.execute(query)
-        conn.commit()
-        c.close()
-        self.msg["text"] = "Le classment de %s est supprimé " % name
+        db = TinyDB('./data_players2.json').table('tournaments')
+        for selected_item in self.tree_chess.selection():
+            # dictionary
+            item = self.tree_chess.item(selected_item)
+            # list
+            record = (item['values'])
+            #  id , lastname, firstname,
+            print(record[0])
+
+        query = db.search(where('id') == record[0])  # on prends l'id
+        if len(query) > 0:
+            db.remove(where('name') == record[1])
+            self.msg["text"] = "Le tournoi de %s est supprimé " % record[1]
+
+        self.view_records()
+        self.msg["text"] = ("")
 
     def open_modify_window(self):
         try:
             self.msg["text"] = ""
-            name = self.tree.item(self.tree.selection())['text']
-            oldrank = self.tree.item(self.tree.selection())['values'][0]
-
+            for selected_item in self.tree_chess.selection():
+                # dictionary
+                item = self.tree_chess.item(selected_item)
+                # list
+                record = (item['values'])
+            data_tmnt = {
+                'id': record[0], 'name': record[1], 'place': record[2],
+                "start_date": record[3], "end_date": record[4],
+                "time_control": record[5], "round_number": max(record[6], 2), 'state': record[7]
+                         }
+            my_tmnt = models.Tournament(**data_tmnt)
             self.tl = Tk()
-            Label(self.tl, text='Nom:').grid(row=0, column=1, sticky='W')
+
+            Label(self.tl, text='Nom:').grid(row=0, column=1, sticky='w')
             ne = Entry(self.tl)
-            ne.grid(row=0, column=2, sticky='W')
-            ne.insert(0, name)
+            ne.grid(row=0, column=2, sticky='w')
+            ne.insert(0, my_tmnt.name)
             ne.config(state='readonly')
 
-            Label(self.tl, text='Ancien data:').grid(row=1, column=1, sticky='W')
+            Label(self.tl, text='Ancienne date début:').grid(row=1, column=1, sticky='w')
             ope = Entry(self.tl)
-            ope.grid(row=1, column=2, sticky='W')
-            # ope.insert(0,str(oldphone))
+            ope.grid(row=1, column=2, sticky='w')
+            ope.insert(0, (my_tmnt.start_date))
             ope.config(state='readonly')
-            Label(self.tl, text='Nouveau data:').grid(row=2, column=1, sticky='W')
-            newrk = StringVar()
-            newrk = Entry(self.tl, textvariable=newrk)
-            newrk.grid(row=2, column=2, sticky='W')
 
-            upbtn = ttk.Button(self.tl, text='Modifier', command=lambda: self.update_record(
-                               newrk.get(), oldrank, name))
-            upbtn.grid(row=3, column=2, sticky="E")
+            Label(self.tl, text='Nouvelle date début:').grid(row=2, column=1, sticky='w')
+            # newrk = StringVar()
+            newrkfield = DateEntry(self.tl, width=17, background='darkblue',
+                                   foreground='white', borderwidth=2)
+            newrkfield.grid(row=2, column=2, sticky='w')
+            my_tmnt.start_date = newrkfield.get()
+            upbtn = ttk.Button(self.tl, text='Modifier', command=lambda: self.update_record(my_tmnt.start_date,
+                               my_tmnt.start_date, my_tmnt.name, my_tmnt.id))
+            upbtn.grid(row=3, column=2, sticky='e')
+
             self.tl.mainloop()
 
-        except IndexError as e:
+        except IndexError:
             self.msg["text"] = "Please Select Item to Modify"
 
-    def update_record(self, newdata, oldata, name):
-        conn = sqlite3.connect('phonebook.db')
-        c = conn.cursor()
-        c.execute("UPDATE contacts SET contactnumber=? WHERE contactnumber=? AND name=?", (newdata, oldata, name))
-        conn.commit()
-        c.close()
-        self.tl.destroy()
-        self.msg["text"] = "Le classement de %s a été modifié" % name
+    def update_record(self, newval, oldval, name, id=None):
+        """ modifie le rang du joueur
+        en updatant la base par son nom,
+        """
+        try:
+            db = Manager('./data_players2.json', 'tournaments')
+
+            query = db.search_to_tinydb_by_id(id)
+
+            query[0]["start_date"] = newval
+            query[0]["end_date"] = newval
+
+            db.tmnt_updating(id, query[0])
+            self.msg["text"] = "Le classement de %s a été modifié" % name
+
+            self.tl.destroy()
+
+        except IndexError:
+            self.msg["text"] = "Please Select Item to Modify"
         self.view_records()
 
 

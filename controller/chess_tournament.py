@@ -1,11 +1,3 @@
-"""from itertools import combinations, permutations
-from operator import itemgetter
-from manager_txt import Manager
-import models
-from view import menu_base
-from view_chess_tk import maintk
-from rapport import print_row_tab_player, print_row_tab_round, print_row_tab_round_2
-from datetime import date"""
 from itertools import combinations, permutations
 from operator import itemgetter
 from datetime import date
@@ -16,25 +8,10 @@ from model import models
 from model.manager_txt import Manager
 from view import rapport
 from view.view_chess_tk import maintk
-# from view.rapport import *
-# import view
 sys.path.insert(0, abspath(join(dirname(__file__), '..')))
 # from root_folder import file_name
 sys.path.append('..model')
 sys.path.append('..view')
-# sys.path.insert(0,'../chess_tournament/model')
-# sys.path.insert(0,'../chess_tournament/view')
-# from typing import Optional
-# from pydantic import BaseModel
-# from tinydb import *
-# from tinydb import database
-# from view.view2 import *
-# from view.view2 import menu_base
-# from rapport import print_row_tab_player, print_row_tab_round, print_row_tab_round_2, print_players_database
-# import view
-# import view_chess_tk
-# import rapport
-
 
 global DATAPATH
 global DB_PLAYERS
@@ -65,13 +42,14 @@ def set_global_var():
 
 
 def player_register(data):
+    """registering a player in a db"""
     player_manager = Manager(DATAPATH, DB_PLAYERS)
     player_manager.data_insert(data)
     player_manager.id_readjust()
 
 
 def modify_player(id, new_rank):
-    # to modify the rank of the player
+    """to modify the rank of the player"""
 
     try:
         player_manager = Manager(DATAPATH, DB_PLAYERS)
@@ -84,12 +62,11 @@ def modify_player(id, new_rank):
 
     except ValueError:
         print("Le joueur n'existe pas !")
-        # view2.menu_base()
 
 
 def game_loader():
 
-    # load temporary data of the game
+    """ load temporary data of the game"""
     game_manager = Manager(DATAPATH, DB_TEMP)
     temp_game_data = game_manager.load_game_temp()
     temp_data = []
@@ -101,20 +78,20 @@ def game_loader():
 
 
 def game_init():
-    # initialisation of temp data
-    # replace all by a zero
+    """initialisation of temp data
+    # replace all by a zero"""
     game_manager = Manager(DATAPATH, DB_TEMP)
     game_manager.init_game_temp()
 
 
 def game_update(data):
-    # save game_temp data in the db to restore later
+    """save game_temp data in the db to restore later"""
     game_manager = Manager(DATAPATH, DB_TEMP)
     game_manager.updgrade_game_temp(data)
 
 
 def serialised_game(data):
-    # formating the liste  to dict , neccessary to send in json
+    """formating the liste  to dict , neccessary to send in json"""
     data_s = {}
     for a in range(len(data)):
         key = str(a)
@@ -177,7 +154,7 @@ def match_tmnt_database_list(t_round, players_t0, round, nb_match=4,
 
 
 def list_indice_constructor(T_round):
-    #  generate à list indice with
+    """generate à list indice with"""
     my_couple_list = []
     for a in range(0, len(T_round), 4):
         if T_round[a+3] != 10:
@@ -187,9 +164,9 @@ def list_indice_constructor(T_round):
 
 
 def score_constructor(T_round, players_T0):
-    # upgrade the score , using the list T_round
-    # compare ind of player with indice in the the result
-    # when it mach with player 1 , i t search in player list and upgrade the right score
+    """upgrade the score , using the list T_round
+     compare ind of player with indice in the the result
+     when it mach with player 1 , i t search in player list and upgrade the right score"""
     for a in range(0, len(T_round), 4):
         player1 = T_round[a+1]
         player2 = T_round[a+2]
@@ -223,8 +200,8 @@ def score_constructor(T_round, players_T0):
 
 
 def query_id_open_state_tnmt():
-    # query id tnmt with statut open
-    # return the id number of active tnmt
+    """query id tnmt with statut open
+    return the id number of active tnmt"""
 
     tnmt_manager = Manager(DATAPATH, DB_TOURNAMENTS)
     query_tmnt = tnmt_manager.search_to_tiny_is_open()
@@ -250,8 +227,8 @@ def assign_id_tnmt(players_t0):
 
 
 def player_inscription(data):
-    # writing the list of player for the game
-    # send to players_t0  the player ready for the tournament
+    """writing the list of player for the game
+     send to players_t0  the player ready for the tournament"""
 
     player_manager_tnmt = Manager(DATAPATH, DB_PLAYER_TNMT)
     player_manager = Manager(DATAPATH, DB_PLAYERS)
@@ -278,15 +255,15 @@ def player_inscription(data):
 
 
 def player_unscription(id):
-    # delete a player on the list of tournament
+    """delete a player on the list of tournament"""
     player_tmnt_manager = Manager(DATAPATH, DB_PLAYER_TNMT)
 
     player_tmnt_manager.del_by_id(id)
 
 
 def players_database_list(db='dbplayers', sort=""):
-    # catch list player in a db , and sorted by
-    # alphabetical name , rank or by chronology
+    """ catch list player in a db , and sorted by
+    alphabetical name , rank or by chronology"""
     if db == 'dbplayers':
         database_name = DB_PLAYERS
     elif db == 'dbplayer_tnmt':
@@ -311,7 +288,7 @@ def players_database_list(db='dbplayers', sort=""):
 
 
 def sorting_player_list(data_list, sort):
-    #  sorting list of list  by alphabetical or rank number
+    """sorting list of list  by alphabetical or rank number"""
     if sort == "alpha":
         players_alpha_sorted = sorted(data_list, key=itemgetter(1, 5))
         return players_alpha_sorted
@@ -322,8 +299,8 @@ def sorting_player_list(data_list, sort):
 
 
 def player_tmnt_constructor_list(id_tmnt):
-    # creat a list of player with a extraction from db_match
-    # return a list of list [lastname, firstname, birth, gender,rank, score]
+    """creat a list of player with a extraction from db_match
+    return a list of list [lastname, firstname, birth, gender,rank, score]"""
 
     player_match_manager = Manager(DATAPATH, DB_MATCH_TMNT)
     data_match = player_match_manager.match_querying_by_id2(2, "id_turn", id_tmnt)
@@ -354,13 +331,13 @@ def player_tmnt_constructor_list(id_tmnt):
 
 
 def player_of_tmnt_to_report(id_tmnt, sort):
-    # formated data to report info to print on screen
+    """formated data to report info to print on screen"""
     data_list = player_tmnt_constructor_list(id_tmnt)
     return sorting_player_list(data_list, sort)
 
 
 def tmnt_database_list():
-    # creation of data list from db
+    """creation of data list from db"""
     tmnt_manager = Manager(DATAPATH, DB_TOURNAMENTS)
     tmnt_all_db = []
     tmnt_all_db = tmnt_manager.tmnt_all_datadb_serialized()
@@ -368,7 +345,7 @@ def tmnt_database_list():
 
 
 def turn_creation_db_old(my_turn_obj, round):
-    # creation turn of the initialisation of the db
+    """creation turn of the initialisation of the db"""
 
     db_turn = Manager(DATAPATH, DB_TURN_TMNT)
     for nb in range(1, round + 1, 1):
@@ -378,7 +355,7 @@ def turn_creation_db_old(my_turn_obj, round):
 
 
 def turn_creation_db_init(id_tnmt, round):
-    # creation turn of the initialisation of the db
+    """creation turn of the initialisation of the db"""
     turn_data = {"id": 1, "id_tournament": id_tnmt, "number": 1, "start_date": date.today(), "end_date": date.today()}
     my_turn_obj = models.Turn(turn_data)
     db_turn = Manager(DATAPATH, DB_TURN_TMNT)
@@ -390,7 +367,7 @@ def turn_creation_db_init(id_tnmt, round):
 
 
 def turn_creation_db(id_tnmt, round):
-    # creation turn of the initialisation of the db
+    """creation turn of the initialisation of the db"""
     turn_data = {"id": round, "id_tournament": id_tnmt, "number": round,
                  "start_date": date.today(), "end_date": date.today()}
     my_turn_obj = models.Turn(turn_data)
@@ -400,7 +377,7 @@ def turn_creation_db(id_tnmt, round):
 
 
 def turn_object_database_(id, id_tnmt):
-    # send a turn object found in the db by id & id_tmnt
+    """send a turn object found in the db by id & id_tmnt"""
     turn_manager = Manager(DATAPATH, DB_TURN_TMNT)
     turn_all_db = []
     turn_all_db = turn_manager.turn_data_serialized_by_id(id, id_tnmt)
@@ -408,7 +385,7 @@ def turn_object_database_(id, id_tnmt):
 
 
 def turn_upgrade_date_internal(turn_object, date='start'):
-    # date upgrade  to tiny db
+    """date upgrade  to tiny db"""
     turn_manager = Manager(DATAPATH, DB_TURN_TMNT)
     # data = turn_manager.search_to_tinydb_by_id_2(turn_object.id, turn_object.id_tournament)
     turn_manager.turn_upgrade_date(turn_object, date='start')
@@ -416,7 +393,7 @@ def turn_upgrade_date_internal(turn_object, date='start'):
 
 
 def del_turn(id, id_tournament):
-    # delete a selected occurs of
+    """delete a selected occurs of"""
     db_turn = Manager(DATAPATH, DB_TURN_TMNT)
 
     data_doc_id = db_turn.search_by_doc_id(id, id_tournament)
@@ -425,8 +402,8 @@ def del_turn(id, id_tournament):
 
 
 def del_all_turn_id(id_tournament, DATAPATH, DB):
-    # delete all ref by_doc_id of a tnmt when it is restarted
-    # compatible all_section
+    """delete all ref by_doc_id of a tnmt when it is restarted
+    compatible all_section"""
     db_manager = Manager(DATAPATH, DB)
     nb_counted = db_manager.count_doc(id_tournament)
     for n in range(1, nb_counted+1):
@@ -435,24 +412,24 @@ def del_all_turn_id(id_tournament, DATAPATH, DB):
 
 
 def tmnt_match_database_serialising(data):
-    # send info to the database
+    """send info to the database"""
     tmnt_match_manager = Manager(DATAPATH, DB_MATCH_TMNT)
     tmnt_match_manager.match_db_serialising(data)
 
 
 def update_math_db(T0_s, players_t0):
-    # update the match base
+    """update the match base"""
     print("test match_update")
 
 
 def tmnt_match_database_to_matchmaking():
-    # send info to the database
+    """send info to the database"""
     tmnt_match_manager = Manager(DATAPATH, DB_MATCH_TMNT)
     tmnt_match_manager.match_db_unserialising()
 
 
 def match_report_with_name(id_value=23, id_name='id'):
-    # mastering data for displaying information with the name of player
+    """mastering data for displaying information with the name of player"""
 
     match_with_name = []
     match_with_name_list = []
@@ -477,7 +454,7 @@ def match_report_with_name(id_value=23, id_name='id'):
 
 
 def round_report_by_id(id_value=23, id_name='id_tournament'):
-    # mastering data for displaying round information
+    """mastering data for displaying round information"""
 
     turn_list = []
     turn_tmnt_manager = Manager(DATAPATH, DB_TURN_TMNT)
@@ -492,7 +469,7 @@ def round_report_by_id(id_value=23, id_name='id_tournament'):
 
 
 def players_list():
-    # catch the player document in db to list for match making
+    """catch the player document in db to list for match making"""
     player_manager_tmnt = Manager(DATAPATH, DB_PLAYER_TNMT)
     players_t0_tmnt = []
 
@@ -502,7 +479,7 @@ def players_list():
 
 
 def player_update_to_db(players_T0):
-    # update the score to the db with manager
+    """ update the score to the db with manager"""
 
     player_tmnt_manager = Manager(DATAPATH, DB_PLAYER_TNMT)
 
@@ -512,7 +489,7 @@ def player_update_to_db(players_T0):
 
 
 def tournament_register(data):
-    # to create the database with data from view
+    """to create the database with data from view"""
     tnmt_manager = Manager(DATAPATH, DB_TOURNAMENTS)
     tnmt_manager.data_tmnt_insert(data)
     tnmt_manager.id_readjust()

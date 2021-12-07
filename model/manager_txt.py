@@ -14,18 +14,18 @@ class Manager:
         return db
 
     def load_game_temp(self):
-        # get the info by doc_id
-        # there is only one id in this case
+        """# get the info by doc_id
+        # there is only one id in this case"""
         data_game_temp = self.db_initial().get(doc_id=1)
         return data_game_temp
 
     def updgrade_game_temp(self, data_temp):
-        # upgrade the data of data_temp
+        """# upgrade the data of data_temp"""
 
         self.db_initial().update(data_temp, doc_ids=[1])
 
     def init_game_temp(self):
-        # initialisation of game_temp for a new tournament
+        """# initialisation of game_temp for a new tournament"""
         test = self.db_initial().contains(doc_id=1)
         if test:
             self.db_initial().truncate()
@@ -33,9 +33,9 @@ class Manager:
         self.db_initial().insert({'0': ""})
 
     def load_all_from_tinydb(self):
-        # load all elements of tiny database
-        # return a list of dict with all elements key & values
-        # return the count of elments for optimize the process
+        """# load all elements of tiny database
+        return a list of dict with all elements key & values
+        return the count of elments for optimize the process"""
         db = TinyDB(self.path).table(self.table)
         serialized_data = {}
         count = 0
@@ -52,15 +52,14 @@ class Manager:
         return datall_2_lists, count
 
     def search_to_tinydb_by_id(self, key_value):
-
-        # search on tiny db database
-        # return a dict with all elements
+        """# search on tiny db database
+        return a dict with all elements"""
         query = (TinyDB(self.path).table(self.table)).search(where('id') == key_value)
         return query
 
     def search_to_tinydb_by_id_2(self, id, id_tmnt):
-        # search on tiny db database
-        # return a dict with all elements
+        """# search on tiny db database
+        return a dict with all elements"""
         db_manager = (TinyDB(self.path).table(self.table))
         db_manager_quer = Query()
         counter = self.db_initial().count((db_manager_quer.id_tournament == id_tmnt) & (db_manager_quer.id == id))
@@ -73,23 +72,24 @@ class Manager:
             return m_data
 
     def search_by_doc_id(self, id, id_tournament):
-
+        """ search by one id for player db or tmnt"""
         m_query = Query()
         data_doc_id = self.db_initial().get((m_query.id == id) & (m_query.id_tournament == id_tournament))
         return data_doc_id.doc_id
 
     def search_by_doc_id_2(self, id_tournament):
+        """ search by odc id for obj dependant from tournament"""
         data_doc_id = []
         m_query = Query()
         data_doc_id = self.db_initial().get(m_query.id_tournament == id_tournament)
         return data_doc_id.doc_id
 
     def del_by_doc_id(self, id):
-        # self.db_initial().remove(m_query.doc_id == id)
+        """# delete with id request (not doc_id)"""
         self.db_initial().remove(doc_ids=[id])
 
     def del_by_id(self, id):
-        # delete with id request (not doc_id)
+        """ delete with  doc_id"""
         M_query = Query()
         self.db_initial().remove(M_query.id == id)
 
@@ -99,36 +99,33 @@ class Manager:
         return el_counted
 
     def search_to_tinydb_by_player_name(self, key_value):
-
-        # search on tiny db database
-        # return a dict with all elements
+        """# search on tiny db database
+        # return a dict with all elements"""
 
         query = (TinyDB(self.path).table(self.table)).search(where('name') == key_value)
         return query
 
     def search_to_tiny_is_open(self):
-        # find the tournanement already opened
-        #
+        """# find the tournanement already opened
+        #"""
         query = self.db_initial().search(where('state') == 'open')
         return query
 
     def serialize_query(self, query):
-        # return data serialized , doc --> dict  unable to easy transfert
+        """# return data serialized , doc --> dict  unable to easy transfert"""
         for item in range(len(query)):
 
             serialized_data = query[0]
             return serialized_data
 
     def player_serialized(self):
-        # catch the data list from tiny and format the list for matching system
+        """# catch the data list from tiny and format the list for matching system"""
 
         db_manager = (TinyDB(self.path).table(self.table))
         match_object_list = []
         list_player_object = []
         for item in range(len(db_manager.all())):
             element_id = db_manager.all()[item]
-            # print('element id ', element_id)
-            # match_object_list.append(0].append(element_id["lastname"])
             for d in range(7):
                 # creation of the entry of the objest to simplify the update
                 match_object_list.append(0)
@@ -137,18 +134,14 @@ class Manager:
             match_object_list[2] = int(element_id["rank"])
             match_object_list[3] = 0
             match_object_list[4] = 0
-            # match_object_list[5] = 0
             match_object_list[5] = element_id["id"]
-
-            # match_object_list.append(element_id["id"])
 
             list_player_object.append(match_object_list)
             match_object_list = []
-            # print(list_player_object)
         return list_player_object
 
     def players_all_data_serialized(self):
-        # catch the data list from tiny and format the list for reporting system
+        """ catch the data list from tiny and format the list for reporting system"""
         db_manager = (TinyDB(self.path).table(self.table))
         match_object_list = []
         list_player_object = []
@@ -174,7 +167,7 @@ class Manager:
         return list_player_object
 
     def tmnt_all_datadb_serialized(self):
-        # catch the TMNT data list from tiny and format the list for reporting system
+        """# catch the TMNT data list from tiny and format the list for reporting system"""
         db_manager = (TinyDB(self.path).table(self.table))
         match_object_list = []
         list_tmnt_object = []
@@ -196,7 +189,7 @@ class Manager:
         return list_tmnt_object
 
     def turn_data_serialized_by_id(self, id, id_tmnt):
-        # catch data in bd  and return a object turn
+        """# catch data in bd  and return a object turn"""
         data = self.search_to_tinydb_by_id_2(id, id_tmnt)
         my_turn = models.Turn(data)
         return my_turn
@@ -211,7 +204,7 @@ class Manager:
         return my_turn
 
     def turn_upgrade_date(self, turn_object, date='start'):
-        # upgrade the date from match making
+        """# upgrade the date from match making"""
         db_manager = TinyDB(self.path).table(self.table)
         turn_object_db = self.turn_data_serialized_by_id(turn_object.id, turn_object.id_tournament)
 
@@ -227,7 +220,7 @@ class Manager:
                               & (turn_query.id_tournament == turn_object_db.id_tournament))
 
     def match_db_serialising(self, data):
-        # catch information from match making db to database
+        """# catch information from match making db to database"""
         db_manager = (TinyDB(self.path).table(self.table))
         match_object_list = []
         list_match_object = []
@@ -256,11 +249,10 @@ class Manager:
 
                 list_match_object.append(element_idb)
                 element_idb = []
-            # print(list_player_object)
         return list_match_object
 
     def match_object_db_serialising(self, datadb, match):
-        # catch information from match making db to database
+        """# catch information from match making db to database"""
         db_manager = (TinyDB(self.path).table(self.table))
         list_match_object = []
         for item in range(len(datadb)):
@@ -287,7 +279,7 @@ class Manager:
         return list_match_object
 
     def match_db_unserialising(self, data):
-        # catch information from data[] match making to database
+        """# catch information from data[] match making to database"""
         db_manager = (TinyDB(self.path).table(self.table))
         match_object_list = []
         list_match_object = []
@@ -315,8 +307,8 @@ class Manager:
         return list_match_object
 
     def match_object_db_unserialising(self, data):
-        # catch information from objet.data match making to database
-        # db_manager = (TinyDB(self.path).table(self.table))
+        """# catch information from objet.data match making to database"""
+
         match_object_list = []
         list_match_object = []
         for d in range(12):
@@ -339,8 +331,8 @@ class Manager:
         return list_match_object
 
     def match_db_unserialising2(self, data):
-        # catch information from data[] match making to database
-        # db_manager = (TinyDB(self.path).table(self.table))
+        """# catch information from data[] match making to database"""
+
         match_object_list = []
         list_match_object = []
 
@@ -365,7 +357,7 @@ class Manager:
         return list_match_object
 
     def match_querying_by_id(self, id, key='id'):
-        # query of for a match
+        """# query of for a match"""
         db_manager = (TinyDB(self.path).table(self.table))
         match_query = Query()
         if key == 'id':
@@ -380,7 +372,7 @@ class Manager:
         return match
 
     def match_querying_by_id2(self, id, key='id', id_tmnt=2):
-        # query of for a match
+        """# query of for a match"""
         if isinstance(id, str):
             id = int(id)
         if isinstance(id_tmnt, str):
@@ -396,17 +388,23 @@ class Manager:
             match = db_manager.search((match_query.id_turn == id) & (match_query.id_tournament == id_tmnt))
         elif key == 'name':
             match = db_manager.search(match_query.name == id)
-        # print(match)
         return match
 
+    def tmnt_updating(self, id, data):
+        """update a tournament , with a dict"""
+        db_manager = (TinyDB(self.path).table(self.table))
+        match_query = Query()
+        db_manager.update({**data}, match_query.id == id)
+
     def match_updating(self, id, data):
+        """update a match , with a dict"""
         db_manager = (TinyDB(self.path).table(self.table))
         match_query = Query()
         for item in (data):
             db_manager.update({data[item]}, match_query.id == id)
 
     def match_updating_2(self, id, data, id_tmnt):
-        # update the database by id
+        """# update the database by id"""
         db_manager = (TinyDB(self.path).table(self.table))
         match_query = Query()
         count_match = db_manager.count((match_query.id == id) & (match_query.id_tournament == id_tmnt))
@@ -417,16 +415,17 @@ class Manager:
         db_manager.update(data, doc_ids=[id_match])
 
     def update_player_tmnt(self, player_t0_u):
-        # update player indice , and score 26/10/2021
+        """ update player indice , and score 26/10/2021"""
         m_query = Query()
         self.db_initial().update({'score': player_t0_u[4]}, m_query.id == player_t0_u[5])
 
     def update_player_rank(self, player_object):
-        # update the player in the db wih player object
+        """ update the player in the db wih player object"""
         query = Query()
         self.db_initial().update({"rank": player_object.rank}, query.id == player_object.id)
 
     def update_turn_tmnt(self, turn_object):
+        """update a round , with a dict"""
         db_manager = (TinyDB(self.path).table(self.table))
         turn_query = Query()
 
@@ -436,8 +435,8 @@ class Manager:
                           turn_query.id_tournament == turn_object.id_tournament)))
 
     def id_readjust(self):
-        # copy the id allowed by tiny to assign a the document
-        # catching de doc_id and if different assign the doc_id  to id if element
+        """ copy the id allowed by tiny to assign a the document
+        catching de doc_id and if different assign the doc_id  to id if element"""
 
         db_manager = (TinyDB(self.path).table(self.table))
         for item in range(len(db_manager.all())):
@@ -448,7 +447,7 @@ class Manager:
                 db_manager.update({'id': element_id.doc_id}, doc_ids=[element_id.doc_id])
 
     def data_insert(self, data):
-        # creation data player  to put in the tiny database
+        """ creation data player  to put in the tiny database"""
         if data['id'] == '':
             data['id'] = 1000
 
@@ -458,7 +457,7 @@ class Manager:
                                                       "score": data["score"]})
 
     def data_match_tmnt_insert(self, data):
-        # create the match data to put in the tiny database
+        """ create the match data to put in the tiny database"""
 
         (TinyDB(self.path).table(self.table)).insert({"id": data['id'],
                                                       "id_turn": data['id_turn'],
@@ -475,29 +474,29 @@ class Manager:
                                                       "time_control": data["time_control"]})
 
     def data_match_tmnt_insert_by_objet(self, my_match):
-        # create the match data to put in the tiny database
+        """ create the match data to put in the tiny database"""
 
         (TinyDB(self.path).table(self.table)).insert({"id": my_match.id,
                                                       "id_turn": my_match.id_turn,
                                                       "id_tournament": my_match.id_tournament})
 
     def data_tmnt_insert(self, data):
-        # creation data tournament  to put in the tiny database
+        """ creation data tournament  to put in the tiny database"""
         (TinyDB(self.path).table(self.table)).insert({"id": data['id'], "name": data["name"],
                                                      "place": data["place"], "start_date": data["start_date"],
                                                       "end_date": data["end_date"],
                                                       "time_control": data["time_control"],
-                                                      "round_number": data["round_number"], 'state': "open"})
+                                                      "round_number": data["round_number"], 'state': data["state"]})
 
     def change_state_tmnt(self, id, date):
-        # modify the state of the active tournament
-        # db_manager = (TinyDB(self.path).table(self.table))
+        """ modify the state of the active tournament
+        # db_manager = (TinyDB(self.path).table(self.table))"""
         m_query = Query()
         self.db_initial().update({"state": "closed"}, m_query.id == id)
         self.db_initial().update({"end_date": date}, m_query.id == id)
 
     def data_turn_init_insert_by_object(self, my_turn_obj):
-        # create a db insertion , to init the data at the first start
+        """ create a db insertion , to init the data at the first start"""
         try:
             query = self.search_to_tinydb_by_id_2(my_turn_obj.id, my_turn_obj.id_tournament)
             if query == 0:
@@ -508,23 +507,6 @@ class Manager:
             self.db_initial().insert({"id": my_turn_obj.id, "id_tournament": my_turn_obj.id_tournament,
                                       "number": my_turn_obj.number, "start_date": str(my_turn_obj.start_date),
                                       "end_date": str(my_turn_obj.end_date)})
-
-    def create(self, *args, **kwargs):
-        # print(*args)
-        # print(**kwargs)
-        item = self.collection_type(*args, **kwargs)
-        self.collection[item.id] = item
-        return item
-
-    def read_all(self):
-        return list(self.collection.values())
-
-    def read(self, id):
-        return self.collection[id]
-
-    def modify_by_id(self, id):
-        print(type(self.collection[id]))
-        return self.collection[id]
 
 
 if __name__ == '__main__':

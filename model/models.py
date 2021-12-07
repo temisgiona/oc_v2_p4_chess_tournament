@@ -27,15 +27,16 @@ class Tournament(BaseModel):
     id: int
     name: Name
     place: Name
-    start_date: datetime = date.today()
-    end_date: datetime = date.today()
+    start_date: str = date.today()
+    end_date: str = date.today()
     round_number: PositiveInt = 0
-    time_control: TimeControl = ""
+    time_control: str = ""
+    state: str = "open"
 
     def serialized_tnmt(self):
         return {'id': self.id, 'name': self.name, 'place': self.place,
                 "start_date": self.start_date, "end_date": self.end_date, "round_number": self.round_number,
-                "time_control": self.time_control}
+                "time_control": self.time_control, 'state': self.state}
 
 
 class Match(BaseModel):
@@ -88,5 +89,3 @@ class Player_Chess:
     def serialized(self):
         return {'id': self.id, 'lastname': self.lastname, 'firstname': self.firstname, 'birthdate': self.birthdate,
                 'gender': self.gender, 'rank': self.rank, 'score': self.score}
-
-
