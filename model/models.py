@@ -1,7 +1,7 @@
 from pydantic import BaseModel, validator
 from pydantic.types import PositiveInt
-from datetime import datetime, date
-from model.custom_types import Name, Gender, TimeControl
+from datetime import date
+from model.custom_types import Name, Gender
 from model.utils import convert_date_to_check_is_past
 
 
