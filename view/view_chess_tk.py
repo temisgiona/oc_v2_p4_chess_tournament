@@ -1,21 +1,20 @@
 import tkinter
 from tkinter import Tk
-from tkinter import Frame, StringVar, ttk, Label, LabelFrame, Entry, PhotoImage, IntVar
+from tkinter import Frame, StringVar, ttk
+from tkinter import Label, LabelFrame, Entry, PhotoImage, IntVar
 from tkinter.constants import END
 from tkcalendar import Calendar, DateEntry
 from tinydb import TinyDB, where
 from model import models, manager_txt
 from model.manager_txt import Manager
-# from model.manager_txt import Manager
 
 
 def treeview_sort_column(tv, col, reverse):
-    # permet de faire le classement dans la fenetre listing
-    # traite element / element et colonne / colonne
+    """ permet de faire le classement dans la fenetre listing
+    # traite element / element et colonne / colonne"""
 
     list_tree = [(tv.set(k, col), k) for k in tv.get_children('')]
     list_tree.sort(key=lambda t: t[0], reverse=reverse)
-    #      ^^^^^^^^^^^^^^^^^^^^^^^
 
     for index, (val, k) in enumerate(list_tree):
         tv.move(k, '', index)
@@ -36,7 +35,8 @@ class GenericLayout(ttk.Frame):
         ttk.Frame.__init__(self, master)
         label_frame = LabelFrame(master, text=title)
         label_frame.grid(row=0, column=1, sticky='n')
-        # mlabel = Label(label_frame, text='Nom du tournoi :').grid(row=0, column=0, sticky='nw', pady=2)
+        # mlabel = Label(label_frame, text='Nom du tournoi :').grid(
+        # row=0, column=0, sticky='nw', pady=2)
 
 
 class ChessLstPlayerFrame(ttk.Frame):
@@ -59,36 +59,62 @@ class ChessLstPlayerFrame(ttk.Frame):
         # ++++++++++++++++++++++++++++++++++++++
         # FORMULAIRE SAISIE
         # ++++++++++++++++++++++++++++++++++++++
-        Label(player_fr, text='Nom:').grid(row=0, column=0, padx=100, pady=10, sticky='nw')
+        Label(player_fr, text='Nom:').grid(
+            row=0,
+            column=0,
+            padx=100,
+            pady=10,
+            sticky='nw'
+            )
         self.lastname = StringVar()
         self.namefield = Entry(player_fr, textvariable=self.lastname)
         self.namefield.grid(row=0, column=0, sticky='nw', padx=210, pady=10)
 
-        Label(player_fr, text='Prénom:').grid(row=0, column=0, padx=100, sticky='nw', pady=35)
+        Label(player_fr, text='Prénom:').grid(
+            row=0, column=0, padx=100, sticky='nw', pady=35
+            )
         self.firstname = StringVar()
         self.firstnamefield = Entry(player_fr, textvariable=self.firstname)
-        self.firstnamefield.grid(row=0, column=0, sticky='nw', padx=210, pady=35)
+        self.firstnamefield.grid(
+            row=0, column=0, sticky='nw', padx=210, pady=35
+            )
 
-        Label(player_fr, text='Genre:').grid(row=0, column=0, sticky='nw', padx=100, pady=60)
+        Label(player_fr, text='Genre:').grid(
+            row=0, column=0, sticky='nw', padx=100, pady=60
+            )
         self.gender = StringVar()
-        self.genderfield = ttk.Combobox(player_fr, textvariable=self.gender, width=17)
+        self.genderfield = ttk.Combobox(
+            player_fr, textvariable=self.gender, width=17
+            )
         self.genderfield['values'] = ("Masculin", 'Feminin')
-        self.genderfield.grid(row=0, column=0, sticky='nw', padx=210, pady=60)
+        self.genderfield.grid(
+            row=0, column=0, sticky='nw', padx=210, pady=60
+            )
         self.genderfield.current(0)
 
-        Label(player_fr, text='Date de naissance:').grid(row=0, column=0, sticky='nw', padx=100, pady=85)
+        Label(player_fr, text='Date de naissance:').grid(
+            row=0, column=0, sticky='nw', padx=100, pady=85
+            )
         self.birthdate = StringVar()
 
-        self.birthdatefield = DateEntry(player_fr, width=17, background='darkblue',
-                                        foreground='white', borderwidth=2)
-        self.birthdatefield.grid(row=0, column=0, sticky='nw', padx=210, pady=85)
+        self.birthdatefield = DateEntry(
+            player_fr, width=17, background='darkblue',
+            foreground='white', borderwidth=2
+            )
+        self.birthdatefield.grid(
+            row=0, column=0, sticky='nw', padx=210, pady=85
+            )
 
-        Label(player_fr, text='Classement:').grid(row=0, column=0, sticky='nw', padx=100, pady=110)
+        Label(player_fr, text='Classement:').grid(
+            row=0, column=0, sticky='nw', padx=100, pady=110
+            )
         self.rank = IntVar()
         self.rankfield = Entry(player_fr, textvariable=self.rank)
         self.rankfield.grid(row=0, column=0, sticky='nw', padx=210, pady=110)
 
-        cal1 = Calendar(player_fr, selectmode='day', year=1980, month=6, day=15)
+        cal1 = Calendar(
+            player_fr, selectmode='day', year=1980, month=6, day=15
+            )
 
         cal1.grid(row=0, column=0, sticky='n')
 
@@ -96,24 +122,34 @@ class ChessLstPlayerFrame(ttk.Frame):
         # BOUTONS
         # ++++++++++++++++++++++++++++++++++++++
 
-        ttk.Button(player_fr, text='Ajouter à la liste', command=self.create_player).grid(
-                    row=0, column=0, sticky='nw', padx=210, pady=135)
+        ttk.Button(
+            player_fr, text='Ajouter à la liste', command=self.create_player
+            ).grid(row=0, column=0, sticky='nw', padx=210, pady=135)
 
-        showbtn = ttk.Button(lst_player_fr, text="Voir la liste", command=self.view_records)
+        showbtn = ttk.Button(
+            lst_player_fr, text="Voir la liste", command=self.view_records
+            )
         showbtn.grid(row=1, column=0, padx=20, pady=20, sticky='w')
         self.msg = Label(text='', fg='red')
         self.msg.grid(row=1, column=0, padx=50, sticky='w')
 
-        delbtn = ttk.Button(lst_player_fr, text="Delete Selected", command=self.delete_record)
+        delbtn = ttk.Button(
+            lst_player_fr, text="Delete Selected", command=self.delete_record
+            )
         delbtn.grid(row=1, column=0, padx=200, sticky='w')
 
-        updtbtn = ttk.Button(lst_player_fr, text="Modify Selected", command=self.open_modify_window)
+        updtbtn = ttk.Button(
+            lst_player_fr, text="Modify Selected",
+            command=self.open_modify_window
+            )
         updtbtn.grid(row=1, column=0, padx=100, sticky='w')
 
         # ++++++++++++++++++++++++++++++++++++++
         # FORMULAIRE LISTING
         # ++++++++++++++++++++++++++++++++++++++
-        my_columns = ("Id", "Name", "Firstname", "Birthdate", "Gender", "Rank",)
+        my_columns = (
+            "Id", "Name", "Firstname", "Birthdate", "Gender", "Rank",
+            )
         self.tree = ttk.Treeview(lst_player_fr, height=6, columns=my_columns)
         self.tree.grid(row=2, column=0, sticky='nw')
         self.tree.heading('#0', text='', anchor='w')
@@ -121,7 +157,8 @@ class ChessLstPlayerFrame(ttk.Frame):
 
         for col in my_columns:
             self.tree.heading(col, text=col, anchor='w',
-                              command=lambda c=col: treeview_sort_column(self.tree, c, False))
+                              command=lambda c=col: treeview_sort_column(
+                                  self.tree, c, False))
 
     def create_record(self):
         lastname = self.namefield.get()
@@ -142,8 +179,11 @@ class ChessLstPlayerFrame(ttk.Frame):
             return
 
         db_players = TinyDB('./data_players2.json').table('players_list')
-        db_players.insert({"id": 1000, "lastname": lastname, "firstname": firstname, "gender": gender,
-                           "birthdate": birthdate, "rank": rank, "score": 0})
+        db_players.insert({
+            "id": 1000, "lastname": lastname, "firstname": firstname,
+            "gender": gender,
+            "birthdate": birthdate, "rank": rank, "score": 0
+            })
 
     def create_player(self):
         lastname = self.namefield.get()
@@ -163,8 +203,11 @@ class ChessLstPlayerFrame(ttk.Frame):
             self.msg["text"] = "Please Enter Number"
             return
 
-        my_player = {"id": 1000, "lastname": lastname, "firstname": firstname, "gender": gender,
-                     "birthdate": birthdate, "rank": rank, "score": 0}
+        my_player = {
+            "id": 1000, "lastname": lastname, "firstname": firstname,
+            "gender": gender, "birthdate": birthdate,
+            "rank": rank, "score": 0
+            }
         players = {}
         manager = Manager('./data_players2.json', 'players_list', players)
         manager.data_insert(my_player)
@@ -193,7 +236,8 @@ class ChessLstPlayerFrame(ttk.Frame):
             value_list = list(value_list)
             values_lists[player_item] = value_list
             """rank_sorted = sorted(values_lists.items(), key=lambda t: t[1][5])
-            alpha_sorted = sorted(values_lists.items(), key=lambda t: t[1][1])"""
+            alpha_sorted = sorted(values_lists.items(), key=lambda t: t[1][1])
+            """
             print(value_list)
             self.tree.insert("", END, text="", values=value_list[0:-1])
 
@@ -215,8 +259,12 @@ class ChessLstPlayerFrame(ttk.Frame):
             self.tree.insert('', END, values=(t,))
 
             for col in head_list:
-                self.tree.heading(col, text=col,
-                                  command=lambda c=col: treeview_sort_column(self.tree, c, False))
+                self.tree.heading(
+                    col, text=col,
+                    command=lambda c=col: treeview_sort_column(
+                        self.tree, c, False
+                        )
+                    )
 
     def delete_record(self):
         self.msg["text"] = ""
@@ -254,19 +302,26 @@ class ChessLstPlayerFrame(ttk.Frame):
             ne.insert(0, name)
             ne.config(state='readonly')
 
-            Label(self.tl, text='Ancien classement:').grid(row=1, column=1, sticky='w')
+            Label(self.tl, text='Ancien classement:').grid(
+                row=1, column=1, sticky='w'
+                )
             ope = Entry(self.tl)
             ope.grid(row=1, column=2, sticky='w')
             ope.insert(0, str(oldrank))
             ope.config(state='readonly')
 
-            Label(self.tl, text='Nouveau classement:').grid(row=2, column=1, sticky='w')
+            Label(self.tl, text='Nouveau classement:').grid(
+                row=2, column=1, sticky='w'
+                )
             newrk = StringVar()
             newrk = Entry(self.tl, textvariable=newrk)
             newrk.grid(row=2, column=2, sticky='w')
 
-            upbtn = ttk.Button(self.tl, text='Modifier', command=lambda: self.update_record(newrk.get(),
-                               oldrank, name, player_id))
+            upbtn = ttk.Button(
+                self.tl, text='Modifier',
+                command=lambda: self.update_record(
+                    newrk.get(), oldrank, name, player_id
+                ))
             upbtn.grid(row=3, column=2, sticky='e')
 
             self.tl.mainloop()
@@ -302,24 +357,36 @@ class ChessPlayer_Tour(ChessLstPlayerFrame):
         ins_trm_fr = LabelFrame(master, text="Inscription à un tournoi")
         ins_trm_fr.grid(row=0, column=0, padx=8, pady=8, sticky='nw')
 
-        Label(ins_trm_fr, text='Choix tournoi:').grid(row=0, column=0, sticky='w', padx=5, pady=26)
+        Label(ins_trm_fr, text='Choix tournoi:').grid(
+            row=0, column=0, sticky='w', padx=5, pady=26
+            )
         self.tr_select = StringVar()
-        self.tr_select_field = ttk.Combobox(ins_trm_fr, textvariable=self.tr_select, width=17)
+        self.tr_select_field = ttk.Combobox(
+            ins_trm_fr, textvariable=self.tr_select, width=17
+            )
         self.tr_select_field['values'] = ("tour1", 'tour2')
-        self.tr_select_field.grid(row=0, column=0, sticky='w', padx=100, pady=46)
+        self.tr_select_field.grid(
+            row=0, column=0, sticky='w', padx=100, pady=46
+            )
         self.tr_select_field.current(0)
-        # self.tr_select_field.bind("<<ComboboxSelected>>", callbackFunc(self.tree, 'players'))
+        # self.tr_select_field.bind("<<ComboboxSelected>>",
+        # callbackFunc(self.tree, 'players'))
         ttk.Button(
-            ins_trm_fr, text='Ajouter joueur au tournoi', command=self.create_record).grid(
+            ins_trm_fr, text='Ajouter joueur au tournoi',
+            command=self.create_record).grid(
             row=3, column=0, sticky='nw', padx=220, pady=35
                     )
-        delbtn_player = ttk.Button(ins_trm_fr, text="Delete Selected", command=self.delete_record)
+        delbtn_player = ttk.Button(
+            ins_trm_fr, text="Delete Selected", command=self.delete_record
+            )
         delbtn_player.grid(row=3, column=0, padx=20, pady=35, sticky='nw')
 
         # ================================================================
         # liste
         # ================================================================
-        self.tree = ttk.Treeview(ins_trm_fr, height=6, columns=("firstname", "gender", "birthdate", "rank"))
+        self.tree = ttk.Treeview(ins_trm_fr, height=6, columns=(
+            "firstname", "gender", "birthdate", "rank"
+            ))
         self.tree.grid(row=2, column=0, sticky='nw')
         self.tree.heading('#0', text='Nom', anchor="w")
         self.tree.heading("firstname", text='Prénom', anchor="w")
@@ -327,7 +394,11 @@ class ChessPlayer_Tour(ChessLstPlayerFrame):
         self.tree.heading("birthdate", text='Date de naissance', anchor="w")
         self.tree.heading("rank", text='Classement', anchor="w")
 
-        self.tree_trn = ttk.Treeview(ins_trm_fr, height=6, columns=("firstname", "rank"))
+        self.tree_trn = ttk.Treeview(
+            ins_trm_fr, height=6, columns=(
+                        "firstname", "rank")
+                        )
+
         self.tree_trn.grid(row=3, column=0, pady=100, sticky='ws')
         self.tree_trn.heading('#0', text='Nom', anchor='w')
         self.tree_trn.heading("firstname", text='Prénom', anchor='w')
@@ -370,67 +441,117 @@ class TournamentFrame(ttk.Frame):
         # ===============================================================
         #  formulaire de saisie
         # ===============================================================
-        Label(chess_fr, text='Nom :').grid(row=0, column=0, sticky='nw', padx=150, pady=10)
+        Label(chess_fr, text='Nom :').grid(
+            row=0, column=0, sticky='nw', padx=150, pady=10
+            )
         self.name = StringVar()
         self.namefield = Entry(chess_fr, textvariable=self.name)
-        self.namefield.grid(row=0, column=0, sticky='nw', padx=260, pady=10)
+        self.namefield.grid(
+            row=0, column=0, sticky='nw', padx=260, pady=10
+            )
 
-        Label(chess_fr, text='Lieu :').grid(row=0, column=0, sticky='nw', padx=150, pady=35)
+        Label(chess_fr, text='Lieu :').grid(
+            row=0, column=0, sticky='nw', padx=150, pady=35
+            )
         self.place = StringVar()
         self.placefield = Entry(chess_fr, textvariable=self.place)
-        self.placefield.grid(row=0, column=0, sticky='nw', padx=260, pady=35)
+        self.placefield.grid(
+            row=0, column=0, sticky='nw', padx=260, pady=35
+            )
 
-        Label(chess_fr, text='Date ouverture :').grid(row=0, column=0, sticky='nw', padx=150, pady=60)
+        Label(chess_fr, text='Date ouverture :').grid(
+            row=0, column=0, sticky='nw', padx=150, pady=60
+            )
         self.start_date = StringVar()
-        self.start_datefield = DateEntry(chess_fr, width=17, background='darkblue',
-                                         foreground='white', borderwidth=2)
-        self.start_datefield.grid(row=0, column=0, sticky='nw', padx=260, pady=60)
-        """        self.birthdatefield = DateEntry(player_fr, width=12, background='darkblue',
-                                        foreground='white', borderwidth=2)
-        self.birthdatefield.grid(row=0, column=0, sticky='nw', padx=210, pady=85)"""
+        self.start_datefield = DateEntry(
+            chess_fr, width=17, background='darkblue',
+            foreground='white', borderwidth=2
+            )
+        self.start_datefield.grid(
+            row=0, column=0, sticky='nw', padx=260, pady=60
+            )
 
-        Label(chess_fr, text='Date fermeture :').grid(row=0, column=0, sticky='nw', padx=150, pady=85)
+        Label(chess_fr, text='Date fermeture :').grid(
+            row=0, column=0, sticky='nw', padx=150, pady=85
+            )
         self.end_date = StringVar()
-        self.end_datefield = DateEntry(chess_fr, width=17, background='darkblue',
-                                       foreground='white', borderwidth=2)
-        self.end_datefield.grid(row=0, column=0, sticky='nw', padx=260, pady=85)
+        self.end_datefield = DateEntry(
+            chess_fr, width=17, background='darkblue',
+            foreground='white', borderwidth=2
+            )
+        self.end_datefield.grid(
+            row=0, column=0, sticky='nw', padx=260, pady=85
+            )
 
-        Label(chess_fr, text='Gestion du temps :').grid(row=0, column=0, sticky='nw', padx=150,  pady=110)
+        Label(chess_fr, text='Gestion du temps :').grid(
+            row=0, column=0, sticky='nw', padx=150,  pady=110
+            )
         self.time_control = StringVar()
-        self.time_controlfield = ttk.Combobox(chess_fr, width=17, textvariable=self.time_control)
+        self.time_controlfield = ttk.Combobox(
+            chess_fr, width=17, textvariable=self.time_control
+            )
         self.time_controlfield['values'] = ("Bullet", "Blitz", "Coups rapide")
-        self.time_controlfield.grid(row=0, column=0, sticky='nw', padx=260, pady=110)
+        self.time_controlfield.grid(
+            row=0, column=0, sticky='nw', padx=260, pady=110
+            )
         self.time_controlfield.current(1)
 
-        ajout_btn = ttk.Button(chess_fr, text='Ajouter à la liste', command=self.create_record)
+        ajout_btn = ttk.Button(
+            chess_fr, text='Ajouter à la liste', command=self.create_record
+            )
         ajout_btn.grid(row=0, column=0, sticky='nw', padx=150, pady=135)
 
         # ===============================================================
         #  boutons
         # ===============================================================
 
-        showbtn = ttk.Button(lst_chess_fr, text="Voir la liste", command=self.view_records)
-        showbtn.grid(row=0, column=0, padx=20, pady=20, sticky='nw')
+        showbtn = ttk.Button(
+            lst_chess_fr, text="Voir la liste", command=self.view_records
+            )
+        showbtn.grid(
+            row=0, column=0, padx=20, pady=20, sticky='nw'
+            )
         self.msg = Label(lst_chess_fr, text='', fg='red')
         self.msg.grid(row=0, column=0, sticky='nw')
 
-        delbtn = ttk.Button(lst_chess_fr, text="Del Selection", command=self.delete_record)
-        delbtn.grid(row=0, column=0, padx=210, pady=20, sticky='nw')
+        delbtn = ttk.Button(
+            lst_chess_fr, text="Del Selection", command=self.delete_record
+            )
+        delbtn.grid(
+            row=0, column=0, padx=210, pady=20, sticky='nw'
+            )
 
-        updtbtn = ttk.Button(lst_chess_fr, text="Modifier Selection", command=self.open_modify_window)
-        updtbtn.grid(row=0, column=0, padx=105, pady=20, sticky='nw')
+        updtbtn = ttk.Button(
+            lst_chess_fr, text="Modifier Selection",
+            command=self.open_modify_window
+            )
+        updtbtn.grid(
+            row=0, column=0, padx=105, pady=20, sticky='nw'
+            )
         # ===============================================================
         # liste affichage
         # ===============================================================
-        my_columns = ("ID", "Nom", "Lieu", "Date début", "Date de fin", "Gestion du temps", "NB round", "Etat",)
-        self.tree_chess = ttk.Treeview(lst_chess_fr, height=10, columns=my_columns)
-        self.tree_chess.grid(row=0, column=0, columnspan=100, padx=5, pady=50, sticky='nw')
-        self.tree_chess.heading('#0', text='', anchor='w')
+        my_columns = (
+            "ID", "Nom", "Lieu", "Date début", "Date de fin",
+            "Gestion du temps", "NB round", "Etat",
+            )
+        self.tree_chess = ttk.Treeview(
+            lst_chess_fr, height=10, columns=my_columns
+            )
+        self.tree_chess.grid(
+            row=0, column=0, columnspan=100, padx=5, pady=50, sticky='nw'
+            )
+        self.tree_chess.heading(
+            '#0', text='', anchor='w'
+            )
         self.tree_chess.column("#0", minwidth=1, width=2)
 
         for col in my_columns:
-            self.tree_chess.heading(col, text=col, anchor='w',
-                                    command=lambda c=col: treeview_sort_column(self.tree_chess, c, False))
+            self.tree_chess.heading(
+                col, text=col, anchor='w',
+                command=lambda c=col: treeview_sort_column(
+                    self.tree_chess, c, False
+                    ))
 
     def create_record(self):
         # creation of a new tournament
@@ -492,7 +613,8 @@ class TournamentFrame(ttk.Frame):
             data_tmnt = {
                 'id': record[0], 'name': record[1], 'place': record[2],
                 "start_date": record[3], "end_date": record[4],
-                "time_control": record[5], "round_number": max(record[6], 2), 'state': record[7]
+                "time_control": record[5], "round_number": max(record[6], 2),
+                'state': record[7]
                          }
             my_tmnt = models.Tournament(**data_tmnt)
             self.tl = Tk()
@@ -503,20 +625,27 @@ class TournamentFrame(ttk.Frame):
             ne.insert(0, my_tmnt.name)
             ne.config(state='readonly')
 
-            Label(self.tl, text='Ancienne date début:').grid(row=1, column=1, sticky='w')
+            Label(self.tl, text='Ancienne date début:').grid(
+                row=1, column=1, sticky='w'
+                )
             ope = Entry(self.tl)
             ope.grid(row=1, column=2, sticky='w')
             ope.insert(0, (my_tmnt.start_date))
             ope.config(state='readonly')
 
-            Label(self.tl, text='Nouvelle date début:').grid(row=2, column=1, sticky='w')
+            Label(self.tl, text='Nouvelle date début:').grid(
+                row=2, column=1, sticky='w'
+                )
             # newrk = StringVar()
             newrkfield = DateEntry(self.tl, width=17, background='darkblue',
                                    foreground='white', borderwidth=2)
             newrkfield.grid(row=2, column=2, sticky='w')
             my_tmnt.start_date = newrkfield.get()
-            upbtn = ttk.Button(self.tl, text='Modifier', command=lambda: self.update_record(my_tmnt.start_date,
-                               my_tmnt.start_date, my_tmnt.name, my_tmnt.id))
+            upbtn = ttk.Button(
+                self.tl, text='Modifier',
+                command=lambda: self.update_record(
+                        my_tmnt.start_date,
+                        my_tmnt.start_date, my_tmnt.name, my_tmnt.id))
             upbtn.grid(row=3, column=2, sticky='e')
 
             self.tl.mainloop()
@@ -552,42 +681,66 @@ class Turn(ttk.Frame):
         fr = LabelFrame(master, text='Saisir un nouveau resultat')
         fr.grid(row=0, column=1, padx=8, pady=8, sticky='ew')
 
-        Label(fr, text='Nom du tournoi :').grid(row=0, column=0, sticky='nw', padx=150, pady=10)
+        Label(fr, text='Nom du tournoi :').grid(
+            row=0, column=0, sticky='nw', padx=150, pady=10
+            )
         self.name = StringVar()
         self.namefield = Entry(fr, textvariable=self.name)
-        self.namefield.grid(row=0, column=0, sticky='nw', padx=260, pady=10)
+        self.namefield.grid(
+            row=0, column=0, sticky='nw', padx=260, pady=10
+            )
 
-        Label(fr, text='Round :').grid(row=0, column=0, sticky='nw', padx=150, pady=35)
+        Label(fr, text='Round :').grid(
+            row=0, column=0, sticky='nw', padx=150, pady=35
+            )
         self.round = StringVar()
         self.roundfield = Entry(fr, textvariable=self.round)
         self.roundfield.grid(row=0, column=0, sticky='nw', padx=260, pady=35)
 
-        Label(fr, text='Date ouverture :').grid(row=0, column=0, sticky='nw', padx=150, pady=60)
+        Label(fr, text='Date ouverture :').grid(
+            row=0, column=0, sticky='nw', padx=150, pady=60
+            )
         self.start_date = StringVar()
         self.start_datefield = Entry(fr, textvariable=self.start_date)
-        self.start_datefield.grid(rrow=0, column=0, sticky='nw', padx=260, pady=60)
+        self.start_datefield.grid(
+            row=0, column=0, sticky='nw', padx=260, pady=60
+            )
 
-        Label(fr, text='Date fermeture :').grid(row=0, column=0, sticky='nw', padx=150, pady=85)
+        Label(fr, text='Date fermeture :').grid(
+            row=0, column=0, sticky='nw', padx=150, pady=85
+            )
         self.end_date = StringVar()
         self.end_datefield = Entry(fr, textvariable=self.end_date)
-        self.end_datefield.grid(row=0, column=0, sticky='nw', padx=260, pady=85)
+        self.end_datefield.grid(
+            row=0, column=0, sticky='nw', padx=260, pady=85
+            )
 
-        Label(fr, text='Gestion du temps :').grid(row=0, column=0, sticky='nw', padx=150, pady=110)
+        Label(fr, text='Gestion du temps :').grid(
+            row=0, column=0, sticky='nw', padx=150, pady=110
+            )
         self.time_control = StringVar()
-        self.time_controlfield = ttk.Combobox(fr, width=20, textvariable=self.time_control)
+        self.time_controlfield = ttk.Combobox(
+            fr, width=20, textvariable=self.time_control
+            )
         self.time_controlfield['values'] = ("Bullet", "Blitz", "Coups rapide")
-        self.time_controlfield.grid(row=0, column=0, sticky='nw', padx=260, pady=110)
+        self.time_controlfield.grid(
+            row=0, column=0, sticky='nw', padx=260, pady=110
+            )
         self.time_controlfield.current(1)
 
-        ttk.Button(fr, text='Ajouter à la liste', command=self.create_record).grid(row=5, column=2,
-                                                                                   sticky='e', padx=5, pady=2)
+        ttk.Button(
+            fr, text='Ajouter à la liste', command=self.create_record).grid(
+                row=5, column=2, sticky='e', padx=5, pady=2
+                )
         showbtn = ttk.Button(text="Voir la liste", command=self.view_records)
         showbtn.grid(row=5, column=0, sticky='w')
 
         self.msg = Label(text='', fg='red')
         self.msg.grid(row=5, column=1, sticky='w')
 
-        self.tree = ttk.Treeview(height=6, columns=("place", "start_date", "end_date", "time_control"))
+        self.tree = ttk.Treeview(height=6, columns=(
+            "place", "start_date", "end_date", "time_control"
+            ))
         self.tree.grid(row=15, column=0, columnspan=100)
         self.tree.heading('#0', text='Nom', anchor='W')
         self.tree.heading("place", text='Lieu', anchor='W')
@@ -598,7 +751,9 @@ class Turn(ttk.Frame):
         delbtn = ttk.Button(text="Delete Selected", command=self.delete_record)
         delbtn.grid(row=7, column=0, sticky='w')
 
-        updtbtn = ttk.Button(text="Modify Selected", command=self.open_modify_window)
+        updtbtn = ttk.Button(
+            text="Modify Selected", command=self.open_modify_window
+            )
         updtbtn.grid(row=7, column=1, sticky='w')
         self.view_records()
 
@@ -612,54 +767,94 @@ class MatchFrame(ttk.Frame):
         fr = LabelFrame(master, text='Saisir un nouveau resultat')
         fr.grid(row=0, column=0, padx=8, pady=8, sticky='nw')
 
-        Label(fr, text='Nom du tournoi :').grid(row=0, column=0, sticky='nw', padx=150, pady=10)
+        Label(fr, text='Nom du tournoi :').grid(
+            row=0, column=0, sticky='nw', padx=150, pady=10
+            )
         self.name = StringVar()
-        self.namefield = ttk.Combobox(fr, width=17, textvariable=self.name)
+        self.namefield = ttk.Combobox(
+            fr, width=17, textvariable=self.name
+            )
         self.namefield['values'] = ["Tournoi 1 ", "Tournoi  2 ", ""]
-        self.namefield.grid(row=0, column=0, sticky='nw', padx=260, pady=10)
+        self.namefield.grid(
+            row=0, column=0, sticky='nw', padx=260, pady=10
+            )
 
-        Label(fr, text='Round :').grid(row=0, column=0, sticky='nw', padx=150, pady=35)
+        Label(fr, text='Round :').grid(
+            row=0, column=0, sticky='nw', padx=150, pady=35
+            )
         self.round = StringVar()
         self.roundfield = ttk.Combobox(fr, width=17, textvariable=self.round)
         self.roundfield['values'] = ["Round 1 ", "Round  2 ", ""]
-        self.roundfield.grid(row=0, column=0, sticky='nw', padx=260, pady=35)
+        self.roundfield.grid(
+            row=0, column=0, sticky='nw', padx=260, pady=35
+            )
 
-        Label(fr, text='Nom échiquier :').grid(row=0, column=0, sticky='nw', padx=150, pady=60)
+        Label(fr, text='Nom échiquier :').grid(
+            row=0, column=0, sticky='nw', padx=150, pady=60
+            )
         self.name_chess = StringVar()
         self.name_chessfield = Entry(fr, textvariable=self.name_chess)
-        self.name_chessfield.grid(row=0, column=0, sticky='nw', padx=260, pady=60)
+        self.name_chessfield.grid(
+            row=0, column=0, sticky='nw', padx=260, pady=60
+            )
 
-        Label(fr, text='Joueur 1 :').grid(row=0, column=0, sticky='nw', padx=410, pady=60)
+        Label(fr, text='Joueur 1 :').grid(
+            row=0, column=0, sticky='nw', padx=410, pady=60
+            )
         self.player1_name = StringVar()
         self.player1_namefield = Entry(fr, textvariable=self.player1_name)
-        self.player1_namefield.grid(row=0, column=0, sticky='nw', padx=480, pady=60)
+        self.player1_namefield.grid(
+            row=0, column=0, sticky='nw', padx=480, pady=60
+            )
 
-        Label(fr, text='Joueur 2 :').grid(row=0, column=0, sticky='nw', padx=410, pady=85)
+        Label(fr, text='Joueur 2 :').grid(
+            row=0, column=0, sticky='nw', padx=410, pady=85
+            )
         self.player2_name = StringVar()
         self.player2_namefield = Entry(fr, textvariable=self.player2_name)
-        self.player2_namefield.grid(row=0, column=0, sticky='nw', padx=480, pady=85)
+        self.player2_namefield.grid(
+            row=0, column=0, sticky='nw', padx=480, pady=85
+            )
 
-        Label(fr, text='Date ouverture :').grid(row=0, column=0, sticky='nw', padx=150, pady=85)
+        Label(fr, text='Date ouverture :').grid(
+            row=0, column=0, sticky='nw', padx=150, pady=85
+            )
         self.start_date = StringVar()
         self.start_datefield = Entry(fr, textvariable=self.start_date)
-        self.start_datefield.grid(row=0, column=0, sticky='nw', padx=260, pady=85)
+        self.start_datefield.grid(
+            row=0, column=0, sticky='nw', padx=260, pady=85
+            )
 
         # la date de fermeture sera ecrite automatique à la saisie du resultat
-        Label(fr, text='Date fermeture :').grid(row=0, column=0, sticky='nw', padx=150, pady=110)
+        Label(fr, text='Date fermeture :').grid(
+            row=0, column=0, sticky='nw', padx=150, pady=110
+            )
         self.end_date = StringVar()
         self.end_datefield = Entry(fr, textvariable=self.end_date)
-        self.end_datefield.grid(row=0, column=0, sticky='nw', padx=260, pady=110)
+        self.end_datefield.grid(
+            row=0, column=0, sticky='nw', padx=260, pady=110
+            )
 
-        Label(fr, text='Résultat :').grid(row=0, column=0, sticky='nw', padx=410, pady=110)
+        Label(fr, text='Résultat :').grid(
+            row=0, column=0, sticky='nw', padx=410, pady=110
+            )
         self.matchresult = StringVar()
-        self.matchresult_controlfield = ttk.Combobox(fr, width=17, textvariable=self.matchresult)
-        self.matchresult_controlfield['values'] = ("Joueur 1 win", "Joueur 2 win", "Nul", "")
-        self.matchresult_controlfield.grid(row=0, column=0, sticky='nw', padx=480, pady=110)
+        self.matchresult_controlfield = ttk.Combobox(
+            fr, width=17, textvariable=self.matchresult
+            )
+        self.matchresult_controlfield['values'] = (
+            "Joueur 1 win", "Joueur 2 win", "Nul", ""
+            )
+        self.matchresult_controlfield.grid(
+            row=0, column=0, sticky='nw', padx=480, pady=110
+            )
         self.matchresult_controlfield.current(3)
         # ===============================================================
         #  boutons
         # ===============================================================
-        ttk.Button(fr, text='Enregistrer résultat').grid(row=0, column=0, sticky='nw', padx=150, pady=135)
+        ttk.Button(fr, text='Enregistrer résultat').grid(
+            row=0, column=0, sticky='nw', padx=150, pady=135
+            )
         showbtn = ttk.Button(fr, text="Actualiser la liste")
 
         showbtn.grid(row=0, column=0, sticky='nw', padx=20, pady=135)
@@ -676,7 +871,9 @@ class MatchFrame(ttk.Frame):
         # ===============================================================
         #  liste
         # ===============================================================
-        self.tree = ttk.Treeview(fr, height=6, columns=("start_date", "end_date", "Player 1", "Player 2", "Results"))
+        self.tree = ttk.Treeview(fr, height=6, columns=(
+            "start_date", "end_date", "Player 1", "Player 2", "Results"
+            ))
         self.tree.grid(row=1, column=0, sticky='nw', pady=10)
         self.tree.heading('#0', text='Echiquier', anchor='w')
         self.tree.heading("start_date", text='Date début', anchor='w')
@@ -701,7 +898,9 @@ class ReportFrame(ttk.Frame):
         # ===============================================================
         #  liste
         # ===============================================================
-        self.tree = ttk.Treeview(fr, height=6, columns=("place", "start_date", "end_date", "time_control"))
+        self.tree = ttk.Treeview(fr, height=6, columns=(
+            "place", "start_date", "end_date", "time_control"
+            ))
         self.tree.grid(row=0, column=0, pady=20, sticky='w')
         self.tree.heading('#0', text='Nom', anchor='w')
         self.tree.heading("place", text='Lieu', anchor='w')
@@ -709,14 +908,18 @@ class ReportFrame(ttk.Frame):
         self.tree.heading("end_date", text='Date de fin', anchor='w')
         self.tree.heading("time_control", text='Gestion du temps', anchor='w')
 
-        self.rnd_tree = ttk.Treeview(fr, height=6, columns=("start_date", "end_date"))
+        self.rnd_tree = ttk.Treeview(fr, height=6, columns=(
+            "start_date", "end_date"
+            ))
         self.rnd_tree.grid(row=1, column=0, columnspan=3, pady=20, sticky='w')
         self.rnd_tree.heading('#0', text='Round', anchor='w')
         self.rnd_tree.heading("start_date", text='Date début', anchor='w')
         self.rnd_tree.heading("end_date", text='Date de fin', anchor='w')
 
-        self.match_tree = ttk.Treeview(fr, height=6, columns=(
-                                       "start_date", "end_date", "Player 1", "Player 2", "Results"))
+        self.match_tree = ttk.Treeview(
+            fr, height=6, columns=(
+                "start_date", "end_date", "Player 1", "Player 2", "Results"
+                ))
         self.match_tree.grid(row=2, column=0, pady=20, sticky='w')
         self.match_tree.heading('#0', text='Echiquier', anchor='w')
         self.match_tree.heading("start_date", text='Date début', anchor='w')
