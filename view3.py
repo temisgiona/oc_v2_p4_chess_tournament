@@ -1,14 +1,9 @@
 from typing import Any, List, Tuple
-# import sys
-# import model
 from controller import chess_tournament
 from controller.chess_tournament import player_inscription
 from controller.chess_tournament import player_register, graphic_mode
 from view.rapport3 import Rapport
-# from view.rapport import print_round_tmnt_datase, print_match_tmnt_datase
-# from view.rapport import print_players_database, print_tournament_database
 from model import models
-# from model import manager_txt
 
 
 class View:
@@ -18,15 +13,17 @@ class View:
         self.content = content
 
     def show(self):
-        print("*"*len(self.title)*5)
+        print("*" * len(self.title) * 5)
         print(self.title)
-        print("*"*len(self.title)*5)
+        print("*" * len(self.title) * 5)
         if self.content:
             print(self.content)
 
 
 class Menu(View):
-    """ Demande à l'utilisateur de faire un choix parmi plusieurs options et renvoi un entier """
+    """ Demande à l'utilisateur de faire un choix parmi
+    plusieurs options et renvoi un entier
+    """
     def __init__(self, title: str, options: List[str]):
         content = "\n".join(
             [f"{nb} - {option}" for nb, option in enumerate(options, start=1)])
@@ -45,7 +42,9 @@ class Menu(View):
 
 
 class Form(View):
-    """ Demande à l'utilisateur de remplir des champs et renvoi un dictionnaire de données """
+    """ Demande à l'utilisateur de remplir des champs
+    et renvoi un dictionnaire de données
+    """
     def __init__(self, title: str, fields: List[Tuple[str, str, Any]]):
         super().__init__(title)
         self.fields = fields
@@ -128,11 +127,14 @@ form_player = [('lastname', 'le Nom ', str), ('firstname', 'le Prénom  ', str),
                ('rank', 'le Rang  ', int)]
 
 
-tmnt_form = [('name', 'le Nom du tournoi', str), ('place', 'le lieu du tournoi', str),
-             ('start_date', 'la date de début prévue (AAAA-MM-JJ)', str),
-             ('end_date', 'la date de fin prévisionnelle (AAAA-MM-JJ)', str),
-             ('time_control', 'la gestion du temps ( rapide, eclair ou normal)', str),
-             ("", 'Retour menu principal <--', str)]
+tmnt_form = [
+    ('name', 'le Nom du tournoi', str),
+    ('place', 'le lieu du tournoi', str),
+    ('start_date', 'la date de début prévue (AAAA-MM-JJ)', str),
+    ('end_date', 'la date de fin prévisionnelle (AAAA-MM-JJ)', str),
+    ('time_control', 'la gestion du temps ( rapide, eclair ou normal)', str),
+    ("", 'Retour menu principal <--', str)
+    ]
 
 
 player_tmnt_registering = [('id_tnmt', 'ID tournoi ', str),
@@ -166,10 +168,14 @@ class MenuPrincipalComm:
         return data_m
 
     def option_J1(self):
-        """  creation of the new player in db base
-        return to db data type {id, , lastname, firstname, birth, gender, rank, score}"""
-        my_new_player = models.Player_Chess({'id': 1000, 'lastname': "", 'firstname': "", 'birthdate': "",
-                                            "gender": "M", 'rank': 0, 'score': 0})
+        """ creation of the new player in db base
+        return to db data type
+        {id, , lastname, firstname, birth, gender, rank, score}
+        """
+        my_new_player = models.Player_Chess({
+            'id': 1000, 'lastname': "", 'firstname': "", 'birthdate': "",
+            "gender": "M", 'rank': 0, 'score': 0
+            })
 
         data = self.data_resquested("Création de joueur", form_player)
         my_new_player.lastname = data['lastname']
@@ -184,11 +190,15 @@ class MenuPrincipalComm:
         """ creation of player"""
         from controller.chess_tournament import players_database_list
 
-        data = self.data_resquested("Inscription d'un joueur au tournoi", player_tmnt_registering)
+        data = self.data_resquested(
+            "Inscription d'un joueur au tournoi", player_tmnt_registering
+            )
 
         player_inscription(data)
         result = players_database_list(db='dbplayer_tnmt', sort="")
-        Rapport("").print_players_database(result, '', 'Liste des joueurs inscrits')
+        Rapport("").print_players_database(
+            result, '', 'Liste des joueurs inscrits'
+            )
 
     def option_tnmt_creat(self):
         """ ihm information tournament"""
@@ -219,17 +229,12 @@ class MenuPrincipalComm:
     def option10(self):
         print('choix option \'Option 10\'')
 
+    def exit(self):
+        exit()
+
     def menu_base(self):
 
         while(True):
-
-            menu_options = {
-                            1: 'Joueurs',
-                            2: 'Tournoi',
-                            3: 'Rapports',
-                            4: 'Mode graphique',
-                            5: 'Quitter',
-                            }
 
             print('')
 
@@ -241,8 +246,11 @@ class MenuPrincipalComm:
                 self.view_choice(option)
                 option = ''
 
-                option = self.display_menu_obj("Menu_joueurs", menu_options_joueurs)
-
+                option = self.display_menu_obj(
+                    "Menu_joueurs", menu_options_joueurs
+                    )
+                from controller.chess_tournament import players_database_list
+                from controller.chess_tournament import modify_player
                 self.view_choice(option)
                 if option == 1:
                     """# saisie joueur
@@ -251,10 +259,7 @@ class MenuPrincipalComm:
                     player_register(data)
 
                 elif option == 2:
-                    """# modification of player rank
-                    # from controller.chess_tournament import modify_player"""
-                    from controller.chess_tournament import modify_player, players_database_list
-
+                    """modification of player rank"""
                     result = players_database_list(db='dbplayers', sort="")
                     Rapport("").print_players_database(result, '')
                     id_player = input("saisir l'id du joueur à modifier: ")
@@ -264,8 +269,6 @@ class MenuPrincipalComm:
                     Rapport("").print_players_database(result, '')
 
                 elif option == 3:
-                    from controller.chess_tournament import players_database_list
-
                     result = players_database_list(db='dbplayers', sort="")
                     Rapport("").print_players_database(result, '')
 
@@ -275,8 +278,10 @@ class MenuPrincipalComm:
             elif option == 2:
                 self.view_choice(option)
                 option = ''
-
-                option = self.display_menu_obj("Menu Tournoi", menu_options_tournois)
+                from controller.chess_tournament import players_database_list
+                option = self.display_menu_obj(
+                    "Menu Tournoi", menu_options_tournois
+                    )
                 self.view_choice(option)
 
                 if option == 1:
@@ -289,16 +294,19 @@ class MenuPrincipalComm:
                     result = players_database_list(db='dbplayers', sort="")
                     Rapport("").print_players_database(result, title2='')
                     result2 = chess_tournament.tmnt_database_list()
-                    Rapport("").print_tournament_database(result2, 'open', "Tournoi disponible")
+                    Rapport("").print_tournament_database(
+                        result2, 'open', "Tournoi disponible"
+                        )
                     data = self.option_player_inscription_tnmt()
 
                 elif option == 3:
-                    """# demarrer ou reprendre un tournoi"""
-                    from controller.chess_tournament import players_database_list
+                    """ demarrer ou reprendre un tournoi"""
 
                     result = players_database_list(db='dbplayer_tnmt', sort="")
                     Rapport("").print_players_database(result, title2='')
-                    result2 = int(input("Saisir l'iD du joueur à retirer de la liste :"))
+                    result2 = int(input(
+                        "Saisir l'iD du joueur à retirer de la liste :"
+                        ))
                     chess_tournament.player_unscription(result2)
                     result = players_database_list(db='dbplayer_tnmt', sort="")
                     Rapport("").print_players_database(result, title2='')
@@ -313,80 +321,106 @@ class MenuPrincipalComm:
             elif option == 3:
                 option = ''
 
-                option = self.display_menu_obj("Menu Rapports", menu_options_rapports)
+                option = self.display_menu_obj(
+                    "Menu Rapports", menu_options_rapports
+                    )
                 from controller.chess_tournament import players_database_list
                 if option == 1:
-                    """# player sorted by alpah"""
+                    """ player sorted by alpah"""
 
-                    result = players_database_list(db='dbplayers', sort="alpha")
+                    result = players_database_list(
+                        db='dbplayers', sort="alpha"
+                        )
                     Rapport("").print_players_database(result, 'alpha')
 
                 elif option == 2:
-                    """# player sorted by rank"""
+                    """ player sorted by rank"""
                     result = players_database_list(db='dbplayers', sort="rank")
                     Rapport("").print_players_database(result, 'rank')
 
                 elif option == 3:
-                    """# tournament players list alphad sorted"""
+                    """ tournament players list alphad sorted"""
                     result = chess_tournament.tmnt_database_list()
                     Rapport("").print_tournament_database(result, 'all')
-                    id_tournament = input("Saisir l'id  du tournoi  pour l'affichage des informations :")
+                    id_tournament = input(
+                        "Saisir l'id  du tournoi :"
+                        )
 
-                    result2 = chess_tournament.player_of_tmnt_to_report(int(id_tournament), sort="alpha")
-                    Rapport("").print_players_database(result2, 'alpha', 'Liste des joueurs inscrit')
+                    result2 = chess_tournament.player_of_tmnt_to_report(int(
+                        id_tournament), sort="alpha"
+                        )
+                    Rapport("").print_players_database(
+                        result2, 'alpha', 'Liste des joueurs inscrit'
+                        )
 
                 elif option == 4:
-                    """# tournament players list rank sorted"""
+                    """ tournament players list rank sorted"""
 
                     result = chess_tournament.tmnt_database_list()
                     Rapport("").print_tournament_database(result, 'all')
-                    id_tournament = input("Saisir l'id  du tournoi  pour l'affichage des informations :")
+                    id_tournament = input(
+                        "Saisir l'id du tournoi :"
+                        )
 
-                    result2 = chess_tournament.player_of_tmnt_to_report(int(id_tournament), sort="rank")
-                    Rapport("").print_players_database(result2, 'rank', 'Liste des joueurs inscrit')
+                    result2 = chess_tournament.player_of_tmnt_to_report(int(
+                        id_tournament), sort="rank"
+                        )
+                    Rapport("").print_players_database(
+                        result2, 'rank', 'Liste des joueurs inscrit :'
+                        )
 
                 elif option == 5:
-                    """# all tournament list"""
+                    """ all tournament list"""
                     result = chess_tournament.tmnt_database_list()
                     Rapport("").print_tournament_database(result, 'all')
 
                 elif option == 6:
-                    """# all round of a selected tournament"""
+                    """ all round of a selected tournament"""
                     result = chess_tournament.tmnt_database_list()
                     Rapport("").print_tournament_database(result, 'all')
-                    id_tournament = input("Saisir l'id  du tournoi  pour l'affichage des informations ")
-                    data_serialized = chess_tournament.round_report_by_id(id_tournament, id_name='id_tournament')
-                    Rapport("").print_round_tmnt_datase(data_serialized, title2="", title="Liste des Round ou Tours")
+                    id_tournament = input(
+                        "Saisir l'id  du tournoi :"
+                        )
+                    data_serialized = chess_tournament.round_report_by_id(
+                        id_tournament, id_name='id_tournament'
+                        )
+                    Rapport("").print_round_tmnt_datase(
+                        data_serialized, title2="",
+                        title="Liste des Round ou Tours"
+                        )
 
                 elif option == 7:
-                    """# all match of a selected tournament"""
+                    """ all match of a selected tournament"""
                     result = chess_tournament.tmnt_database_list()
                     Rapport("").print_tournament_database(result, 'all')
-                    id_tournament = input("Saisir l'id  du tournoi  pour l'affichage des informations ")
+                    id_tournament = input(
+                        "Saisir l'id  du tournoi :")
                     data_serialized = chess_tournament.match_report_with_name(
                         id_value=id_tournament,
                         id_name='id_tournament'
                          )
-                    Rapport("").print_match_tmnt_datase(data_serialized, title2="", title="Liste des match")
+                    Rapport("").print_match_tmnt_datase(
+                        data_serialized, title2="",
+                        title="Liste des match"
+                        )
 
                 # ----------------------------------------
                 #         escape menu
                 # ----------------------------------------
-                elif option == 4:
-                    self.option4()
-                    """# print('Au revoir et Merci !')
-                    # exit()"""
+            elif option == 4:
+                self.option4()
 
-                elif option == 5:
-                    # option5()
-                    print('Au revoir et Merci !')
-                    exit()
+            elif option == 5:
 
-                elif option == 10:
-                    print('Au revoir et Merci !')
-                    exit()
-                else:
-                    print('Invalide option. SVP, entrez un chiffre dans la bonne plage affichée ci dessus.')
+                print('Au revoir et Merci !')
+                self.exit()
+
+            elif option == 10:
+                print('Au revoir et Merci !')
+                self.exit()
+            else:
+                print('Invalide option.')
+                print('Entrez SVP un chiffre dans la plage affichée ci-dessus')
 
 
 if __name__ == '__main__':

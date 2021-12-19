@@ -134,16 +134,22 @@ class Rapport:
         print("")
 
     def print_row_tab_round(self, round, match):
-        """ print the result of a round  match/match without name of player"""
+        """ print the result of a round  match/match
+        without name of player
+        """
         match_view_list = []
         print("")
-        data_title = ["Nom Echiquier", "indice joueur 1", "indice Joueur 2",  "Resultat"]
+        data_title = [
+            "Nom Echiquier", "indice joueur 1", "indice Joueur 2", "Resultat"
+            ]
         mon_title = ViewMatch(data_title)
         mon_title.print_data()
         print("")
         for row in range(0, len(match), 4):
             m_row = row + 3
-            match_view_list = [match[row], match[row+1], match[row+2], match[row+3]]
+            match_view_list = [
+                match[row], match[row+1], match[row+2], match[row+3]
+                ]
             if match[m_row] == 10:
                 match_view_list[3] = 'Non joué'
                 mavisumatch = ViewMatch(match_view_list)
@@ -152,10 +158,14 @@ class Rapport:
         print("")
 
     def print_row_tab_round_2(self, round, match):
-        """ print the result of a round  match/match with name of player by objet to print"""
+        """ print the result of a round  match/match
+        with name of player by objet to print
+        """
         match_view_list = []
         print("")
-        data_title = ["Nom Echiquier", "indice joueur 1", "indice Joueur 2",  "Resultat"]
+        data_title = [
+            "Nom Echiquier", "indice joueur 1", "indice Joueur 2", "Resultat"
+            ]
         mon_title = ViewMatch(data_title)
         mon_title.print_data()
         print("")
@@ -188,7 +198,10 @@ class Rapport:
         print('%-25s' % tab, title)
         if not title2 == "":
             print('%-25s' % tab, title2b)
-        data_title = ["ID", "Nom", "Prénom", "date de naissance", "Genre", "Rang", "Score"]
+        data_title = [
+            "ID", "Nom", "Prénom", "date de naissance",
+            "Genre", "Rang", "Score"
+            ]
         mon_title = Viewplayer_db(data_title)
         mon_title.print_data()
         print("")
@@ -215,7 +228,10 @@ class Rapport:
         if not title2 == "":
             print('%-25s' % tab, title2b)
 
-        data_title = ["ID", "Nom", "Lieu", "Date de début", "Date de fin", "Controle temps", "Nbr Round", "Statut"]
+        data_title = [
+            "ID", "Nom", "Lieu", "Date de début", "Date de fin",
+            "Controle temps", "Nbr Round", "Statut"
+            ]
         m_tmnt = ViewTnmt(data_title)
         m_tmnt.print_data()
 
@@ -236,7 +252,9 @@ class Rapport:
         print("")
 
     def print_round_tmnt_datase(self, data_serialized, title2="", title="Liste des round"):
-        """ print all round in tournament with start date and end_date by object to print"""
+        """ print all round in tournament with
+        start date and end_date by object to print
+        """
         tab = "    "
 
         title2b = ""
@@ -245,7 +263,10 @@ class Rapport:
         print('%-25s' % tab, title)
         if not title2 == "":
             print('%-25s' % tab, title2b)
-        data_title = {'id': "ID", "number": "Round", "start_date": "Date de début", "end_date": "Date de fin"}
+        data_title = {
+            'id': "ID", "number": "Round", "start_date": "Date de début",
+            "end_date": "Date de fin"
+            }
         my_round = ViewRound(data_title)
         my_round.print_data()
 
@@ -256,7 +277,9 @@ class Rapport:
             my_round.print_data()
 
     def print_match_tmnt_datase(self, data_serialized, title2='open', title="Liste des match"):
-        """ print match evenement  with a match specific match objet to print"""
+        """ print match evenement  with
+        a match specific match objet to print
+        """
         tab = "    "
         # method of sorting
         if title2 == 'open':
@@ -272,7 +295,8 @@ class Rapport:
             print('%-25s' % tab, title2b)
 
         data_title = [
-            "ID", "round", "iD_TMNT", "Nom", "Joueur 1", "joueur 2", 'score joueur 1',
+            "ID", "round", "iD_TMNT", "Nom", "Joueur 1", "joueur 2",
+            'score joueur 1',
             'score joueur 2', "Date de début", "Date de fin"
                     ]
         m_match_db = ViewMatch_db(data_title)

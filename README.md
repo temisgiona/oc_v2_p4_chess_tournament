@@ -1,6 +1,6 @@
 # oc_v2_p4_chess_tournament
 chess_tournament.py (mode console) 
-Pour lancer le programme, il faut lancer en mode console le fichier view2.py
+Pour lancer le programme, il faut lancer en mode console le fichier view3.py
 
 ## **Notice utilisation :** 
 

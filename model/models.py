@@ -35,7 +35,8 @@ class Tournament(BaseModel):
 
     def serialized_tnmt(self):
         return {'id': self.id, 'name': self.name, 'place': self.place,
-                "start_date": self.start_date, "end_date": self.end_date, "round_number": self.round_number,
+                "start_date": self.start_date, "end_date": self.end_date,
+                "round_number": self.round_number,
                 "time_control": self.time_control, 'state': self.state}
 
 
@@ -67,7 +68,8 @@ class Turn:
         self.end_date = data_type['end_date']
 
     def serialized(self):
-        return {'id': self.id, 'id_tournament': self.id_tournament, 'number': self.number,
+        return {'id': self.id, 'id_tournament': self.id_tournament,
+                'number': self.number,
                 "start_date": self.start_date, "end_date": self.end_date}
 
 
@@ -87,5 +89,6 @@ class Player_Chess:
         self.score = data_type['score']
 
     def serialized(self):
-        return {'id': self.id, 'lastname': self.lastname, 'firstname': self.firstname, 'birthdate': self.birthdate,
+        return {'id': self.id, 'lastname': self.lastname,
+                'firstname': self.firstname, 'birthdate': self.birthdate,
                 'gender': self.gender, 'rank': self.rank, 'score': self.score}

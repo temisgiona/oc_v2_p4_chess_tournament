@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>flake8 violations: .\controller\chess_tournament.py</title>
+      <meta http-equiv="Content-Type" value="text/html; charset=UTF-8">
+      <link rel="stylesheet" href="styles.css">
+<script>
+function bindHandler(link) {
+   var code = link.getAttribute('data-code');
+   var key = location.pathname + '#' + code;
+
+   var ul = link.parentNode.querySelector('.details');
+   if (sessionStorage[key] != 'open') {
+      ul.style.display = 'none';
+   }
+   link.addEventListener('click', function (event) {
+      if (!ul.style.display || ul.style.display == 'none') {
+         ul.style.display = 'block';
+         sessionStorage[key] = 'open';
+      } else {
+         ul.style.display = 'none';
+         sessionStorage[key] = 'closed';
+      }
+   });
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+   var links = document.querySelectorAll('#index > li > a');
+   for (var i = 0; i < links.length; i++) {
+      bindHandler(links[i]);
+   }
+});
+</script>
+   </head>
+   <body>
+      <div id="masthead" class="sev-2"></div>
+      <div id="page">
+         <p id="srclink">
+            <a title="View full annotated source"
+               href="controller.chess_tournament.source.html">
+               <img src="file.svg" alt="&#x2261;">
+            </a></p>
+         <h1>
+            <a href="index.html">
+               <img src="back.svg" alt="&#x2B05;">
+               .\controller\chess_tournament.py
+            </a>
+         </h1>
+
+         <ul id="index">
+         
+         <li>
+            <a data-code="E501">
+               <span class="count sev-2">
+                  68
+               </span>
+               <strong>E501:</strong> line too long (115 > 79 characters)
+               
+                  (and 29 similar)
+               
+            </a>
+            <ul class="details">
+            <li>
+               
+               <p>Line too long (115 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l124">
+                  <tt><i>124</i>             <span class="n">data_round</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">players_t0</span><span class="p">[</span><span class="n">search_player_by_indice</span><span class="p">(</span><span class="n">players_t0</span><span class="p">,</span> <span class="n">t_round</span><span class="p">[</span><span class="n">a</span><span class="o">+</span><span class="mi">1</span><span class="p">])][</span><span class="mi">6</span><span class="p">]</span>              <span class="c1"># id_tnmt</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (113 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l125">
+                  <tt><i>125</i>             <span class="n">data_round</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">t_round</span><span class="p">[</span><span class="n">a</span><span class="p">]</span>                                                                     <span class="c1"># name</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (115 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l126">
+                  <tt><i>126</i>             <span class="n">data_round</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">players_t0</span><span class="p">[</span><span class="n">search_player_by_indice</span><span class="p">(</span><span class="n">players_t0</span><span class="p">,</span> <span class="n">t_round</span><span class="p">[</span><span class="n">a</span><span class="o">+</span><span class="mi">1</span><span class="p">])][</span><span class="mi">5</span><span class="p">]</span>              <span class="c1"># player1</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (115 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l127">
+                  <tt><i>127</i>             <span class="n">data_round</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">players_t0</span><span class="p">[</span><span class="n">search_player_by_indice</span><span class="p">(</span><span class="n">players_t0</span><span class="p">,</span> <span class="n">t_round</span><span class="p">[</span><span class="n">a</span><span class="o">+</span><span class="mi">2</span><span class="p">])][</span><span class="mi">5</span><span class="p">]</span>              <span class="c1"># player2</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (90 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l169">
+                  <tt><i>169</i> <span class="sd">     when it mach with player 1 , i t search in player list and upgrade the right score&quot;&quot;&quot;</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (80 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l191">
+                  <tt><i>191</i>                 <span class="n">players_T0</span><span class="p">[</span><span class="n">search_player_by_indice</span><span class="p">(</span><span class="n">players_T0</span><span class="p">,</span> <span class="n">player1</span><span class="p">)][</span><span class="mi">4</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (80 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l193">
+                  <tt><i>193</i>                 <span class="n">players_T0</span><span class="p">[</span><span class="n">search_player_by_indice</span><span class="p">(</span><span class="n">players_T0</span><span class="p">,</span> <span class="n">player2</span><span class="p">)][</span><span class="mi">4</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (113 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l195">
+                  <tt><i>195</i>                 <span class="n">players_T0</span><span class="p">[</span><span class="n">search_player_by_indice</span><span class="p">(</span><span class="n">players_T0</span><span class="p">,</span> <span class="n">player2</span><span class="p">)][</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">players_T0</span><span class="p">[</span><span class="n">search_player_by_indice</span><span class="p">(</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (119 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l196">
+                  <tt><i>196</i>                                                                                          <span class="n">players_T0</span><span class="p">,</span> <span class="n">player2</span><span class="p">)][</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (113 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l197">
+                  <tt><i>197</i>                 <span class="n">players_T0</span><span class="p">[</span><span class="n">search_player_by_indice</span><span class="p">(</span><span class="n">players_T0</span><span class="p">,</span> <span class="n">player1</span><span class="p">)][</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">players_T0</span><span class="p">[</span><span class="n">search_player_by_indice</span><span class="p">(</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (119 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l198">
+                  <tt><i>198</i>                                                                                          <span class="n">players_T0</span><span class="p">,</span> <span class="n">player1</span><span class="p">)][</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (87 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l240">
+                  <tt><i>240</i>         <span class="n">player_query_tmnt</span> <span class="o">=</span> <span class="n">player_manager_tnmt</span><span class="o">.</span><span class="n">search_to_tinydb_by_id</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]))</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (86 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l247">
+                  <tt><i>247</i>                 <span class="n">player_query_serialised</span> <span class="o">=</span> <span class="n">player_manager</span><span class="o">.</span><span class="n">serialize_query</span><span class="p">(</span><span class="n">player_query</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (88 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l281">
+                  <tt><i>281</i>         <span class="n">players_rank_sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">players_all_db</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (83 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l297">
+                  <tt><i>297</i>         <span class="n">players_rank_sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data_list</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (82 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l306">
+                  <tt><i>306</i>     <span class="n">data_match</span> <span class="o">=</span> <span class="n">player_match_manager</span><span class="o">.</span><span class="n">match_querying_by_id2</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;id_turn&quot;</span><span class="p">,</span> <span class="n">id_tmnt</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (118 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l359">
+                  <tt><i>359</i>     <span class="n">turn_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;id_tournament&quot;</span><span class="p">:</span> <span class="n">id_tnmt</span><span class="p">,</span> <span class="s2">&quot;number&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;start_date&quot;</span><span class="p">:</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">(),</span> <span class="s2">&quot;end_date&quot;</span><span class="p">:</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()}</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (93 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l390">
+                  <tt><i>390</i>     <span class="c1"># data = turn_manager.search_to_tinydb_by_id_2(turn_object.id, turn_object.id_tournament)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (88 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l442">
+                  <tt><i>442</i>             <span class="n">my_player_data1</span> <span class="o">=</span> <span class="n">player_manager</span><span class="o">.</span><span class="n">search_to_tinydb_by_id</span><span class="p">(</span><span class="n">my_match</span><span class="o">.</span><span class="n">player1_id</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (88 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l443">
+                  <tt><i>443</i>             <span class="n">my_player_data2</span> <span class="o">=</span> <span class="n">player_manager</span><span class="o">.</span><span class="n">search_to_tinydb_by_id</span><span class="p">(</span><span class="n">my_match</span><span class="o">.</span><span class="n">player2_id</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (88 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l447">
+                  <tt><i>447</i>             <span class="n">match_with_name</span> <span class="o">=</span> <span class="n">match_tmnt_manager</span><span class="o">.</span><span class="n">match_object_db_unserialising</span><span class="p">(</span><span class="n">my_match</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (84 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l449">
+                  <tt><i>449</i>             <span class="n">match_with_name</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">my_player1</span><span class="o">.</span><span class="n">lastname</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">my_player1</span><span class="o">.</span><span class="n">firstname</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (84 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l450">
+                  <tt><i>450</i>             <span class="n">match_with_name</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">my_player2</span><span class="o">.</span><span class="n">lastname</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">my_player2</span><span class="o">.</span><span class="n">firstname</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (82 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l505">
+                  <tt><i>505</i>     <span class="n">players_list2</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">players_list</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">((</span><span class="n">column</span><span class="o">-</span><span class="mi">1</span><span class="p">)),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (80 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l535">
+                  <tt><i>535</i>     <span class="n">players_list2</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">players_list</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">((</span><span class="n">column</span><span class="p">)),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (86 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l542">
+                  <tt><i>542</i> <span class="sd">    création de la liste des joueurs devant s&#39;affronter selon methode tournoi suisse ,</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (80 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l543">
+                  <tt><i>543</i> <span class="sd">    scission en 2 groupes de la liste , et 1er de chaque groupe en confrontation</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (101 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l548">
+                  <tt><i>548</i>     <span class="c1"># base pour recuperer le nombre de parties au tour 0 , nb participants / 2, parties à 1 contre 1&#39;</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (83 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l569">
+                  <tt><i>569</i>             <span class="n">round_0_listb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>                         <span class="c1"># this the round number</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (92 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l598">
+                  <tt><i>598</i>             <span class="n">round_0_listb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">round</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>                         <span class="c1"># this is the round number</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (101 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l613">
+                  <tt><i>613</i>     <span class="c1"># base pour recuperer le nombre de parties au tour 0 , nb participants / 2, parties à 1 contre 1&#39;</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (117 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l636">
+                  <tt><i>636</i>         <span class="n">ind_player_1</span> <span class="o">=</span> <span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Tour &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; : Donner l&#39;indice alphabétique du joueur gagnant : &quot;</span><span class="p">))</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (101 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l659">
+                  <tt><i>659</i>             <span class="n">player_exist</span><span class="p">,</span> <span class="n">pos_result</span><span class="p">,</span> <span class="n">ind_player_2</span> <span class="o">=</span> <span class="n">search_player</span><span class="p">(</span><span class="n">T0</span><span class="p">,</span> <span class="n">ind_player_1</span><span class="p">,</span> <span class="nb">round</span><span class="p">,</span> <span class="n">nb_chess</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (119 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l680">
+                  <tt><i>680</i>         <span class="n">ind_player_1</span> <span class="o">=</span> <span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Tour &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; : Donner l&#39;indice alphabétique du joueur gagnant : &quot;</span><span class="p">))</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (91 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l703">
+                  <tt><i>703</i>             <span class="n">player_exist</span><span class="p">,</span> <span class="n">pos_result</span><span class="p">,</span> <span class="n">ind_player_2</span> <span class="o">=</span> <span class="n">search_player</span><span class="p">(</span><span class="n">T0</span><span class="p">,</span> <span class="n">ind_player_1</span><span class="p">,</span> <span class="nb">round</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (89 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l733">
+                  <tt><i>733</i>         <span class="n">a</span> <span class="o">=</span> <span class="n">player_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">player</span><span class="p">,</span> <span class="n">start_search</span><span class="p">,</span> <span class="n">end_list</span><span class="p">)</span>  <span class="c1"># position juste apres e+1</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (85 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l744">
+                  <tt><i>744</i>             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Le joueur&quot;</span><span class="p">,</span> <span class="n">ind_player2</span><span class="p">,</span> <span class="s2">&quot;est trouvé dans l&#39;échiquier&quot;</span><span class="p">,</span> <span class="n">nom_echiq</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (111 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l746">
+                  <tt><i>746</i>         <span class="k">elif</span> <span class="n">player_list</span><span class="p">[(</span><span class="n">a</span><span class="o">-</span><span class="mi">2</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;E&quot;</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">player_list</span><span class="p">[(</span><span class="n">a</span><span class="o">-</span><span class="mi">2</span><span class="p">)])</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>          <span class="c1"># position 2 dans la liste</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (85 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l751">
+                  <tt><i>751</i>             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Le joueur&quot;</span><span class="p">,</span> <span class="n">ind_player2</span><span class="p">,</span> <span class="s2">&quot;est trouvé dans l&#39;échiquier&quot;</span><span class="p">,</span> <span class="n">nom_echiq</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (113 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l753">
+                  <tt><i>753</i>         <span class="k">elif</span> <span class="n">player_list</span><span class="p">[(</span><span class="n">a</span><span class="o">-</span><span class="mi">3</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;E&quot;</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">player_list</span><span class="p">[(</span><span class="n">a</span><span class="o">-</span><span class="mi">3</span><span class="p">)])</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>          <span class="c1"># a déjà gagné ! modifier  ?</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (84 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l815">
+                  <tt><i>815</i> <span class="k">def</span> <span class="nf">round_tournament</span><span class="p">(</span><span class="n">player_lists</span><span class="p">,</span> <span class="n">list_tmp_tournament</span><span class="p">,</span> <span class="n">T0_results</span><span class="p">,</span> <span class="nb">round</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (92 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l817">
+                  <tt><i>817</i> <span class="sd">    algo deroulement du tournoi sur la base des points accumulés au fur a mesure des parties</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (90 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l820">
+                  <tt><i>820</i>     <span class="n">T1</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># liste des parties apres le 1er tour avec appariement par  piorité resultats</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (91 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l837">
+                  <tt><i>837</i>     <span class="c1"># tri des couples deja joués dans un tour precedent et ajout a une liste de recensement</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (87 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l843">
+                  <tt><i>843</i>     <span class="n">list_combinaison</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">combinations</span><span class="p">(</span><span class="n">couple_list_temp2</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">player_lists2</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)))</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (97 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l868">
+                  <tt><i>868</i>             <span class="c1"># formule de calcul  on associe le point de chaque joueur + son rang divisé par mille</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (102 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l871">
+                  <tt><i>871</i>                     <span class="n">point_player1</span> <span class="o">=</span> <span class="n">player_lists2</span><span class="p">[</span><span class="n">players</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">player_lists2</span><span class="p">[</span><span class="n">players</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="mi">10000</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (102 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l874">
+                  <tt><i>874</i>                     <span class="n">point_player2</span> <span class="o">=</span> <span class="n">player_lists2</span><span class="p">[</span><span class="n">players</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">player_lists2</span><span class="p">[</span><span class="n">players</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="mi">10000</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (89 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l887">
+                  <tt><i>887</i>         <span class="n">list_tmp_tournament</span> <span class="o">=</span> <span class="n">add_couplelist</span><span class="p">(</span><span class="n">list_tmp_tournament</span><span class="p">,</span> <span class="n">players</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">players</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (93 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l894">
+                  <tt><i>894</i> <span class="sd">    creation of the iteration about to listing all possibilities of meeting in the tournament</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (81 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l979">
+                  <tt><i>979</i> <span class="k">def</span> <span class="nf">deroulement</span><span class="p">(</span><span class="n">players_t0</span><span class="p">,</span> <span class="n">T_round</span><span class="p">,</span> <span class="n">list_ind_tournament</span><span class="p">,</span> <span class="n">nb_chess</span><span class="p">,</span> <span class="nb">round</span><span class="p">,</span> <span class="n">T0_s</span><span class="p">):</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (97 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l997">
+                  <tt><i>997</i>         <span class="n">T0_results</span><span class="p">,</span> <span class="n">player_indice</span><span class="p">,</span> <span class="n">pt_gain</span><span class="p">,</span> <span class="n">player_indice2</span> <span class="o">=</span> <span class="n">results_T0</span><span class="p">(</span><span class="n">T_round</span><span class="p">,</span> <span class="nb">round</span><span class="p">,</span> <span class="n">nb_chess</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (96 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l1003">
+                  <tt><i>1003</i>         <span class="n">list_ind_tournament</span> <span class="o">=</span> <span class="n">add_couplelist</span><span class="p">(</span><span class="n">list_ind_tournament</span><span class="p">,</span> <span class="n">player_indice</span><span class="p">,</span> <span class="n">player_indice2</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (81 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l1004">
+                  <tt><i>1004</i>         <span class="n">players_t0</span> <span class="o">=</span> <span class="n">score_up</span><span class="p">(</span><span class="n">players_t0</span><span class="p">,</span> <span class="n">player_indice</span><span class="p">,</span> <span class="n">player_indice2</span><span class="p">,</span> <span class="n">pt_gain</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (88 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l1008">
+                  <tt><i>1008</i>         <span class="n">data_round</span> <span class="o">=</span> <span class="n">match_tmnt_database_list</span><span class="p">(</span><span class="n">T0_results</span><span class="p">,</span> <span class="n">players_t0</span><span class="p">,</span> <span class="nb">round</span><span class="p">,</span> <span class="n">nb_match</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (104 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l1009">
+                  <tt><i>1009</i>                                               <span class="n">play1_result</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">play2_result</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">st_date</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (102 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l1015">
+                  <tt><i>1015</i>                                                 <span class="n">data_round_s</span><span class="p">[</span><span class="n">row</span><span class="p">],</span> <span class="n">data_round_s</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="s1">&#39;id_tournament&#39;</span><span class="p">])</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (99 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l1019">
+                  <tt><i>1019</i>         <span class="n">nb_free</span> <span class="o">=</span> <span class="n">test_search</span><span class="p">(</span><span class="n">T0_results</span><span class="p">)</span>  <span class="c1"># trying to find &quot;10&quot;, is the flag to chess party is not</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (92 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l1065">
+                  <tt><i>1065</i>     <span class="n">test_saisi</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;un tournoi est en cours , voulez vous le charger ? (Oui= O, Non=N)&quot;</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (109 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l1083">
+                  <tt><i>1083</i>         <span class="n">active_round</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">T0</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">nb_chess</span><span class="p">))</span>  <span class="c1"># is divided by 4 because a party is writed  by 4 caracters</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (91 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l1095">
+                  <tt><i>1095</i>     <span class="k">if</span> <span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">players_t0</span><span class="p">))</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>        <span class="c1"># test si nb_chess est paire via le modulo == 0</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (98 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l1114">
+                  <tt><i>1114</i>                 <span class="n">T0_results</span><span class="p">,</span> <span class="n">list_ind_tournament</span> <span class="o">=</span> <span class="n">deroulement</span><span class="p">(</span><span class="n">players_t0</span><span class="p">,</span> <span class="n">T0</span><span class="p">,</span> <span class="n">list_ind_tournament</span><span class="p">,</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (84 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l1115">
+                  <tt><i>1115</i>                                                               <span class="n">nb_chess</span><span class="p">,</span> <span class="nb">round</span><span class="p">,</span> <span class="n">T0_s</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (81 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l1122">
+                  <tt><i>1122</i>                     <span class="n">T0_results</span><span class="p">,</span> <span class="n">list_ind_tournament</span> <span class="o">=</span> <span class="n">deroulement</span><span class="p">(</span><span class="n">players_t0</span><span class="p">,</span> <span class="n">T0</span><span class="p">,</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (109 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l1123">
+                  <tt><i>1123</i>                                                                   <span class="n">list_ind_tournament</span><span class="p">,</span> <span class="n">nb_chess</span><span class="p">,</span> <span class="nb">round</span><span class="p">,</span> <span class="n">T0_s</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (106 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l1127">
+                  <tt><i>1127</i>                     <span class="n">T1</span><span class="p">,</span> <span class="n">list_ind_tournament</span> <span class="o">=</span> <span class="n">round_tournament</span><span class="p">(</span><span class="n">players_t0</span><span class="p">,</span> <span class="n">list_ind_tournament</span><span class="p">,</span> <span class="n">T1</span><span class="p">,</span> <span class="nb">round</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (114 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l1141">
+                  <tt><i>1141</i>                     <span class="n">T1</span><span class="p">,</span> <span class="n">list_ind_tournament</span> <span class="o">=</span> <span class="n">round_tournament</span><span class="p">(</span><span class="n">players_t0</span><span class="p">,</span> <span class="n">list_ind_tournament</span><span class="p">,</span> <span class="n">T0_results</span><span class="p">,</span> <span class="nb">round</span><span class="p">)</span></tt>
+               </a>
+            </li><li>
+               
+               <p>Line too long (87 > 79 characters):</p>
+               
+               <a href="controller.chess_tournament.source.html#l1149">
+                  <tt><i>1149</i>                 <span class="n">deroulement</span><span class="p">(</span><span class="n">players_t0</span><span class="p">,</span> <span class="n">T1</span><span class="p">,</span> <span class="n">list_ind_tournament</span><span class="p">,</span> <span class="n">nb_chess</span><span class="p">,</span> <span class="nb">round</span><span class="p">,</span> <span class="n">T0_s</span><span class="p">)</span></tt>
+               </a>
+            </li>
+            </ul>
+         </li>
+         
+         <li>
+            <a data-code="E402">
+               <span class="count sev-2">
+                  1
+               </span>
+               <strong>E402:</strong> module level import not at top of file
+               
+            </a>
+            <ul class="details">
+            <li>
+               
+               <a href="controller.chess_tournament.source.html#l10">
+                  <tt><i>10</i> <span class="kn">from</span> <span class="nn">view.rapport3</span> <span class="kn">import</span> <span class="n">Rapport</span></tt>
+               </a>
+            </li>
+            </ul>
+         </li>
+         
+         </ul>
+      </div>
+   </body>
+</html>

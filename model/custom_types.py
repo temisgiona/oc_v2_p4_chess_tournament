@@ -1,6 +1,7 @@
 from enum import Enum
 import re
 
+
 class Gender(Enum):
     Male = "M"
     Female = "F"
@@ -8,10 +9,10 @@ class Gender(Enum):
 
 class Name(str):
     def __new__(cls, value):
-        if not re.match("^[a-zA-Z \-'ïöéè]{2,25}$", value):
+        if not re.match("^[a-zA-Z \\-'ïöéè]{2,25}$", value):
             raise ValueError()
 
-        return  str.__new__(cls, value.title())
+        return str.__new__(cls, value.title())
 
 
 class TimeControl(Enum):
@@ -24,6 +25,3 @@ class Results(Enum):
     win = "W"
     Loose = "L"
     null = "N"
-
-
-
