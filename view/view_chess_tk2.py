@@ -352,7 +352,6 @@ class ChessLstPlayerFrame(ttk.Frame):
 
 
 class ChessPlayer_Tour(ChessLstPlayerFrame):
-    """onglet liste des joueurs potentiels tournois"""
     def __init__(self, master):
         ttk.Frame.__init__(self, master)
         ins_trm_fr = LabelFrame(master, text="Inscription à un tournoi")
@@ -885,7 +884,6 @@ class MatchFrame(ttk.Frame):
 
 
 class ReportFrame(ttk.Frame):
-    """onglet rapport"""
     def __init__(self, master):
         ttk.Frame.__init__(self, master)
         # ===============================================================
@@ -900,16 +898,11 @@ class ReportFrame(ttk.Frame):
         # ===============================================================
         #  liste
         # ===============================================================
-
-        self.tree = ttk.Treeview(
-            fr, height=6, columns=(
-             "name", "place", "start_date", "end_date", "time_control"
-            )
-            )
-        self.tree.grid(row=0, column=0, pady=50, sticky='w')
-        self.tree.heading('#0', text='', anchor='w')
-        self.tree.column("#0", minwidth=1, width=2)
-        self.tree.heading('name', text='Nom', anchor='w')
+        self.tree = ttk.Treeview(fr, height=6, columns=(
+            "place", "start_date", "end_date", "time_control"
+            ))
+        self.tree.grid(row=0, column=0, pady=20, sticky='w')
+        self.tree.heading('#0', text='Nom', anchor='w')
         self.tree.heading("place", text='Lieu', anchor='w')
         self.tree.heading("start_date", text='Date début', anchor='w')
         self.tree.heading("end_date", text='Date de fin', anchor='w')
@@ -934,30 +927,6 @@ class ReportFrame(ttk.Frame):
         self.match_tree.heading("Player 1", text='Player 1', anchor='w')
         self.match_tree.heading("Player 2", text='Player 2', anchor='w')
         self.match_tree.heading("Results", text='Résultat gagnant', anchor='w')
-
-        # ===============================================================
-        #  boutons
-        # ===============================================================
-
-        showbtn = ttk.Button(
-            fr, text="Voir la liste", command=self.view_records_tnmt
-            )
-        showbtn.grid(
-            row=0, column=0, padx=20, pady=15, sticky='nw'
-            )
-
-    def view_records_tnmt(self):
-        x = self.tree.get_children()
-        for item in x:
-            self.tree.delete(item)
-
-        tk_manager = manager_txt.Manager('./data_players2.json', 'tournaments')
-        all_db_data, count = tk_manager.load_all_from_tinydb()
-
-        for item in range(count):
-            serial_d_player = all_db_data[item]
-
-            self.tree.insert("", END, text="", values=serial_d_player[1:6])
 
 
 def maintk():
